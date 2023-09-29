@@ -53,6 +53,8 @@ public class ShootRailGun : MonoBehaviour
        
         // 일정 시간 후 레이저 제거
         yield return new WaitForSeconds(1f);
+
+       
         Destroy(laser);
     }
 
