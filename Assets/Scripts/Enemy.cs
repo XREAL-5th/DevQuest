@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    
+    public int HP;
     public enum State 
     {
         None,
@@ -31,10 +31,15 @@ public class Enemy : MonoBehaviour
     { 
         state = State.None;
         nextState = State.Idle;
+        HP = 60;
     }
 
     private void Update()
     {
+        if (this.HP <= 0)
+        {
+            Destroy(this.gameObject);
+        }
         //1. 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
