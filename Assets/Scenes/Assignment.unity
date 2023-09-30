@@ -140,7 +140,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &706425930
 Transform:
@@ -526,8 +526,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c44d45ccb6bec4ebda916817330378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserRange: 2
-  laserPrefab: {fileID: 122648, guid: 11530f2b0a0cd2442949827ecbb622f2, type: 3}
+  laserPrefab:
+  - {fileID: 122648, guid: 11530f2b0a0cd2442949827ecbb622f2, type: 3}
+  - {fileID: 1802793274631111305, guid: 1efe179ee1c00c447ab022fbb653c74d, type: 3}
   laserSpawnPoint: {fileID: 775758161}
 --- !u!1 &1641673474
 GameObject:
@@ -546,7 +547,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 8
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &1641673475
 MeshCollider:
@@ -1057,7 +1058,7 @@ GameObject:
   - component: {fileID: 186189157315080663}
   - component: {fileID: 3625695013233082856}
   m_Layer: 0
-  m_Name: Pistol 2
+  m_Name: Magic Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1305,6 +1306,8 @@ GameObject:
   - component: {fileID: 5146417150334442811}
   - component: {fileID: 5146417150334442810}
   - component: {fileID: 5146417150334442812}
+  - component: {fileID: 5146417150334442813}
+  - component: {fileID: 5146417150334442814}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -2462,6 +2465,11 @@ MonoBehaviour:
   animator: {fileID: 5146417150334442810}
   splashFx: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
   attackRange: 4.1
+  player: {fileID: 2047535499}
+  chaseRange: 20
+  HP: 100
+  originEnemySpeed: 3.5
+  DeadVfx: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   state: 0
   nextState: 0
 --- !u!136 &5146417150334442812
@@ -2487,6 +2495,55 @@ CapsuleCollider:
   m_Height: 8.776296
   m_Direction: 1
   m_Center: {x: -0.012780428, y: 5.5, z: 1.3088206}
+--- !u!54 &5146417150334442813
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5146417150327186246}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!195 &5146417150334442814
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5146417150327186246}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!137 &5146417150338688760
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -2654,7 +2711,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1660057539 &9223372036854775807

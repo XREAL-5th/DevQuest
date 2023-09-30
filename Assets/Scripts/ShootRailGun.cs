@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ShootRailGun : MonoBehaviour
 {
-    public float laserRange = 2f;
-    public GameObject laserPrefab; // 레이저
+
+    public GameObject[] laserPrefab; // 레이저 Prefab
+    
     [SerializeField]
     private GameObject laserSpawnPoint; // 레이저 발사 위치
 
@@ -18,6 +19,11 @@ public class ShootRailGun : MonoBehaviour
             // 레이저 생성
             // ShootLaser();
             CreateLaser();
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            CreateRedLaser();
         }
     }
 
@@ -40,21 +46,37 @@ public class ShootRailGun : MonoBehaviour
     }
 
     // Projectile(발사체) 충돌 체크
-    void CreateLaser()
+    private void CreateLaser()
     {
         StartCoroutine(ShowLaser(laserSpawnPoint.transform.position));
+    }
+
+    private void CreateRedLaser()
+    {
+        StartCoroutine(ShoRedwLaser(laserSpawnPoint.transform.position));
     }
 
     IEnumerator ShowLaser(Vector3 startPosition)
     {
         // 레이저 생성 및 설정
-        GameObject laser = Instantiate(laserPrefab, startPosition, Quaternion.Euler(90, 0, 0));
+        GameObject laser = Instantiate(laserPrefab[0], startPosition, Quaternion.Euler(90, 0, 0));
         laser.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
        
         // 일정 시간 후 레이저 제거
         yield return new WaitForSeconds(1f);
 
-       
+        Destroy(laser);
+    }
+
+    IEnumerator ShoRedwLaser(Vector3 startPosition)
+    {
+        // 레이저 생성 및 설정
+        GameObject laser = Instantiate(laserPrefab[1], startPosition, Quaternion.Euler(90, 0, 0));
+        laser.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
+
+        // 일정 시간 후 레이저 제거
+        yield return new WaitForSeconds(1f);
+
         Destroy(laser);
     }
 

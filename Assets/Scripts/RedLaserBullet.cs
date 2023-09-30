@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using System.Threading.Tasks;
 
-public class LaserBullet : MonoBehaviour
+public class RedLaserBullet : MonoBehaviour
 {
-    public GameObject magicPrefab; // 마법 Prefab을 할당할 변수
-    private float damage = 40f;
+    public GameObject DebuffMagic; // 마법 Prefab을 할당할 변수
+    private float DebuffSpeed = 1.0f;
 
 
 
@@ -27,8 +26,8 @@ public class LaserBullet : MonoBehaviour
 
             if (enemy != null)
             {
-                // Enemy에게 데미지 부여하기 
-                enemy.GetDamage(damage);
+                // Enemey의 속도 너프
+                enemy.GetDebuffSpeed(DebuffSpeed);
             }
 
             Destroy(gameObject);
@@ -39,7 +38,7 @@ public class LaserBullet : MonoBehaviour
     async void MagicMeteros(Vector3 CollPostion)
     {
         // 마법 Prefab을 인스턴스화하여 적 주변에 생성
-        GameObject magicInstance = Instantiate(magicPrefab, CollPostion, Quaternion.identity);
+        GameObject magicInstance = Instantiate(DebuffMagic, CollPostion, Quaternion.identity);
 
         await WaitForSecondsAsync(2f);
 
@@ -52,5 +51,4 @@ public class LaserBullet : MonoBehaviour
     {
         await Task.Delay(Mathf.FloorToInt(seconds * 1000));
     }
-
 }
