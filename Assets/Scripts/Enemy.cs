@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
+    public float health = 50f;
     
     public enum State 
     {
@@ -100,5 +101,14 @@ public class Enemy : MonoBehaviour
         //해당 함수는 없어도 기능 상의 문제는 없지만, 기능 체크 및 디버깅을 용이하게 합니다.
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawSphere(transform.position, attackRange);
+    }
+
+    public void TakeDamage(float amount)
+    {
+        health -= amount;
+        if(health <= 0f)
+        {
+            Destroy(gameObject);
+        }
     }
 }
