@@ -27,7 +27,7 @@ public class LaserBullet : MonoBehaviour
 
             if (enemy != null)
             {
-                // Enemy에게 데미지 부여하기 
+                // Enemy에게 데미지 부여한다.
                 enemy.GetDamage(damage);
             }
 
@@ -35,7 +35,7 @@ public class LaserBullet : MonoBehaviour
         }
     }
 
-
+    // 마볍효과를 생성하고, 일정시간 이후 인스턴스를 제거합니다.
     async void MagicMeteros(Vector3 CollPostion)
     {
         // 마법 Prefab을 인스턴스화하여 적 주변에 생성

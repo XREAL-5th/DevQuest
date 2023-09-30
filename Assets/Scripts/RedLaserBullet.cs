@@ -26,7 +26,7 @@ public class RedLaserBullet : MonoBehaviour
 
             if (enemy != null)
             {
-                // Enemey의 속도 너프
+                // Enemey의 속도를 너프 한다.
                 enemy.GetDebuffSpeed(DebuffSpeed);
             }
 
@@ -34,7 +34,7 @@ public class RedLaserBullet : MonoBehaviour
         }
     }
 
-
+    // 마볍효과를 생성하고, 일정시간 이후 인스턴스를 제거합니다.
     async void MagicMeteros(Vector3 CollPostion)
     {
         // 마법 Prefab을 인스턴스화하여 적 주변에 생성

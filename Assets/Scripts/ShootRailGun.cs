@@ -6,14 +6,13 @@ public class ShootRailGun : MonoBehaviour
 {
 
     public GameObject[] laserPrefab; // 레이저 Prefab
-    
     [SerializeField]
     private GameObject laserSpawnPoint; // 레이저 발사 위치
 
 
     void Update()
     {
-        // 마우스 클릭을 감지
+        // 마우스 왼쪽 클릭 시 데미지 부여 레이저 발사
         if (Input.GetMouseButtonDown(0))
         {
             // 레이저 생성
@@ -21,6 +20,7 @@ public class ShootRailGun : MonoBehaviour
             CreateLaser();
         }
 
+        // 마우스 오른쪽 클릭 시 속도 너프 레이저 발사
         if(Input.GetMouseButtonDown(1))
         {
             CreateRedLaser();
@@ -56,6 +56,7 @@ public class ShootRailGun : MonoBehaviour
         StartCoroutine(ShoRedwLaser(laserSpawnPoint.transform.position));
     }
 
+    // 데미지 레이저 생성 코루틴
     IEnumerator ShowLaser(Vector3 startPosition)
     {
         // 레이저 생성 및 설정
@@ -68,6 +69,7 @@ public class ShootRailGun : MonoBehaviour
         Destroy(laser);
     }
 
+    // 속도 너프 레이저 생성 코루틴 
     IEnumerator ShoRedwLaser(Vector3 startPosition)
     {
         // 레이저 생성 및 설정

@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    [SerializeField] private Transform player;
+    public Transform player;
     [SerializeField] private float chaseRange = 10f;
 
     [Header("Enemy State")]
@@ -118,7 +118,7 @@ public class Enemy : MonoBehaviour
         //insert code here...
     }
 
-
+    // 속도를 너프 합니다.
     public void GetDebuffSpeed(float speed)
     {
         if(navMeshAgent != null)
@@ -129,13 +129,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // 지속시간을 갖고 다시 원래속도로 복귀 합니다.
     private void ResetEnemySpeed()
     {
       //  Debug.Log("원래 속도로");
         navMeshAgent.speed = originEnemySpeed;
     }
 
-    
+    // 일정 데미지 부여 합니다.
     public void GetDamage(float damage)
     {
         HP -= damage;
@@ -151,6 +152,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // Enemy 사망
     private void Dead()
     {
         // Enemy 제거
@@ -160,6 +162,7 @@ public class Enemy : MonoBehaviour
         Destroy(deadVfxInstance, 2f);
     }
     
+
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
