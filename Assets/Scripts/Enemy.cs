@@ -26,11 +26,14 @@ public class Enemy : MonoBehaviour
     public State nextState = State.None;
 
     private bool attackDone;
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
 
     private void Start()
     { 
         state = State.None;
         nextState = State.Idle;
+        currentHealth = maxHealth; // 체력 초기화
     }
 
     private void Update()
@@ -81,7 +84,25 @@ public class Enemy : MonoBehaviour
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
+        // 공격을 받았을 때 체력을 감소시키는 로직
+        TakeDamage(10); 
     }
+
+    private void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
     {
