@@ -13,7 +13,11 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    
+
+    [Header("Health Settings")]
+    [SerializeField] private float maxHealth = 100f;
+    private float currentHealth;
+
     public enum State 
     {
         None,
@@ -31,6 +35,7 @@ public class Enemy : MonoBehaviour
     { 
         state = State.None;
         nextState = State.Idle;
+        currentHealth = maxHealth;
     }
 
     private void Update()
@@ -93,7 +98,6 @@ public class Enemy : MonoBehaviour
         attackDone = true;
     }
 
-
     private void OnDrawGizmosSelected()
     {
         //Gizmos를 사용하여 공격 범위를 Scene View에서 확인할 수 있게 합니다. (인게임에서는 볼 수 없습니다.)
@@ -101,4 +105,26 @@ public class Enemy : MonoBehaviour
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawSphere(transform.position, attackRange);
     }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        Debug.Log($"Damage Taken. Current Health: {currentHealth}");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
 }
