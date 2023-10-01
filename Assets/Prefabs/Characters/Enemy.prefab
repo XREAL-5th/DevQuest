@@ -1265,9 +1265,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2952659448571080718}
-  splashFx: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
+  splashFx: {fileID: 0}
   attackRange: 4.1
   maxHealth: 100
+  damageVFXPrefab: {fileID: 9070474633162843459, guid: 356cf4dca1465b54fabbb8cd9b1cd190,
+    type: 3}
   state: 1
   nextState: 0
 --- !u!95 &2952659448571080718

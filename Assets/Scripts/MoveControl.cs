@@ -167,8 +167,9 @@ public class MoveControl : MonoBehaviour
     }
 
     //TODO: fix - not working
-    private void ShootRaycast()
+    private void ShootProjectile()
     {
+        // TODO idea: remove raycasting?
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo;
 

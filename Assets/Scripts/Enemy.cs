@@ -18,6 +18,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float maxHealth = 100f;
     private float currentHealth;
 
+    [Header("VFX")]
+    [SerializeField] private GameObject damageVFXPrefab;
+
     public enum State 
     {
         None,
@@ -109,6 +112,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        if (damageVFXPrefab)
+        {
+            Instantiate(damageVFXPrefab, transform.position, Quaternion.identity);
+        }
         Debug.Log($"Damage Taken. Current Health: {currentHealth}");
 
         if (currentHealth <= 0)
