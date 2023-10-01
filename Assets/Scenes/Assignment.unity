@@ -123,6 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 0f405823fb884d7449ffe2f88f9b5848, type: 2}
+--- !u!4 &467812648 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+    type: 3}
+  m_PrefabInstance: {fileID: 2056737631}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &600887560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -489,7 +495,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.483, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 467812648}
   m_Father: {fileID: 2047535499}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1330314348
@@ -672,7 +679,7 @@ PrefabInstance:
     - target: {fileID: 4972335773377818102, guid: ff2c885473a84bd4cae839b312f7fea7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.99
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 4972335773377818102, guid: ff2c885473a84bd4cae839b312f7fea7,
         type: 3}
@@ -1092,6 +1099,79 @@ MonoBehaviour:
     type: 3}
   bulletPrefab: {fileID: 1795315002769621265, guid: 44584cf976f7da44195a4953aaa5e14c,
     type: 3}
+--- !u!1001 &2056737631
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1330314347}
+    m_Modifications:
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.435
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.33600006
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.305
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5326075
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.09460977
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.8389103
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.060065854
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -115.179
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484752262350124014, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 12.869
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292674143187265876, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_Name
+      value: Rifle 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7727607288425220577, guid: ad4af7a378c328b479efaa42f7756c12,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ad4af7a378c328b479efaa42f7756c12, type: 3}
 --- !u!1001 &2085728487
 PrefabInstance:
   m_ObjectHideFlags: 0

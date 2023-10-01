@@ -28,7 +28,7 @@ public class PlayerAttack : MonoBehaviour
         if (Physics.Raycast(aim.transform.position, aim.transform.forward, out hit, range))
         {
             var bullet = Instantiate(bulletPrefab, aim.transform.position, aim.transform.rotation);
-            bullet.GetComponent<Rigidbody>().AddForce(aim.transform.forward* 30, ForceMode.Impulse);
+            bullet.GetComponent<Rigidbody>().AddForce(aim.transform.forward* 50, ForceMode.Impulse);
 
             if (hit.transform.gameObject.layer == 7)
             {
