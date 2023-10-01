@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
 
 public class GunShot : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class GunShot : MonoBehaviour
     struct GunStat
     {
         public int damage, ammo;
-        public float speed, reloadTime;
+        public float speed, reloadTime, knockbackStrength;
         public bool auto; //Auto=ture/semi=false
     }
     GunStat gunStat;
@@ -39,6 +40,7 @@ public class GunShot : MonoBehaviour
         pistol.damage = 30;
         pistol.ammo = 8;
         pistol.speed = 1.0f;
+        pistol.knockbackStrength = 2.0f;
         pistol.reloadTime = 3.0f;
         pistol.auto = false;
         gunStat = pistol;
@@ -81,8 +83,17 @@ public class GunShot : MonoBehaviour
         {
             Debug.Log(rayHit.collider.name);
             if (rayHit.collider.CompareTag("Enemy"))
+            {
                 //give Damage to Enemy
                 rayHit.collider.GetComponent<HpControl>().Damaged(gunStat.damage);
+                //knockback
+                Rigidbody rigidbody = rayHit.collider.GetComponent<Rigidbody>();
+                Vector3 knockbackDirection = gameObject.transform.position - rayHit.point;
+                knockbackDirection.Normalize();
+                knockbackDirection.y = 0.01f;
+
+                rigidbody.AddForce(knockbackDirection * gunStat.knockbackStrength, ForceMode.Impulse);
+            }
                 
         }
         Instantiate(bulletHole, rayHit.point, Quaternion.Euler(rayHit.normal));
@@ -110,5 +121,6 @@ public class GunShot : MonoBehaviour
         yield return new WaitForSeconds(gunStat.reloadTime);
         leftAmmo = gunStat.ammo;
         state = State.readyToShoot;
+        Debug.Log("Done Reload");
     }
 }
