@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject hitFx;
+    public GameObject hitVfx;
     [Header("Preset Fields")] 
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject splashFx;
@@ -26,8 +28,8 @@ public class Enemy : MonoBehaviour
     public State nextState = State.None;
 
     private bool attackDone;
-    [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
+    [SerializeField] public int maxHealth = 100;
+    public int currentHealth;
 
     private void Start()
     { 
@@ -80,15 +82,16 @@ public class Enemy : MonoBehaviour
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
     }
-    
-    private void Attack() //현재 공격은 애니메이션만 작동합니다.
+
+    public void Attack() //현재 공격은 애니메이션만 작동합니다. 
     {
         animator.SetTrigger("attack");
         // 공격을 받았을 때 체력을 감소시키는 로직
-        TakeDamage(10); 
+        TakeDamage(10);
+        Instantiate(hitVfx, transform.position, Quaternion.identity);
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
 
