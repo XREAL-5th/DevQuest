@@ -110,7 +110,7 @@ public class Enemy : MonoBehaviour
     {
         currentHealthPoint--;
         Debug.Log(currentHealthPoint);
-        if (currentHealthPoint == 0)
+        if (currentHealthPoint <= 0)
             Die();
     }
 

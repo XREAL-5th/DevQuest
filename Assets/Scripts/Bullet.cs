@@ -8,12 +8,8 @@ public class Bullet : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float duration = 2f;
 
-    private int enemyLayer;
+    private int enemyLayer = 8;
 
-    private void Start()
-    {
-        enemyLayer = 1 << 8;
-    }
     private void Awake()
     {
         StartCoroutine(CountDuration());
@@ -24,13 +20,13 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject); 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        GameObject collidedObjcet = other.gameObject;
+        GameObject collidedObjcet = collision.gameObject;
 
-        if(collidedObjcet.layer.Equals(enemyLayer))
-        {
+        if (collidedObjcet.layer.Equals(enemyLayer))
             collidedObjcet.GetComponent<Enemy>().GetDamage();
-        }
+        Destroy(gameObject);
+
     }
 }

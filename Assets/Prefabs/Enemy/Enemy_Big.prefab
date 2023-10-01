@@ -8,6 +8,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 85819407818537349, guid: fa3160a30f01a7e48ae00b51c7b0750a,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1495043894100426032, guid: fa3160a30f01a7e48ae00b51c7b0750a,
+        type: 3}
+      propertyPath: initialHealthPoint
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 4327648465696763226, guid: fa3160a30f01a7e48ae00b51c7b0750a,
         type: 3}
       propertyPath: m_Name
