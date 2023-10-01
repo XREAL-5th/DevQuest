@@ -101,7 +101,7 @@ public class MoveControl : MonoBehaviour
     }
 
     private void CheckLanded() {
-        //발 위치에 작은 구를 하나 생성한 후, 그 구가 땅에 닿는지 검사한다.
+        // 발 위치에 작은 구를 하나 생성한 후, 그 구가 땅에 닿는지 검사한다.
         //1 << 3은 Ground의 레이어가 3이기 때문, << 는 비트 연산자
         var center = col.bounds.center;
         var origin = new Vector3(center.x, center.y - ((col.height - 1f) / 2 + 0.15f), center.z);
