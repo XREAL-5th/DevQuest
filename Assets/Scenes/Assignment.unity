@@ -184,7 +184,7 @@ PrefabInstance:
     - target: {fileID: 4042517558427108750, guid: 21f69687ae136d440a9613161ea57687,
         type: 3}
       propertyPath: shootPower
-      value: 15
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4042517558427108750, guid: 21f69687ae136d440a9613161ea57687,
         type: 3}
@@ -1097,10 +1097,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1495043894100426032, guid: fa3160a30f01a7e48ae00b51c7b0750a,
+        type: 3}
+      propertyPath: initialHealthPoint
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4327648465696763226, guid: fa3160a30f01a7e48ae00b51c7b0750a,
         type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5721910485465390911, guid: fa3160a30f01a7e48ae00b51c7b0750a,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8029152885706093582, guid: fa3160a30f01a7e48ae00b51c7b0750a,
         type: 3}
@@ -1155,8 +1165,45 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4327648465696763226, guid: fa3160a30f01a7e48ae00b51c7b0750a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5146417150334442812}
   m_SourcePrefab: {fileID: 100100000, guid: fa3160a30f01a7e48ae00b51c7b0750a, type: 3}
+--- !u!1 &5146417150327186246 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4327648465696763226, guid: fa3160a30f01a7e48ae00b51c7b0750a,
+    type: 3}
+  m_PrefabInstance: {fileID: 3991252687817495645}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &5146417150334442812
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5146417150327186246}
+  serializedVersion: 4
+  m_Mass: 0.5
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

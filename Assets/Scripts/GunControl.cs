@@ -10,7 +10,7 @@ public class GunControl : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float fireDelay;
     [SerializeField] private float shootRange = 10f;
-    [SerializeField] private float shootPower = 15f;
+    [SerializeField] private float shootPower = 300f;
     [SerializeField] private Vector3 gunPosition = new Vector3(0.55f, -0.2f, 0.5f);
 
     private float elapsedTime;
