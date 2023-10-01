@@ -7,6 +7,7 @@ public class Managers : MonoBehaviour
     static Managers s_instance;
     static Managers Instance { get { init(); return s_instance; } }
 
+    // Core
     InputManager _input = new InputManager();
     ResourceManager _resource = new ResourceManager();
 

@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Define
 {
-
     public enum MouseEvent
     {
         Press,
