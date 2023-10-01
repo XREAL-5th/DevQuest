@@ -40,7 +40,7 @@ public class PlayerControl : MonoBehaviour
             Debug.Log(targetStat.Hp);
             if (targetStat.Hp <= 0)
             {
-                Destroy(_target);
+                Managers.Resource.Destroy(_target);
             }
 
         }
