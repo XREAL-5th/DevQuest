@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour
 {
     public GameObject hitFx;
-    public GameObject hitVfx;
     [Header("Preset Fields")] 
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject splashFx;
@@ -88,7 +87,7 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("attack");
         // 공격을 받았을 때 체력을 감소시키는 로직
         TakeDamage(10);
-        Instantiate(hitVfx, transform.position, Quaternion.identity);
+        Instantiate(hitFx, transform.position, Quaternion.identity);
     }
 
     public void TakeDamage(int damage)
