@@ -19,15 +19,19 @@ public class InputManager
         if (Input.anyKey && KeyAction != null)
             KeyAction.Invoke();
 
-        if (Input.GetMouseButton(0))
+        if (MouseAction != null)
         {
-            MouseAction.Invoke(Define.MouseEvent.PointerDown);
-            _pressed = true;        }
-        else
-        {
-            if (_pressed)
-                MouseAction.Invoke(Define.MouseEvent.PointerUp);
-            _pressed = false;
+            if (Input.GetMouseButton(0))
+            {
+                MouseAction.Invoke(Define.MouseEvent.PointerDown);
+                _pressed = true;
+            }
+            else
+            {
+                if (_pressed)
+                    MouseAction.Invoke(Define.MouseEvent.PointerUp);
+                _pressed = false;
+            }
         }
     }
 }

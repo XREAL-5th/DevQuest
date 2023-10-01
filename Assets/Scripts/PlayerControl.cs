@@ -25,24 +25,41 @@ public class PlayerControl : MonoBehaviour
 
     void BulletFire()
     {
-        Debug.Log("Bullet!");
         Instantiate(_bullet, _firePos.position, _firePos.rotation);
     }
 
-    int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Enemy);
+    int _mask = 1 << (int)Define.Layer.Enemy;
+    GameObject _target;
+    bool _fired;
 
     void OnMouseEvent(Define.MouseEvent evt)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(Camera.main.transform.position, ray.direction * 100, Color.red, 1.0f);
-
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100.0f, _mask))
+        bool raycastHit = Physics.Raycast(ray, out hit, 100.0f, _mask);
+        
+        if (hit.collider.gameObject.layer == (int)Define.Layer.Enemy)
         {
-            if (hit.collider.gameObject.layer == (int)Define.Layer.Enemy && evt == Define.MouseEvent.PointerUp)
+            switch(evt)
             {
-                BulletFire();
+                case Define.MouseEvent.PointerDown:
+                    {
+                        if(!_fired)
+                        {
+                            _target = hit.collider.gameObject;
+                            BulletFire();
+                            _fired = true;
+                        }
+                        break;
+                    }
+                case Define.MouseEvent.PointerUp:
+                    {
+                        _fired = false;
+                        break;
+                    }
             }
         }
+
     }
 }
+
