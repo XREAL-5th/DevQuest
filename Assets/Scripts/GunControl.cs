@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class GunControl : MonoBehaviour
 {
     [Header("Prefab")]
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject shootFX;
 
     [Header("Settings")]
     [SerializeField] private float fireDelay;
@@ -15,6 +17,7 @@ public class GunControl : MonoBehaviour
 
     private float elapsedTime;
     private Transform bulletSpawnPoint;
+    private ParticleSystem[] ShootFXParticleSystems;
     private Quaternion bulletSpawnRotation;
     private Camera playerCamera;
 
@@ -62,6 +65,7 @@ public class GunControl : MonoBehaviour
             targetPoint = playerCamera.transform.position + playerCamera.transform.forward * shootRange;
         }
 
+        Instantiate(shootFX, bulletSpawnPoint);
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
 

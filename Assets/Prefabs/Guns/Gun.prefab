@@ -91,6 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe5b56fde94a44149a01b340eb508c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1448051081432559483, guid: e60be6ba3d5b2a74597eca4d91f9ed48, type: 3}
+  bulletPrefab: {fileID: 1448051081432559483, guid: e60be6ba3d5b2a74597eca4d91f9ed48,
+    type: 3}
+  shootFX: {fileID: 100000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
   fireDelay: 0.2
+  shootRange: 10
+  shootPower: 300
   gunPosition: {x: 0.55, y: -0.2, z: 0.5}
