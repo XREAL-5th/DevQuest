@@ -114,9 +114,34 @@ public class Enemy : MonoBehaviour
         Debug.Log("hp: " + hp);
         if (hp <= 0)
         {
-            nextState = State.Die;
-            Destroy(gameObject, 1);
-            // TODO:
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        nextState = State.Die;
+        Destroy(gameObject, 3);
+        AddRigidbodyRecursivelyToChild(transform);
+    }
+    
+    private void AddRigidbodyRecursivelyToChild(Transform currentTransform)
+    {
+        if (currentTransform.gameObject.GetComponent<MeshRenderer>())
+        {
+            MeshFilter meshFilter = currentTransform.gameObject.GetComponent<MeshFilter>();
+            if (meshFilter && meshFilter.sharedMesh)
+            {
+                MeshCollider mc = currentTransform.gameObject.AddComponent<MeshCollider>();
+                mc.sharedMesh = meshFilter.sharedMesh;
+                mc.convex = true;
+            }
+            Rigidbody rb = currentTransform.gameObject.AddComponent<Rigidbody>();
+            rb.AddExplosionForce(5.0f, transform.position, 1.0f);
+        }
+        foreach (Transform child in currentTransform)
+        {
+            AddRigidbodyRecursivelyToChild(child);
         }
     }
 }
