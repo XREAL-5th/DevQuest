@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private float duration = 2f;
+    [SerializeField] private int damage = 1;
 
     private int enemyLayer = 8;
 
@@ -25,8 +26,7 @@ public class Bullet : MonoBehaviour
         GameObject collidedObjcet = collision.gameObject;
 
         if (collidedObjcet.layer.Equals(enemyLayer))
-            collidedObjcet.GetComponent<Enemy>().GetDamage();
+            collidedObjcet.GetComponent<Enemy>().GetDamage(damage, collision.contacts[0].point);
         Destroy(gameObject);
-
     }
 }

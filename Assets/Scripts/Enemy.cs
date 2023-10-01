@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     [Header("Preset Fields")]
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject splashFx;
+    [SerializeField] private GameObject hitFX;
 
     [Header("Settings")]
     [SerializeField] private float attackRange;
@@ -27,7 +28,6 @@ public class Enemy : MonoBehaviour
     public State nextState = State.None;
 
     private bool attackDone;
-    private int bulletLayer = 1 << 7;
     private int currentHealthPoint;
 
     private void Start()
@@ -106,9 +106,10 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawSphere(transform.position, attackRange);
     }
 
-    public void GetDamage()
+    public void GetDamage(int damage, Vector3 hitLocation)
     {
-        currentHealthPoint--;
+        currentHealthPoint -= damage;
+        Instantiate(hitFX, hitLocation, Quaternion.identity);
         Debug.Log(currentHealthPoint);
         if (currentHealthPoint <= 0)
             Die();

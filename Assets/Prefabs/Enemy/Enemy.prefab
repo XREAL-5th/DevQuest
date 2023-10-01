@@ -686,6 +686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 2472630702562933957}
   splashFx: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
+  hitFX: {fileID: 4535006216103734310, guid: 98c4704d0fd7211449bcf5c451095a60, type: 3}
   attackRange: 4.1
   initialHealthPoint: 10
   state: 0
