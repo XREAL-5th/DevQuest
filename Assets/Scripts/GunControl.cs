@@ -17,16 +17,13 @@ public class GunControl : MonoBehaviour
 
     private float elapsedTime;
     private Transform bulletSpawnPoint;
-    private ParticleSystem[] ShootFXParticleSystems;
-    private Quaternion bulletSpawnRotation;
     private Camera playerCamera;
 
     private void Start()
     {
-        if(bulletPrefab != null)
-        bulletSpawnPoint = transform.Find("BulletSpawnPoint");
+        if (bulletPrefab != null)
+            bulletSpawnPoint = transform.Find("BulletSpawnPoint");
         transform.localPosition = gunPosition;
-        bulletSpawnRotation = bulletSpawnPoint.rotation;
         playerCamera = transform.parent.GetComponent<Camera>();
     }
 
@@ -40,7 +37,7 @@ public class GunControl : MonoBehaviour
         {
             Debug.Log("발사");
             elapsedTime = 0;
-            if(bulletPrefab != null)
+            if (bulletPrefab != null)
             {
                 Shoot();
             }
@@ -56,6 +53,8 @@ public class GunControl : MonoBehaviour
         Vector3 targetPoint;
         RaycastHit hit;
 
+        /* 카메라를 기준으로 전방 범위내에 목표가 있다면 목표를 조준하고, 없다면 최대범위를 조준.
+        조금 더 정밀한 조준 매커니즘을 위해 추가함.*/
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, shootRange))
         {
             targetPoint = hit.point;
@@ -69,6 +68,7 @@ public class GunControl : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
 
+        // 방향을 구하기 위해 목표 지점에서 총알 생성지점을 뺀 후 정규화.
         Vector3 shootDirection = (targetPoint - bulletSpawnPoint.position).normalized;
         bulletRb.AddForce(shootDirection * shootPower);
     }
