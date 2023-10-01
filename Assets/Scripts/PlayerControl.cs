@@ -6,6 +6,9 @@ public class PlayerControl : MonoBehaviour
 {
     PlayerStat _stat;
 
+    [SerializeField] GameObject _bullet;
+    [SerializeField] Transform _firePos;
+
     public enum PlayerState
     {
         Attack,
@@ -20,9 +23,10 @@ public class PlayerControl : MonoBehaviour
 
     }
 
-    void Update()
+    void BulletFire()
     {
-        
+        Debug.Log("Bullet!");
+        Instantiate(_bullet, _firePos.position, _firePos.rotation);
     }
 
     int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Enemy);
@@ -35,13 +39,9 @@ public class PlayerControl : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100.0f, _mask))
         {
-            if (hit.collider.gameObject.layer == (int)Define.Layer.Enemy)
+            if (hit.collider.gameObject.layer == (int)Define.Layer.Enemy && evt == Define.MouseEvent.PointerUp)
             {
-                
-            }
-            else
-            {
-                Debug.Log("G");
+                BulletFire();
             }
         }
     }
