@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject splashFx;
     [SerializeField] private GameObject hitFX;
+    [SerializeField] private GameObject dieFX;
 
     [Header("Settings")]
     [SerializeField] private float attackRange;
@@ -117,6 +118,7 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
+        Instantiate(dieFX, transform.position, Quaternion.identity);
         gameObject.SetActive(false);
     }
 }
