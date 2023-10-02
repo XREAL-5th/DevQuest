@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
+
+    Stat _stat;
     
     public enum State 
     {
@@ -31,6 +33,8 @@ public class Enemy : MonoBehaviour
     { 
         state = State.None;
         nextState = State.Idle;
+
+        _stat = gameObject.GetComponent<Stat>();
     }
 
     private void Update()
