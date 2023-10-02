@@ -46,6 +46,13 @@ public class Shoot : MonoBehaviour
 
             float destroyTime = 2f;
             Destroy(shootInstance, destroyTime);
+
+            Enemy enemy = hit.collider.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                Debug.Log("Enemy 10 감소");
+                enemy.TakeDamage(10); // 10만큼의 데미지를 입힘
+            }
         }
     }
 }
