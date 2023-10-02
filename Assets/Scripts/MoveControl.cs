@@ -9,10 +9,14 @@ public class MoveControl : MonoBehaviour
     [Header("Preset Fields")]
     [SerializeField] private Rigidbody rigid;
     [SerializeField] private CapsuleCollider col;
-    
+
     [Header("Settings")]
     [SerializeField][Range(1f, 10f)] private float moveSpeed;
     [SerializeField][Range(1f, 10f)] private float jumpAmount;
+
+    [Header("Shooting")]
+    [SerializeField] private GameObject projectilePrefab;
+    public GameObject bulletTrailPrefab;
 
     //FSM(finite state machine)에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     public enum State 
@@ -90,9 +94,14 @@ public class MoveControl : MonoBehaviour
             }
             stateTime = 0f;
         }
-        
+
         //3. 글로벌 & 스테이트 업데이트
-        //insert code here...
+       
+        // detect user's shooting input
+        if (Input.GetMouseButtonDown(0))  // left mouse down
+        {
+            ShootHitscan();
+        }
     }
 
     private void FixedUpdate()
@@ -120,5 +129,67 @@ public class MoveControl : MonoBehaviour
         direction.Normalize(); //대각선 이동(Ex. W + A)시에도 동일한 이동속도를 위해 direction을 Normalize
         
         transform.Translate( moveSpeed * Time.deltaTime * direction); //Move
+    }
+
+    void ShootHitscan()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(ray, out hitInfo, 1000f)) // 1000f is the max distance
+        {
+            Vector3 shootOrigin = Camera.main.transform.position;
+            Vector3 hitPoint = hitInfo.point;
+
+            SpawnBulletTrail(shootOrigin, hitPoint);
+
+            Enemy enemy = hitInfo.collider.gameObject.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                Debug.Log($"Hitscan hit enemy: {enemy.name}");
+                enemy.TakeDamage(50f);
+            }
+        }
+    }
+
+    void SpawnBulletTrail(Vector3 start, Vector3 end)
+    {
+        GameObject trail = Instantiate(bulletTrailPrefab, start, Quaternion.identity);
+
+        LineRenderer lr = trail.GetComponent<LineRenderer>();
+        if (lr != null)
+        {
+            lr.SetPosition(0, start);
+            lr.SetPosition(1, end);
+        }
+
+        Destroy(trail, 0.5f);
+    }
+
+    //TODO: fix - not working
+    private void ShootProjectile()
+    {
+        // TODO idea: remove raycasting?
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            Vector3 fireDirection = (hitInfo.point - transform.position).normalized;
+
+            GameObject bulletInstance = Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(fireDirection));
+            Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
+            if (bulletRb)
+            {
+                bulletRb.velocity = fireDirection * 20f;
+            }
+            else
+            {
+                Debug.LogError("No Rigidbody found on the bullet.");
+            }
+            Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.red, 5f);
+            Debug.Log($"Hit object: {hitInfo.collider.name} at {hitInfo.point}");
+        }
+
     }
 }
