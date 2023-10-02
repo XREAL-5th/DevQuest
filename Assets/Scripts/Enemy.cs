@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
+
+    [SerializeField] private int HP = 100;
     
     public enum State 
     {
@@ -35,13 +37,13 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        //1. 스테이트 전환 상황 판단
+        // 1. 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
             switch (state) 
             {
                 case State.Idle:
-                    //1 << 6인 이유는 Player의 Layer가 6이기 때문
+                    // 1 << 6인 이유는 Player의 Layer가 6이기 때문
                     if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
                         nextState = State.Attack;
@@ -54,11 +56,11 @@ public class Enemy : MonoBehaviour
                         attackDone = false;
                     }
                     break;
-                //insert code here...
+                // insert code here...
             }
         }
         
-        //2. 스테이트 초기화
+        // 2. 스테이트 초기화
         if (nextState != State.None) 
         {
             state = nextState;
@@ -70,25 +72,31 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
-                //insert code here...
+                // insert code here...
             }
         }
         
-        //3. 글로벌 & 스테이트 업데이트
-        //insert code here...
+        // 3. 글로벌 & 스테이트 업데이트
+        // insert code here...
     }
     
-    private void Attack() //현재 공격은 애니메이션만 작동합니다.
+    private void Attack() // 현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
+        HP -= 10;
+        Debug.LogFormat("{0}", HP);
+        if (HP == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
+    public void InstantiateFx() // Unity Animation Event 에서 실행됩니다.
     {
         Instantiate(splashFx, transform.position, Quaternion.identity);
     }
     
-    public void WhenAnimationDone() //Unity Animation Event 에서 실행됩니다.
+    public void WhenAnimationDone() // Unity Animation Event 에서 실행됩니다.
     {
         attackDone = true;
     }
@@ -96,8 +104,8 @@ public class Enemy : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        //Gizmos를 사용하여 공격 범위를 Scene View에서 확인할 수 있게 합니다. (인게임에서는 볼 수 없습니다.)
-        //해당 함수는 없어도 기능 상의 문제는 없지만, 기능 체크 및 디버깅을 용이하게 합니다.
+        // Gizmos를 사용하여 공격 범위를 Scene View에서 확인할 수 있게 합니다. (인게임에서는 볼 수 없습니다.)
+        // 해당 함수는 없어도 기능 상의 문제는 없지만, 기능 체크 및 디버깅을 용이하게 합니다.
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawSphere(transform.position, attackRange);
     }

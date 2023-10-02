@@ -7,7 +7,7 @@ public class CameraControl : MonoBehaviour
 {
     [SerializeField][Range(1f, 20f)] private float sensitivity = 10f;
     private float mouseX, mouseY;
-    private Transform playerTransform;
+    private Transform playerTransform, gun, bullet;
 
     private void Start()
     {
@@ -15,6 +15,9 @@ public class CameraControl : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         playerTransform = transform.parent;
+
+        gun = GameObject.Find("Player/Rifle 2").transform;
+        bullet = GameObject.Find("Player/Bullet").transform;
     }
 
     private void FixedUpdate()
@@ -25,5 +28,6 @@ public class CameraControl : MonoBehaviour
         mouseY += Input.GetAxis("Mouse Y") * sensitivity;
         mouseY = Mathf.Clamp(mouseY, -75f, 75f);
         transform.localRotation = Quaternion.Euler(new Vector3(-mouseY, 0, 0));
+        gun.localRotation = Quaternion.Euler(new Vector3(0, -100, mouseY));
     }
 }
