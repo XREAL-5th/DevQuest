@@ -27,6 +27,8 @@ public class Enemy : MonoBehaviour
 
     private bool attackDone;
 
+    public int enemyHP = 30;
+
     private void Start()
     { 
         state = State.None;
@@ -78,6 +80,21 @@ public class Enemy : MonoBehaviour
         //insert code here...
     }
     
+    public void TakeDamage(int damage)
+    {
+        enemyHP -= damage;
+        if(enemyHP <= 0)
+        {
+            Debug.Log("Enemy 사라짐");
+            DestroyEnemy();
+        }
+    }
+
+    private void DestroyEnemy()
+    {
+        Destroy(gameObject);
+    }
+
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
