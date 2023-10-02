@@ -15,6 +15,7 @@ public class MoveControl : MonoBehaviour
     [SerializeField][Range(1f, 10f)] private float jumpAmount;
 
     //FSM(finite state machine)에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
+
     public enum State 
     {
         None,
@@ -75,7 +76,7 @@ public class MoveControl : MonoBehaviour
         }
         
         //2. 스테이트 초기화
-        if (nextState != State.None) 
+        if (nextState != State.None)
         {
             state = nextState;
             nextState = State.None;
