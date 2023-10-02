@@ -26,11 +26,13 @@ public class Enemy : MonoBehaviour
     public State nextState = State.None;
 
     private bool attackDone;
+    [HideInInspector] public int health;
 
     private void Start()
     { 
         state = State.None;
         nextState = State.Idle;
+        health = 3;
     }
 
     private void Update()
@@ -76,6 +78,15 @@ public class Enemy : MonoBehaviour
         
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
+
+        if (health == 1)
+        {
+            Debug.Log("살려줘");
+        }
+        else if (health == 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
     
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
