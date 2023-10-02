@@ -13,6 +13,10 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
+
+    // HP값 세팅
+    int initialHP = 100;
+    int currentHP;
     
     public enum State 
     {
@@ -28,7 +32,8 @@ public class Enemy : MonoBehaviour
     private bool attackDone;
 
     private void Start()
-    { 
+    {
+        currentHP = initialHP;
         state = State.None;
         nextState = State.Idle;
     }
@@ -91,6 +96,19 @@ public class Enemy : MonoBehaviour
     public void WhenAnimationDone() //Unity Animation Event 에서 실행됩니다.
     {
         attackDone = true;
+    }
+
+    void HPDamaged()
+    {
+        // 공격 당하면 5 ~ 15 HP 감소
+        currentHP -= Random.Range(10, 15);
+        Debug.Log(currentHP);
+        if (currentHP < 0)
+            Destroy(gameObject);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        HPDamaged();
     }
 
 
