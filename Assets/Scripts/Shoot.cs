@@ -30,6 +30,7 @@ public class Shoot : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
+            /*
             // 플레이어의 위치에서 커서의 위치로 향하는 방향 벡터 계산
             Vector3 direction = (hit.point - transform.position).normalized;
 
@@ -38,9 +39,13 @@ public class Shoot : MonoBehaviour
 
             // 발사체의 방향 설정
             shoot.transform.forward = direction;
+            */
 
-            //Instantiate(shootPrefab, hit.point, Quaternion.identity);
+            GameObject shootInstance = Instantiate(shootPrefab, hit.point, Quaternion.identity);
             Instantiate(hitEffectPrefab, hit.point, Quaternion.identity);
+
+            float destroyTime = 2f;
+            Destroy(shootInstance, destroyTime);
         }
     }
 }
