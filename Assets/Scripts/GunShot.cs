@@ -40,7 +40,7 @@ public class GunShot : MonoBehaviour
         pistol.damage = 30;
         pistol.ammo = 8;
         pistol.speed = 1.0f;
-        pistol.knockbackStrength = 2.0f;
+        pistol.knockbackStrength = 50.0f;
         pistol.reloadTime = 3.0f;
         pistol.auto = false;
         gunStat = pistol;
@@ -88,9 +88,9 @@ public class GunShot : MonoBehaviour
                 rayHit.collider.GetComponent<HpControl>().Damaged(gunStat.damage);
                 //knockback
                 Rigidbody rigidbody = rayHit.collider.GetComponent<Rigidbody>();
-                Vector3 knockbackDirection = gameObject.transform.position - rayHit.point;
+                Vector3 knockbackDirection = rayHit.collider.transform.position - rayHit.point;
                 knockbackDirection.Normalize();
-                knockbackDirection.y = 0.01f;
+                knockbackDirection.y = 0f;
 
                 rigidbody.AddForce(knockbackDirection * gunStat.knockbackStrength, ForceMode.Impulse);
             }
