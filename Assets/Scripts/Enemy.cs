@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
     public State state = State.None;
     public State nextState = State.None;
 
+    private int id;
     private bool attackDone;
     private int currentHealthPoint;
 
@@ -119,6 +120,11 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         Instantiate(dieFX, transform.position, Quaternion.identity);
-        gameObject.SetActive(false);
+        GameManager.Instance.UpdateEnemyDeath(id);
+    }
+
+    public void InitSetting(int index)
+    {
+        id= index;
     }
 }
