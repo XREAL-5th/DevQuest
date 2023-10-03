@@ -120,6 +120,7 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         Instantiate(dieFX, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
         GameManager.Instance.UpdateEnemyDeath(id);
     }
 

@@ -11,8 +11,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
 
     private bool isGameStarted = false;
-    private GameObject[] enemies;
-    private List<bool> isEnemyAlive;
+    private bool[] isEnemyAlive;
     int numberOfEnemies;
 
     public static GameManager Instance { 
@@ -53,26 +52,32 @@ public class GameManager : MonoBehaviour
 
     private void StartGame()
     {
-        numberOfEnemies = enemyPrefabs.Length;
-        enemies = new GameObject[numberOfEnemies];
-        isEnemyAlive = new List<bool>();
+        SetEnemy();
+    }
 
-        for(int i = 0; i < numberOfEnemies; ++i)
+    private void SetEnemy()
+    {
+        numberOfEnemies = enemyPrefabs.Length;
+        isEnemyAlive = new bool[numberOfEnemies];
+
+        for (int i = 0; i < numberOfEnemies; ++i)
         {
-            enemies[i] = Instantiate(enemyPrefabs[i], enemyPrefabs[i].transform.position, Quaternion.Euler(0, 180, 0));
-            enemies[i].GetComponent<Enemy>().InitSetting(i);
-            isEnemyAlive.Add(true);
+            GameObject enemy = Instantiate(enemyPrefabs[i], enemyPrefabs[i].transform.position, Quaternion.Euler(0, 180, 0));
+            enemy.GetComponent<Enemy>().InitSetting(i);
+            isEnemyAlive[i] = true;
         }
 
         isGameStarted = true;
     }
+    
+    private void SetItems()
+    {
 
+    }
     public void UpdateEnemyDeath(int id)
     {
         isEnemyAlive[id] = false;
-        enemies[id].gameObject.SetActive(false);
         --numberOfEnemies;
-        Debug.Log($"{enemies[id].name} 해치움!");
         Debug.Log($"남은 적 : {numberOfEnemies}");
         if (numberOfEnemies <= 0)
         {
