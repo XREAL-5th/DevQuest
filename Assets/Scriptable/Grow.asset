@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 137f36880c49ede4988a54aa2d1fcf61, type: 3}
   m_Name: Grow
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: "\uC0C1\uC9D5 \uC544\uC774\uD15C"
   effectAmount: 2
