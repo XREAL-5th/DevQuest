@@ -1,0 +1,121 @@
+## Scripts tree
+```
+│  ├─ Scripts
+│  │  ├─ Managers
+│  │  │  ├─ InputManager.cs
+│  │  │  ├─ Managers.cs
+│  │  │  └─ ResourceManager.cs
+│  │  ├─ Utils
+│  │  │  ├─ Define.cs
+│  │  │  └─ Util.cs
+│  │  ├─ BulletControl.cs
+│  │  ├─ CameraControl.cs
+│  │  ├─ Enemy.cs
+│  │  ├─ MoveControl.cs
+│  │  ├─ PlayerControl.cs
+│  │  ├─ PlayerStat.cs
+│  │  ├─ Stat.cs
+```
+
+### 1. Singleton Pattern
+
+- **필수과제 1-1)게임이 종료되었는지 파악하고, 게임 종료를 알리는 싱글톤을 구현해주세요.**
+    - 게임 종료는 ‘시간 안에 모든 적 잡기’ 등으로 자유롭게 결정하시면 됩니다.
+    
+- **필수과제 1-2) 아이템을 배치하는 매니저 싱글톤을 구현해주세요.**
+
+### 2. Scriptable Object
+
+- **필수과제 2-1 **게임 플레이에 영향을 미치는 아이템을 SO(Scriptable Object)로 구현해주세요.**
+    - 아이템에 대한 정보 (이름, 설명, 배치 빈도, 플레이어에 끼치는 영향, 아이템 먹었을 때 생성되는 vfx 등)를 SO에 저장하면 됩니다.
+    - 아이템은 점프력이 늘어나는 표션이나 멀티샷 화처럼, 자유롭게 구상해주세요.
+    
+    
+- *추가과제) pooling 구현을 구현해보세요.*
+
+### Managers
+1. Manager.cs: 모든 Scene에서 필요한 Manager Singleton(non-lazy, DDOL)
+2. MainScManager.cs: 특정 Scene에 사용되는 Manager Singleton(non-lazy, non-DDOL)
+
+### Delegate
+public delegate void Action ();
+MouseAction.Invoke(Define.MouseEvent.PointerDown);
+
+### Object Pooling
+https://docs.unity3d.com/ScriptReference/Pool.ObjectPool_1.html
+
+
+# 과제 중 구현 기능 명시
+##  1. 폴더 구조와 프리팹 사용
+**1-1) Enemy: prefab, hp ** 
+- Stat<-PlayerStat Class 를 만들어서 hp, maxHp, attack, defense 구현
+- 씬의 적 프리팹으로 만들어 5마리로 늘림
+
+**1-2) Ground object** 
+- Environment:  성과 숲을 조합해서 ground 변경
+- layer ground로 설정
+
+**추가)**
+- transform이 서로 다른 오리 5마리 생성
+- rigidbody mass 조절
+
+## 2)Input 시스템
+- InpuManager Class : MouseEvent 발생하면 등록된 MouseAction에 invoke
+```C#
+// Scripts/Managers/InputManger.cs
+void Start()
+    {
+        Managers.Input.MouseAction -= OnMouseEvent;
+     }
+
+// Scripts/Managers/InputManger.cs
+if (Input.GetMouseButton(0))
+            {
+                MouseAction.Invoke(Define.MouseEvent.PointerDown);
+                _pressed = true;
+...
+```
+- PlayerContol Class
+  - OnMouseEvent(): 마우스 up/down event, 총알 발사 조건 처리, RayCast
+```C#
+void OnMouseEvent(Define.MouseEvent evt)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        bool raycastHit = Physics.Raycast(ray, out hit, 100.0f, _mask);
+        
+        if(raycastHit) 
+        {
+              switch(evt)
+              {
+                case Define.MouseEvent.PointerDown:
+                    {  ...
+```
+
+## 3. Raycasting, Collision & Rigidbody
+**3-1) BulletControl Class**  
+- PlayerControl/OnHitEvent() : 총알 발사 후 적과 충돌 시 처리(hp 감소 등)
+- PlayerControl/BulletFire(): 총알 instanciate 
+- Bullet Control Class: -> 총알 Rigidbody로 앞으로 날아가게
+```
+void Start()
+     GetComponent<Rigidbody>().AddForce(transform.forward * _speed);
+```
+**3-2) collider
+- Enemy prefab collider 크기 조정: x:0, y:4.5 z:1
+
+## 4. vfx
+**4) attack effect**
+- BulletControl/OnCollisionEnter(collison) : 총알 충돌 -> vfx effect
+```C#
+private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == (int)Define.Layer.Enemy)
+        {
+            Instantiate(_hitEffect, collision.transform.position + new Vector3(0.0f, 2.0f, 0.0f), collision.transform.rotation);
+            Managers.Resource.Destroy(gameObject);          
+        }
+    }
+```
+
+---

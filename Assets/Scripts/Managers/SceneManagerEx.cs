@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
-public class NewMonoBehaviour : MonoBehaviour
+public class SceneManagerEx
 {
-    // Use this for initialization
-    void Start()
-    {
 
+    public BaseScene CurrentScene { get{ return GameObject.FindObjectOfType<BaseScene>(); } }
+
+    public void LoadScene(Define.Scene type)
+    {
+        CurrentScene.Clear();
+        SceneManager.LoadScene(GetSceneName(type));
     }
 
-    // Update is called once per frame
-    void Update()
+    string GetSceneName(Define.Scene type)
     {
-
+        string name = System.Enum.GetName(typeof(Define.Scene), type);
+        return name;
     }
 }

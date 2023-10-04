@@ -7,6 +7,8 @@ public class PlayerControl : MonoBehaviour
     int _mask = 1 << (int)Define.Layer.Enemy;
     bool _fired;
     GameObject _target;
+    private int _maxKillCount = 6;
+    private int _curKillCount = 0;
 
     PlayerStat _stat;
 
@@ -27,6 +29,11 @@ public class PlayerControl : MonoBehaviour
         Instantiate(_bullet, _firePos.position, _firePos.rotation);
     }
 
+    public bool clearedGame()
+    {
+        return _curKillCount >= _maxKillCount;
+    }
+
     void OnHitEvent()
     {
         BulletFire();
@@ -40,6 +47,7 @@ public class PlayerControl : MonoBehaviour
             Debug.Log(targetStat.Hp);
             if (targetStat.Hp <= 0)
             {
+                _curKillCount++;
                 Managers.Resource.Destroy(_target);
             }
 

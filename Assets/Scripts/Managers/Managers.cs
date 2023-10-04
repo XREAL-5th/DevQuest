@@ -10,9 +10,12 @@ public class Managers : MonoBehaviour
     // Core
     InputManager _input = new InputManager();
     ResourceManager _resource = new ResourceManager();
+    SceneManagerEx _scene = new SceneManagerEx();
 
     public static InputManager Input { get { return Instance._input; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
+    public static SceneManagerEx Scene { get { return Instance._scene;  } }
+
 
 
     void Start()
@@ -37,6 +40,7 @@ public class Managers : MonoBehaviour
             }
 
             DontDestroyOnLoad(go);
+
             s_instance = go.GetComponent<Managers>();
         }    
     }
