@@ -9,5 +9,15 @@ public class ClearData : MonoBehaviour
     private void Awake()
     {
         coinText.text = "Coin Count : " + GameManager.coinCount;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+    public void Exit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

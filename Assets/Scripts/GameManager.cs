@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
     public Item SpawnItem(Spawner type)
     {
         var newItem = Instantiate(itemPrefab,itemPos.position,Quaternion.identity).GetComponent<Item>();
