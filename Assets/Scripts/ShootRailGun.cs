@@ -12,12 +12,16 @@ public class ShootRailGun : MonoBehaviour
 
     void Update()
     {
+     
+
         // 마우스 왼쪽 클릭 시 데미지 부여 레이저 발사
         if (Input.GetMouseButtonDown(0))
         {
             // 레이저 생성
             // ShootLaser();
-            CreateLaser();
+             CreateLaser();
+
+      
         }
 
         // 마우스 오른쪽 클릭 시 속도 너프 레이저 발사
@@ -45,7 +49,7 @@ public class ShootRailGun : MonoBehaviour
         }
     }
 
-    // Projectile(발사체) 충돌 체크
+   // Projectile(발사체) 충돌 체크
     private void CreateLaser()
     {
         StartCoroutine(ShowLaser(laserSpawnPoint.transform.position));
@@ -56,13 +60,14 @@ public class ShootRailGun : MonoBehaviour
         StartCoroutine(ShoRedwLaser(laserSpawnPoint.transform.position));
     }
 
+
     // 데미지 레이저 생성 코루틴
     IEnumerator ShowLaser(Vector3 startPosition)
     {
         // 레이저 생성 및 설정
         GameObject laser = Instantiate(laserPrefab[0], startPosition, Quaternion.Euler(90, 0, 0));
         laser.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
-       
+
         // 일정 시간 후 레이저 제거
         yield return new WaitForSeconds(1f);
 
