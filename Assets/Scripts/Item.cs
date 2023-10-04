@@ -8,19 +8,22 @@ public class Item : MonoBehaviour
     ItemData itemData;
     public ItemData ItemData { set { itemData = value; } }
 
-    public void ItemInfo()
-    {
-        Debug.Log(this.itemData.name);
-        Debug.Log(this.itemData.Jump);
-        Debug.Log(this.itemData.Color);
-    }
-    private void OnTriggerEnter(Collider other)
+
+    //public void ItemInfo()
+    //{
+    //    Debug.Log(this.itemData.name);
+    //    Debug.Log(this.itemData.Jump);
+    //    Debug.Log(this.itemData.Color);
+    //}
+    private void OnTriggerEnter(Collider other)         //세분화 필요
     {
         if (other.CompareTag("Player"))
         {
             other.GetComponent<MeshRenderer>().material.color = itemData.Color;
             other.GetComponent<MoveControl>().jumpAmount = itemData.Jump;
             other.GetComponent<MoveControl>().moveSpeed = itemData.Speed;
+            GameManager.Instance.items.Dequeue();
+            Destroy(this.gameObject);
         }
     }
 }

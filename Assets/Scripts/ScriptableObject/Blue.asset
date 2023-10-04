@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Blue
   color: {r: 0, g: 0.3158722, b: 1, a: 0}
-  jump: 4
-  speed: 5
+  jump: 5
+  speed: 6

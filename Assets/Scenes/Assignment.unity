@@ -382,6 +382,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8601f7f2cb0c8ab4794a037f1c5b7df0, type: 2}
   coinText: {fileID: 948255697}
   itemPos: {fileID: 989711970}
+  enemyPos: {fileID: 0}
+  damage: 10
   coins:
   - {fileID: 8560223045243902612, guid: 8d75091b38d487d4199183a2aa55aaad, type: 3}
   - {fileID: 8560223045243902612, guid: 8d75091b38d487d4199183a2aa55aaad, type: 3}
