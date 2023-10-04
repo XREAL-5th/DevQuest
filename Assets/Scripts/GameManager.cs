@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         SetEnemy();
+        SetItem();
     }
 
     private void SetEnemy()
@@ -72,12 +73,12 @@ public class GameManager : MonoBehaviour
         isGameStarted = true;
     }
     
-    private void SetItems()
+    private void SetItem()
     {
         numberOfItems = itemPrefabs.Length;
         for (int i = 0; i < numberOfItems; ++i)
         {
-            GameObject Item = Instantiate(enemyPrefabs[i], enemyPrefabs[i].transform.position, Quaternion.identity);
+            GameObject Item = Instantiate(itemPrefabs[i], itemPrefabs[i].transform.position, Quaternion.identity);
         }
     }
     public void UpdateEnemyDeath(int id)
