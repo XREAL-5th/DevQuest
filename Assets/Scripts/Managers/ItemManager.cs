@@ -6,6 +6,7 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance;
     [SerializeField] private List<GameObject> itemPrefabs = new List<GameObject>();
+    [SerializeField] private PowerUpItem defaultPowerUpItem;
 
     private void Awake()
     {
@@ -20,8 +21,13 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public void SpawnItem(Vector3 position)
+    public void SpawnPowerUpItem(Vector3 position)
     {
+        GameObject powerUpGO = Instantiate(itemPrefabs[0], position, Quaternion.identity); // itemPrefabs[0] == PowerUpItem
+        PowerUp powerUp = powerUpGO.AddComponent<PowerUp>();
+        powerUp.Initialize(defaultPowerUpItem);
 
+        SphereCollider collider = powerUpGO.AddComponent<SphereCollider>();
+        collider.isTrigger = true;
     }
 }

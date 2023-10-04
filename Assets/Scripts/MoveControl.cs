@@ -13,6 +13,7 @@ public class MoveControl : MonoBehaviour
     [Header("Settings")]
     [SerializeField][Range(1f, 10f)] private float moveSpeed;
     [SerializeField][Range(1f, 10f)] private float jumpAmount;
+    public GameObject itemVFXPrefab;
 
     [Header("Shooting")]
     [SerializeField] private GameObject projectilePrefab;
@@ -35,6 +36,10 @@ public class MoveControl : MonoBehaviour
     private float stateTime;
     private Vector3 forward, right;
 
+    private float defaultDamage = 50f;
+    private float currentDamage;
+    private bool damageBoosted = false;
+
     private void Start()
     {
         rigid = GetComponent<Rigidbody>();
@@ -45,6 +50,8 @@ public class MoveControl : MonoBehaviour
         stateTime = 0f;
         forward = transform.forward;
         right = transform.right;
+
+        currentDamage = defaultDamage;
     }
 
     private void Update()
@@ -147,7 +154,7 @@ public class MoveControl : MonoBehaviour
             if (enemy != null)
             {
                 Debug.Log($"Hitscan hit enemy: {enemy.name}");
-                enemy.TakeDamage(50f);
+                enemy.TakeDamage(currentDamage);
             }
         }
     }
@@ -191,5 +198,24 @@ public class MoveControl : MonoBehaviour
             Debug.Log($"Hit object: {hitInfo.collider.name} at {hitInfo.point}");
         }
 
+    }
+
+    // Item
+
+    public void BoostDamage(float boostedPercentage, float duration)
+    {
+        if (!damageBoosted)
+        {
+            StartCoroutine(DamageBoostCoroutine(boostedPercentage, duration));
+        }
+    }
+
+    private IEnumerator DamageBoostCoroutine(float boostedPercentage, float duration)
+    {
+        damageBoosted = true;
+        currentDamage = defaultDamage*boostedPercentage;
+        yield return new WaitForSeconds(duration);
+        currentDamage = defaultDamage;
+        damageBoosted = false;
     }
 }
