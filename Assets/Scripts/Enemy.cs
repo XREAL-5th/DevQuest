@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour
         state = State.None;
         nextState = State.Idle;
         currentHealth = maxHealth;
+        GameManager.Instance.RegisterEnemy(this);
     }
 
     private void Update()
@@ -126,6 +127,8 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        GameManager.Instance.UnregisterEnemy(this);
+        GameManager.Instance.CheckGameEndCondition();
         Destroy(gameObject);
     }
 
