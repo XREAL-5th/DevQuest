@@ -7,12 +7,14 @@ public class GameManager : MonoBehaviour
 {
     [Header("Prefab")]
     [SerializeField] private GameObject[] enemyPrefabs;
-
+    [SerializeField] private GameObject[] itemPrefabs;
+ 
     private static GameManager instance;
 
     private bool isGameStarted = false;
     private bool[] isEnemyAlive;
     int numberOfEnemies;
+    int numberOfItems;
 
     public static GameManager Instance { 
         get 
@@ -72,7 +74,11 @@ public class GameManager : MonoBehaviour
     
     private void SetItems()
     {
-
+        numberOfItems = itemPrefabs.Length;
+        for (int i = 0; i < numberOfItems; ++i)
+        {
+            GameObject Item = Instantiate(enemyPrefabs[i], enemyPrefabs[i].transform.position, Quaternion.identity);
+        }
     }
     public void UpdateEnemyDeath(int id)
     {
