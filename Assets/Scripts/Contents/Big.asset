@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 340d4ef77b6904793b9f7f21e0fa1285, type: 3}
+  m_Name: Big
+  m_EditorClassIdentifier: 
+  prefabName: big potion
+  numberOfPrefabsToCreate: 1
+  spawnPoints:
+  - {x: 11, y: 1, z: 30}
+  _hp: 30
+  _maxHp: 0
+  _attack: 10
+  _defense: 10
+  _effect: {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05, type: 3}

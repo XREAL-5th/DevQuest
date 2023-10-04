@@ -426,6 +426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a081a840d4c442d88cee3a5c3bdaee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  cam: {fileID: 0}
+  camc: {fileID: 0}
+  timer: {fileID: 0}
+  playerSpawn: {fileID: 0}
 --- !u!1001 &1042182701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1099,6 +1104,56 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1377037167}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2001505278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2001505280}
+  - component: {fileID: 2001505279}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2001505279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001505278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ff904ca7d5141a2875aee4efeb0e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityToSpawn: {fileID: 1808228417298534, guid: f16e0d712129f7b4abba89bfd58e985b,
+    type: 3}
+  spawnDatas:
+  - {fileID: 11400000, guid: b4d5d235c1f594aa9a652720a1fc3912, type: 2}
+  - {fileID: 11400000, guid: 5312cddc14f5f45d394229601e6dd8de, type: 2}
+  - {fileID: 11400000, guid: 4fb470789e5ad400186143b04b306179, type: 2}
+--- !u!4 &2001505280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001505278}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.000000059604645, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2019819899
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,7 +1515,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2047535494}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 673f22202be854df6b97dbfbf4453ec1, type: 3}
+  m_Script: {fileID: 11500000, guid: f3b6dd51fea34436db2675b618c107d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _hp: 0
@@ -1708,3 +1763,4 @@ SceneRoots:
   - {fileID: 1042271392}
   - {fileID: 1624055643}
   - {fileID: 8478967290851362602}
+  - {fileID: 2001505280}
