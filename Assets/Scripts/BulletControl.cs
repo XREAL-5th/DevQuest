@@ -16,7 +16,7 @@ public class BulletControl : MonoBehaviour
     {
         if(collision.gameObject.layer == (int)Define.Layer.Enemy)
         {
-            Instantiate(_hitEffect, collision.transform.position + new Vector3(0.0f, 2.0f, 0.0f), collision.transform.rotation);
+            GameObject effect = Instantiate(_hitEffect, collision.transform.position + new Vector3(0.0f, 2.0f, 0.0f), collision.transform.rotation);
             Managers.Resource.Destroy(gameObject);          
         }
     }

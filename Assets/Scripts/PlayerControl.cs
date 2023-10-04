@@ -12,14 +12,12 @@ public class PlayerControl : MonoBehaviour
 
     PlayerStat _stat;
 
-    public void useStatItem(int hp, int maxHp, int attack, int defense)
+    public void UseStatItem(int hp, int maxHp, int attack, int defense)
     {
         _stat.Hp += hp;
         _stat.MaxHp += maxHp;
         _stat.Attack += attack;
         _stat.Defense += defense;
-
-        Debug.Log($"{_stat.Attack}");
     }
 
     [SerializeField] GameObject _bullet;
@@ -50,8 +48,7 @@ public class PlayerControl : MonoBehaviour
         if(_target != null)
         {
             Stat targetStat = _target.GetComponent<Stat>();
-            Stat myStat = gameObject.GetComponent<PlayerStat>();
-            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
+            int damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
             targetStat.Hp -= damage;
 
             Debug.Log(targetStat.Hp);

@@ -21,7 +21,7 @@ public class Potion : MonoBehaviour
 		if (_other.gameObject.layer == (int)Define.Layer.Player)
 		{
 			GameObject effect = Instantiate(potionData.Effect, transform.position, transform.rotation);
-			_other.GetComponent<PlayerControl>().useStatItem(potionData.Hp, potionData.MaxHp, potionData.Attack, potionData.Defense);
+			_other.GetComponent<PlayerControl>().UseStatItem(potionData.Hp, potionData.MaxHp, potionData.Attack, potionData.Defense);
 			Managers.Resource.Destroy(gameObject);
 			//Managers.Resource.Destroy(effect);
 		}
