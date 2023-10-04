@@ -1,8 +1,10 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.UI;
 using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
@@ -38,6 +40,7 @@ public class Enemy : MonoBehaviour
     {
         if (this.HP <= 0)
         {
+            GameManager.Instance.CoinDrop(new Vector3(this.transform.position.x,this.transform.position.y + 2f,this.transform.position.z),this.transform.rotation);
             Destroy(this.gameObject);
         }
         //1. 스테이트 전환 상황 판단
