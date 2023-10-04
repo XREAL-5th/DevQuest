@@ -29,8 +29,10 @@ public class Spawner : MonoBehaviour
         
         for (int i = 0; i < spawnManagerValues.numberOfPrefabsToCreate; i++)
         {
-            GameObject currentEntity = Instantiate(entityToSpawn, spawnManagerValues.spawnPoints[currentSpawnPointIndex], Quaternion.identity);
-            currentEntity.name = spawnManagerValues.prefabName + instanceNumber;
+            var currentEntity = Instantiate(entityToSpawn, spawnManagerValues.spawnPoints[currentSpawnPointIndex], Quaternion.identity);
+            Potion potion = currentEntity.GetComponent<Potion>();
+            potion.PotionData = spawnManagerValues;
+            potion.name = spawnManagerValues.prefabName + instanceNumber;
             currentSpawnPointIndex = (currentSpawnPointIndex + 1) % spawnManagerValues.spawnPoints.Length;
             instanceNumber++;
         }

@@ -12,6 +12,16 @@ public class PlayerControl : MonoBehaviour
 
     PlayerStat _stat;
 
+    public void useStatItem(int hp, int maxHp, int attack, int defense)
+    {
+        _stat.Hp += hp;
+        _stat.MaxHp += maxHp;
+        _stat.Attack += attack;
+        _stat.Defense += defense;
+
+        Debug.Log($"{_stat.Attack}");
+    }
+
     [SerializeField] GameObject _bullet;
     [SerializeField] Transform _firePos;
 
