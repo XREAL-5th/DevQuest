@@ -6,18 +6,13 @@ using UnityEngine.Rendering;
 
 public class PlayerRay : MonoBehaviour
 {
-    public Transform FirePoint, weapon;
-    public GameObject Fire;
-    public GameObject HitPoint;
-    public GameObject Bullet;
-    public GameObject variantBullet;
-
-    public float bulletSpeed;
+    public Transform weapon, BulletIniPos;
+    public GameObject Fire, HitPoint, Bullet;
+    private GameObject BulletClone;
 
     // Start is called before the first frame update
     void Start()
     {
-        weapon = transform.GetChild(1);
     }
 
     // Update is called once per frame
@@ -29,32 +24,34 @@ public class PlayerRay : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            float time = Time.time;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // pixel coordinates
-            RaycastHit hit;
+            RaycastHit hit; // used in raycast, but switched to Projectile method.
 
-            GameObject tempBullet = Instantiate(variantBullet, Bullet.transform.position, Bullet.transform.rotation);
-            tempBullet.GetComponent<Rigidbody>().velocity = (Bullet.transform.position - ray.origin).normalized * bulletSpeed * Time.deltaTime;
             // Debug.LogFormat("Start: {0}, End: {1}", Bullet.transform.position, ray.origin);
             // Debug.DrawLine(Bullet.transform.position, (Bullet.transform.position - ray.origin) * 1000, Color.red, 5.0f, true);
             // Debug.DrawLine(transform.position, transform.position + ray.direction * 4, Color.red, 1.0f, true);
 
-            if (Physics.Raycast(transform.position, ray.direction, out hit, Mathf.Infinity, layerMask))
-            {
-                OnFireRaycast(hit);
-            }
-            else
-            {
-                GameObject hitting = Instantiate(Fire, weapon.position, Quaternion.identity);
-                Destroy(hitting, 1);
-            }
-            
+            OnFireRaycast();
+            BulletClone = Instantiate(Bullet, BulletIniPos.position, BulletIniPos.rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f));
         }
     }
 
-    private void OnFireRaycast(RaycastHit hit)
+    private void OnFireRaycast()
     {
         GameObject hitting = Instantiate(Fire, weapon.position, Quaternion.identity);
         Destroy(hitting, 1);
+    }
+
+    // Coroutine으로 총알 구현 - 끊기는 듯한 효과 -> AddForce로 전환
+    IEnumerator BulletMove(GameObject cloneBullet, Ray ray, float time)
+    {
+        
+        while (Time.time - time < 10) // 10 seconds
+        {
+            // cloneBullet.transform.position += ray.direction.normalized * BulletSpeed; // nullException??
+            yield return new WaitForSeconds(0.02f);
+        }
     }
 
 }

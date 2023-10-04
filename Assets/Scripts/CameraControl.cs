@@ -7,7 +7,7 @@ public class CameraControl : MonoBehaviour
 {
     [SerializeField][Range(1f, 20f)] private float sensitivity = 10f;
     private float mouseX, mouseY;
-    private Transform playerTransform, gun, bullet;
+    [SerializeField] private Transform playerTransform, gun;
 
     private void Start()
     {
@@ -15,9 +15,6 @@ public class CameraControl : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         playerTransform = transform.parent;
-
-        gun = GameObject.Find("Player/Rifle 2").transform;
-        bullet = GameObject.Find("Player/Bullet").transform;
     }
 
     private void FixedUpdate()

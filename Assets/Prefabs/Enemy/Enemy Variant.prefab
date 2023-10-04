@@ -18,6 +18,11 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8154327613365761796, guid: b01e87987929d4b4eaa2bcfb8aa4d492,
+        type: 3}
+      propertyPath: m_Mass
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8926763712606764653, guid: b01e87987929d4b4eaa2bcfb8aa4d492,
         type: 3}
       propertyPath: m_Name
