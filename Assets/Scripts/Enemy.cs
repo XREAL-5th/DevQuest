@@ -14,7 +14,9 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    
+
+    int playerAttackPower;
+
     public enum State 
     {
         None,
@@ -39,12 +41,26 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        // Player를 찾을 때까지 반복적으로 시도
+        if (playerAttackPower == 0 || playerAttackPower == 10)
+        {
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            if (playerObject != null)
+            {
+                Player player = playerObject.GetComponent<Player>();
+                if (player != null)
+                {
+                    playerAttackPower = player.attackPower;
+                }
+            }
+        }
         //1. 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
             switch (state) 
             {
                 case State.Idle:
+
                     //1 << 6인 이유는 Player의 Layer가 6이기 때문
                     if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
@@ -52,14 +68,16 @@ public class Enemy : MonoBehaviour
                     }
                     break;
                 case State.Attack:
+
                     if (attackDone)
                     {
                         nextState = State.Idle;
                         attackDone = false;
                     }
                     break;
-                //insert code here...
+                 //insert code here...
             }
+
         }
         
         //2. 스테이트 초기화
@@ -86,7 +104,9 @@ public class Enemy : MonoBehaviour
     {
         animator.SetTrigger("attack");
         // 공격을 받았을 때 체력을 감소시키는 로직
-        TakeDamage(10);
+        TakeDamage(playerAttackPower); // 현재 palyer의 attect power 만큼
+        Debug.Log("[enemy] -" + playerAttackPower);
+
         Instantiate(hitFx, transform.position, Quaternion.identity);
     }
 
@@ -102,6 +122,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        GameManager.Instance.EnemyKilled(); // 적이 처치되었을 때 GameManager에게 알림
         Destroy(gameObject);
     }
 

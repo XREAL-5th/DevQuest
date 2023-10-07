@@ -42,9 +42,8 @@ public class Shooting : MonoBehaviour
             if (enemy != null)
             {
                 // Enemy 타격한 경우, 체력을 감소
-                //enemy.TakeDamage(10);
                 enemy.Attack();
-                Debug.Log("enemy" + hitInfo.collider.name + "Take Damage");
+                Debug.Log("[enemy]" + hitInfo.collider.name + "Take Damage");
             }
         }
         else
