@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class baditem : MonoBehaviour
 {
-    public ItemSO itemData; // 아이템 정보를 저장한 Scriptable Object
+    // public ItemSO itemData; // 아이템 정보를 저장한 Scriptable Object
     public BadItemSO baditemData; // 아이템 정보를 저장한 Scriptable Object
 
-    public float attackPowerMultiplier;
-
-    public void SetPowerMult(float num)
-    {
-        attackPowerMultiplier = num;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
