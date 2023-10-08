@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -9,7 +10,9 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class GameMain : MonoBehaviour
 {
     [Header("EnemySettings")]
+    [SerializeField] public GameObject enemyContainer;
     [SerializeField] public Enemy[] enemy;
+    [HideInInspector] public int enemy_count;
 
     [Header("UserScreenSettings")]
     [SerializeField] public Camera mainCamera;
@@ -18,15 +21,20 @@ public class GameMain : MonoBehaviour
     [Header("VFX")]
     [SerializeField] public GameObject effect;
 
+    // Singleton
     public static GameMain main;
 
     // ## Game Manager
-    private float gameTimer;
+    [HideInInspector] public float gameTimer;
     private bool isShoot;
     private bool isOnhit;
 
     private bool isEffectOn;
     private float effetTimer;
+
+
+    // ## User Power
+    private int gunPower;
      
 
     // ## VFX
@@ -39,18 +47,40 @@ public class GameMain : MonoBehaviour
     //[HideInInspector] public Vector3 userPosition;
     //[HideInInspector] public Quaternion userOrientation;
 
+
+
+    private void Awake()
+    {
+        if (main == null)
+        {
+            main = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+
+
+
     private void Start()
     {
-        main = this;
-        gameTimer = 0f;
+        //main = this;
+        gameTimer = 100f;
         effetTimer = 0f;
 
-        for (int i = 0; i < enemy.Length; i++) { enemy[i] = GameObject.Find($"Enemy ({i})").GetComponent<Enemy>(); }
+        enemy_count = enemyContainer.transform.childCount;
+        for (int i = 0; i < enemy_count; i++) { enemy[i] = GameObject.Find($"Enemy ({i})").GetComponent<Enemy>(); }
+
         layDistance = 500.0f;
         isShoot = false;
         isOnhit = false;
         isEffectOn = false;
         effetTimer = 0f;
+
+        gunPower = 1;
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
@@ -58,14 +88,24 @@ public class GameMain : MonoBehaviour
 
     private void Update()
     {
-        UserManage();
-        EnemyManage();
-        EffectManage();
-        ResetState();
+        if (gameTimer >= 0f)
+        {
+            TimeManage();
+            InputManage();
+            EnemyManage();
+            EffectManage();
+
+            ResetState();
+        }
+    }
+
+    private void TimeManage()
+    {
+        gameTimer -= Time.deltaTime;
     }
 
 
-    private void UserManage()
+    private void InputManage()
     {
         isShoot = Input.GetMouseButtonDown(0);
 
@@ -76,6 +116,8 @@ public class GameMain : MonoBehaviour
 
     private void EnemyManage()
     {
+        enemy_count = enemyContainer.transform.childCount;
+
         if (isShoot)
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -85,18 +127,22 @@ public class GameMain : MonoBehaviour
                 isOnhit = true;
                 Debug.DrawRay(ray.origin, ray.direction * layDistance, Color.red);
 
-                if (hit.collider.gameObject.name == "Enemy (0)") { enemy[0].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (1)") { enemy[1].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (2)") { enemy[2].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (3)") { enemy[3].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (4)") { enemy[4].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (5)") { enemy[5].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (6)") { enemy[6].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (7)") { enemy[7].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (8)") { enemy[8].health -= 1; }
-                else if (hit.collider.gameObject.name == "Enemy (9)") { enemy[9].health -= 1; }
+                if (hit.collider.gameObject.name == "Enemy (0)") { enemy[0].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (1)") { enemy[1].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (2)") { enemy[2].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (3)") { enemy[3].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (4)") { enemy[4].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (5)") { enemy[5].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (6)") { enemy[6].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (7)") { enemy[7].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (8)") { enemy[8].health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (9)") { enemy[9].health -= gunPower; }
             }
         }
+
+        //GameObject[] enemies = GameObject.FindGameObjectsWithTag("Player");
+        //int enemyCount = enemies.Length;
+        //Debug.Log(enemyCount);
     }
 
     private void EffectManage()
@@ -132,6 +178,7 @@ public class GameMain : MonoBehaviour
             lineRenderer.SetPosition(1, new(-101f, -101f, -101f));
         }
     }
+
 
     private void ResetState()
     {
