@@ -4952,6 +4952,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011650569256}
   - component: {fileID: 7419541111511833473}
+  - component: {fileID: 8365308926550562528}
   m_Layer: 0
   m_Name: Bottle_Mana
   m_TagString: Untagged
@@ -4989,6 +4990,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 0}
+--- !u!65 &8365308926550562528
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013317980782}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.42, y: 0.64, z: 0.61}
+  m_Center: {x: 0, y: 1.05, z: 0}
 --- !u!1 &1000013970829164
 GameObject:
   m_ObjectHideFlags: 0

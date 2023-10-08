@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class ShootRailGun : MonoBehaviour
 {
-
     public GameObject[] laserPrefab; // 레이저 Prefab
-    [SerializeField]
-    private GameObject laserSpawnPoint; // 레이저 발사 위치
 
+    [SerializeField] private GameObject laserSpawnPoint; // 레이저 발사 위치
+    [SerializeField] private PlayerState playerState;
+
+    private void Start()
+    {
+        playerState = transform.parent.GetComponent<PlayerState>();
+    }
 
     void Update()
     {
      
-
-        // 마우스 왼쪽 클릭 시 데미지 부여 레이저 발사
-        if (Input.GetMouseButtonDown(0))
+        // 마우스 왼쪽 클릭 시 그리고 공격 부여 물약을 획득 시에 데미지 부여 레이저 발사
+        if (Input.GetMouseButtonDown(0) && playerState.IsAttack == true)
         {
             // 레이저 생성
             // ShootLaser();

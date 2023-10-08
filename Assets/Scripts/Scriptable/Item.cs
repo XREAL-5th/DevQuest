@@ -14,9 +14,10 @@ public class Item : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             ApplyItemEffect(other.GetComponent<PlayerState>());
+            
             // 아이템을 획득했으므로 해당 오브젝트 비활성화 또는 제거
-            gameObject.SetActive(false);
-            // 또는 Destroy(gameObject);
+            //gameObject.SetActive(false);
+             Destroy(gameObject);
         }
     }
 
@@ -26,15 +27,16 @@ public class Item : MonoBehaviour
         switch (itemData.itemEffectType)
         {
             case ItemData.ItemEffectType.IncreaseHP:
-                playerState.HP += itemData.ItemValue;
+                playerState.PlusHP += itemData.ItemValue;
                 break;
 
             case ItemData.ItemEffectType.IncreaseTime:
                 playerState.RemainTime += itemData.ItemValue;
+                GameControl.Instance.EscapePortal.SetActive(true);
                 break;
 
             case ItemData.ItemEffectType.EnableAttack:
-                // 예를 들어, 공격을 가능하게 하는 효과를 추가할 수 있음
+                // 공격을 가능하게 하는 효과 부여한다.
                 playerState.IsAttack = true;
                 break;
 

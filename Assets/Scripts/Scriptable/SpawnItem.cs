@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class SpawnItem : MonoBehaviour
 {
+   [Header("Scriptable Object")]
    public List<ItemData> itemDatas = new List<ItemData>();
-
+   [Header("Item")]
    public GameObject[] itemPrefabs;
+   [Header("Item Spawn")]
    public Transform[] spawnPoints; // 서로 다른 위치에 배치할 때 사용할 위치 배열
     
    Dictionary<int, int> itemToSpawnPointMap = new Dictionary<int, int>();
@@ -23,11 +25,11 @@ public class SpawnItem : MonoBehaviour
         itemToSpawnPointMap.Add(0, 0);
         itemToSpawnPointMap.Add(1, 1);
         itemToSpawnPointMap.Add(2, 2);
+        itemToSpawnPointMap.Add(3, 3);
 
         for (int i = 0; i < itemDatas.Count; i++)
         {
             var item = SpawnItemFunc((ItemData.ItemEffectType)i, itemToSpawnPointMap[i]);
-            //item.DebugItemInfo();
         }
     }
 
