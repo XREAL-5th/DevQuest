@@ -10,36 +10,45 @@ public class GameMain : MonoBehaviour
 {
     [Header("EnemySettings")]
     [SerializeField] public Enemy[] enemy;
-    [SerializeField] public GameObject effect;
 
     [Header("UserScreenSettings")]
-    [SerializeField] public GameObject gun;
     [SerializeField] public Camera mainCamera;
+    [SerializeField] public GameObject gun;
+
+    [Header("VFX")]
+    [SerializeField] public GameObject effect;
+
+    public static GameMain main;
+
+    // ## Game Manager
+    private float gameTimer;
+    private bool isShoot;
+    private bool isOnhit;
+
+    private bool isEffectOn;
+    private float effetTimer;
+     
+
+    // ## VFX
     private LineRenderer lineRenderer;
     private Vector3 shootPoint;
-
-    // Timer, flag
-    //private float gameTimer;
-    private bool isShoot;
-    private float effetTimer;
-    private bool isEffectOn;
-
     private Ray ray;
     private RaycastHit hit;
     private float layDistance;
-    
     //private int layerMask;
-
-    [HideInInspector] public Vector3 userPosition;
-    [HideInInspector] public Quaternion userOrientation;
+    //[HideInInspector] public Vector3 userPosition;
+    //[HideInInspector] public Quaternion userOrientation;
 
     private void Start()
     {
+        main = this;
+        gameTimer = 0f;
         effetTimer = 0f;
 
         for (int i = 0; i < enemy.Length; i++) { enemy[i] = GameObject.Find($"Enemy ({i})").GetComponent<Enemy>(); }
         layDistance = 500.0f;
         isShoot = false;
+        isOnhit = false;
         isEffectOn = false;
         effetTimer = 0f;
 
@@ -73,6 +82,7 @@ public class GameMain : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, layDistance))
             {
+                isOnhit = true;
                 Debug.DrawRay(ray.origin, ray.direction * layDistance, Color.red);
 
                 if (hit.collider.gameObject.name == "Enemy (0)") { enemy[0].health -= 1; }
@@ -91,12 +101,13 @@ public class GameMain : MonoBehaviour
 
     private void EffectManage()
     {
-        if(isShoot)
+        if(isOnhit)
         {
             effetTimer = 0f;
 
             //Debug.Log(hit.point);
             shootPoint = gun.transform.position;
+
             Instantiate(effect, hit.point, Quaternion.identity);
             isEffectOn = true;
         }
@@ -124,6 +135,6 @@ public class GameMain : MonoBehaviour
 
     private void ResetState()
     {
-        isShoot = false;
+        isOnhit = false;
     }
 }
