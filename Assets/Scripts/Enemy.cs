@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float attackRange;
 
-    [SerializeField] private int HP = 100;
+    public int HP = 100;
     
     public enum State 
     {
@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour
     private void Attack() // 현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
-        HP -= 10;
+        HP -= GameEndingSingleton.main.player.GetComponent<PlayerItem>().damage;
         Debug.LogFormat("{0}", HP);
         if (HP == 0)
         {

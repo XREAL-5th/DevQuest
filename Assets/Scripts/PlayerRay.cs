@@ -22,7 +22,7 @@ public class PlayerRay : MonoBehaviour
         layerMask = ~layerMask;
 
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && gameObject && weapon.childCount > 0)
         {
             float time = Time.time;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // pixel coordinates
@@ -39,8 +39,11 @@ public class PlayerRay : MonoBehaviour
 
     private void OnFireRaycast()
     {
-        GameObject hitting = Instantiate(Fire, weapon.position, Quaternion.identity);
-        Destroy(hitting, 1);
+        if (weapon.childCount == 1)
+        {
+            GameObject hitting = Instantiate(Fire, weapon.position, Quaternion.identity);
+            Destroy(hitting, 1);
+        }
     }
 
     // Coroutine으로 총알 구현 - 끊기는 듯한 효과 -> AddForce로 전환
