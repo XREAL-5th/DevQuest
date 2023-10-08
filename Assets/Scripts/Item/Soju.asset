@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81b76f896fa14df889df3f82ae3a4c6, type: 3}
+  m_Name: Soju
+  m_EditorClassIdentifier: 
+  type: 0
+  prefab: {fileID: 729110287479459703, guid: 1db92330e4e1d46c28273ba2b64b0514, type: 3}
