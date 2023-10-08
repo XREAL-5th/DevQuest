@@ -109,6 +109,10 @@ public class Enemy : MonoBehaviour
         if(health <= 0f)
         {
             Destroy(gameObject);
+            GameManager.Instance.currEnemyNum -= 1;
+            GameManager.Instance.GameClear();
+
+            GameObject item = Instantiate(ItemManager.Instance.buffItem, this.transform.position, this.transform.rotation);
         }
     }
 }

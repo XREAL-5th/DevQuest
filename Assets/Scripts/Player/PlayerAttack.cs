@@ -11,6 +11,10 @@ public class PlayerAttack : MonoBehaviour
     [Header("Gun Properties")]
     public GameObject bulletPrefab;
 
+    private void Start()
+    {
+        GameManager gameManager = GameManager.Instance;
+    }
     private void Update()
     {
         if(Input.GetButtonDown("Fire1"))
