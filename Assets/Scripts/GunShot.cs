@@ -37,7 +37,7 @@ public class GunShot : MonoBehaviour
     {
         //temporary Gunstat setting for test
         GunStat pistol;
-        pistol.damage = 30;
+        pistol.damage = 50;
         pistol.ammo = 8;
         pistol.speed = 1.0f;
         pistol.knockbackStrength = 50.0f;
@@ -96,8 +96,9 @@ public class GunShot : MonoBehaviour
             }
                 
         }
-        Instantiate(bulletHole, rayHit.point, Quaternion.Euler(rayHit.normal));
-        Instantiate(spark, rayHit.point, Quaternion.Euler(rayHit.normal));
+        Debug.Log("Rayhit normal : " + rayHit.normal);
+        Instantiate(bulletHole, rayHit.point, Quaternion.Euler(rayHit.normal.y * 90 + 180, rayHit.normal.x * 90, rayHit.normal.z * 90));
+        Instantiate(spark, rayHit.point, Quaternion.Euler(rayHit.normal.y*90 + 180, rayHit.normal.x*90 , rayHit.normal.z*90));
         Instantiate(muzzleFlash, muzzle.position, Quaternion.identity);
 
         leftAmmo--;
@@ -107,6 +108,7 @@ public class GunShot : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f/gunStat.speed);
         state = State.readyToShoot;
+        GameManager.main.CheckEnemyLeft();
     }
     private void Reload()
     {

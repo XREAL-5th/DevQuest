@@ -81,6 +81,7 @@ public class Enemy : MonoBehaviour
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
+        GameManager.main.player.Damaged(25);
     }
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
