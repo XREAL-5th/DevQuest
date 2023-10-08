@@ -5,12 +5,12 @@ using UnityEngine;
 public class BuffItem : MonoBehaviour
 {
     public Item item;
-    private GameObject vfx;
+    //private GameObject vfx;
 
     private void Start()
     {
-        vfx = item.vfx;
-        Instantiate(vfx, transform.position, Quaternion.identity);
+        //vfx = item.vfx;
+        //Instantiate(vfx, transform.position, Quaternion.identity);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -19,7 +19,7 @@ public class BuffItem : MonoBehaviour
         {
             collision.gameObject.GetComponent<MoveControl>().moveSpeed += 2;
             print("collisoin");
-
+            //Destroy(vfx);
             Destroy(this.gameObject);
         }
     }
