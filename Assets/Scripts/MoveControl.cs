@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
 public class MoveControl : MonoBehaviour
@@ -93,6 +94,12 @@ public class MoveControl : MonoBehaviour
         
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
+        if(GameMain.main.playerMode == 1)
+        {
+            moveSpeed = 10f;
+        }
+
+
     }
 
     private void FixedUpdate()

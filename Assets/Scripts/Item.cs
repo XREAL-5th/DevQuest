@@ -5,7 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     [SerializeField] ItemData itemData;
-    public ItemData ItemData { set { itemData = value; } }
+    public ItemData ItemData { get { return itemData; } set { itemData = value; } }
 
     public void WatchItemInfo()
     {

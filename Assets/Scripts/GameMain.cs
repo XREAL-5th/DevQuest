@@ -14,7 +14,9 @@ public class GameMain : MonoBehaviour
     [SerializeField] public Enemy[] enemy;
     [HideInInspector] public int enemy_count;
 
-    [Header("UserScreenSettings")]
+    [Header("PlayerSettings")]
+    [SerializeField] public GameObject PlayerObject;
+    [SerializeField] public Player player;
     [SerializeField] public Camera mainCamera;
     [SerializeField] public GameObject gun;
 
@@ -26,14 +28,15 @@ public class GameMain : MonoBehaviour
 
     // ## Game Manager
     [HideInInspector] public float gameTimer;
+    private int timerValue;
     private bool isShoot;
     private bool isOnhit;
 
     private bool isEffectOn;
     private float effetTimer;
 
-
-    // ## User Power
+    // ## Player
+    [HideInInspector] public int playerMode;
     private int gunPower;
      
 
@@ -63,13 +66,14 @@ public class GameMain : MonoBehaviour
 
 
 
-
-
     private void Start()
     {
         //main = this;
         gameTimer = 100f;
+        timerValue = 1;
         effetTimer = 0f;
+
+        player = PlayerObject.GetComponent<Player>();
 
         enemy_count = enemyContainer.transform.childCount;
         for (int i = 0; i < enemy_count; i++) { enemy[i] = GameObject.Find($"Enemy ({i})").GetComponent<Enemy>(); }
@@ -92,6 +96,7 @@ public class GameMain : MonoBehaviour
         {
             TimeManage();
             InputManage();
+            PlayerManage();
             EnemyManage();
             EffectManage();
 
@@ -101,7 +106,11 @@ public class GameMain : MonoBehaviour
 
     private void TimeManage()
     {
-        gameTimer -= Time.deltaTime;
+        if (GameMain.main.playerMode == 3)
+        {
+            timerValue = 10;
+        }
+        gameTimer -= Time.deltaTime / timerValue;
     }
 
 
@@ -112,6 +121,16 @@ public class GameMain : MonoBehaviour
         //userPosition = mainCamera.transform.position;
         //userOrientation = mainCamera.transform.rotation;
         //Debug.Log(userPosition);
+    }
+
+    private void PlayerManage()
+    {
+        playerMode = player.playermode;
+
+        if (GameMain.main.playerMode == 2)
+        {
+            gunPower = 3;
+        }
     }
 
     private void EnemyManage()
