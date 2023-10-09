@@ -3,6 +3,20 @@ using System.Collections;
 
 public class Define
 {
+    public enum WorldObject
+    {
+        Unknown,
+        Player,
+        Enemy,
+    }
+
+    public enum Scene
+    {
+        Unknown,
+        Game,
+        End,
+    }
+
     public enum MouseEvent
     {
         Press,

@@ -7,8 +7,18 @@ public class PlayerControl : MonoBehaviour
     int _mask = 1 << (int)Define.Layer.Enemy;
     bool _fired;
     GameObject _target;
+    private int _maxKillCount = 6;
+    private int _curKillCount = 0;
 
     PlayerStat _stat;
+
+    public void UseStatItem(int hp, int maxHp, int attack, int defense)
+    {
+        _stat.Hp += hp;
+        _stat.MaxHp += maxHp;
+        _stat.Attack += attack;
+        _stat.Defense += defense;
+    }
 
     [SerializeField] GameObject _bullet;
     [SerializeField] Transform _firePos;
@@ -27,19 +37,24 @@ public class PlayerControl : MonoBehaviour
         Instantiate(_bullet, _firePos.position, _firePos.rotation);
     }
 
+    public bool clearedGame()
+    {
+        return _curKillCount >= _maxKillCount;
+    }
+
     void OnHitEvent()
     {
         BulletFire();
         if(_target != null)
         {
             Stat targetStat = _target.GetComponent<Stat>();
-            Stat myStat = gameObject.GetComponent<PlayerStat>();
-            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
+            int damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
             targetStat.Hp -= damage;
 
             Debug.Log(targetStat.Hp);
             if (targetStat.Hp <= 0)
             {
+                _curKillCount++;
                 Managers.Resource.Destroy(_target);
             }
 
