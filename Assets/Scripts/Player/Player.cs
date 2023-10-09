@@ -49,8 +49,7 @@ public class Player : MonoBehaviour
             minDamage += 5;
             maxDamage += 5;
         }
-        Debug.Log("Min Damage: " + minDamage);
-        Debug.Log("Max Damage: " + maxDamage);
+        Debug.Log("Min Damage: " + minDamage + " Max Damage: " + maxDamage);
 
     }
 
@@ -62,8 +61,7 @@ public class Player : MonoBehaviour
             minDamage -= 5;
             maxDamage -= 5;
         }
-        Debug.Log("Min Damage: " + minDamage);
-        Debug.Log("Max Damage: " + maxDamage);
+        Debug.Log("Min Damage: " + minDamage + " Max Damage: " + maxDamage);
     }
 
 }

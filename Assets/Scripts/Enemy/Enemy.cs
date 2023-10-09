@@ -79,7 +79,6 @@ public class Enemy : MonoBehaviour
                     Attack();
                     break;
                 case State.Die:
-                    Die();
                     break;
                     //insert code here...
             }
@@ -93,10 +92,7 @@ public class Enemy : MonoBehaviour
     {
         animator.SetTrigger("attack");
     }
-    private void Die() //현재 공격은 애니메이션만 작동합니다.
-    {
 
-    }
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
     {
@@ -112,7 +108,7 @@ public class Enemy : MonoBehaviour
     {
         // 공격 당하면 5 ~ 15 HP 감소
         currentHP -= Random.Range(minDamage, maxDamage);
-        Debug.Log(currentHP);
+        Debug.Log("HP: " + currentHP);
         if (currentHP < 0)
         {
             state = State.Die;
