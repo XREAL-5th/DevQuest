@@ -22,7 +22,11 @@ public class Enemy : MonoBehaviour
     public GameObject DeadVfx;
     private GameObject deadVfxInstance;
 
+    // 적이 사망했을 때 호출되는 이벤트
+    public event System.Action OnDeath;
+
     private NavMeshAgent navMeshAgent;
+    private PlayerState playerState; // Player State 컴포넌트를 저장할 변수
 
     public enum State 
     {
@@ -42,6 +46,16 @@ public class Enemy : MonoBehaviour
         state = State.None;
         nextState = State.Idle;
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        if (player != null )
+        {
+            playerState = player.GetComponent<PlayerState>();
+
+            if(playerState == null )
+            {
+                Debug.LogError("Player State 컴포넌트를 찾을 수 없습니다.");
+            }
+        }
     }
 
     private void Update()
@@ -77,7 +91,7 @@ public class Enemy : MonoBehaviour
 
                 case State.Walk:
                     // 목적지(추적 할 곳) 목표 위치 지정 함수 -> 플레이어의 위치를 목적지로 설정.
-                    navMeshAgent.SetDestination(player.position);
+                    navMeshAgent.SetDestination(player.transform.position);
 
                     // Walk 상태에서 공격 범위 안에 있으면 Attack 상태로 전환
                     if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
@@ -155,6 +169,9 @@ public class Enemy : MonoBehaviour
     // Enemy 사망
     private void Dead()
     {
+        // OnDeath 이벤트를 발생시켜 다른 스크립트에서 적의 사망을 감지할 수 있도록 함
+        OnDeath?.Invoke();
+
         // Enemy 제거
         Destroy(gameObject);
 
@@ -166,6 +183,9 @@ public class Enemy : MonoBehaviour
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
+
+        // Player가 사정거리 안에 들어와 공격 모션 발동 시 플레이어 HP 깎는다.
+        playerState.currentPlayerHp -= 10;
     }
 
     private void Walk()
@@ -189,7 +209,7 @@ public class Enemy : MonoBehaviour
         //Gizmos를 사용하여 공격 범위를 Scene View에서 확인할 수 있게 합니다. (인게임에서는 볼 수 없습니다.)
         //해당 함수는 없어도 기능 상의 문제는 없지만, 기능 체크 및 디버깅을 용이하게 합니다.
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
-       // Gizmos.DrawSphere(transform.position, attackRange);
-        Gizmos.DrawSphere(transform.position, chaseRange);
+        Gizmos.DrawSphere(transform.position, attackRange);
+       // Gizmos.DrawSphere(transform.position, chaseRange);
     }
 }
