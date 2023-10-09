@@ -11,8 +11,8 @@ public class MoveControl : MonoBehaviour
     [SerializeField] private CapsuleCollider col;
     
     [Header("Settings")]
-    [SerializeField][Range(1f, 10f)] private float moveSpeed;
-    [SerializeField][Range(1f, 10f)] private float jumpAmount;
+    public float moveSpeed;
+    public float jumpAmount;
 
     //FSM(finite state machine)에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
 
@@ -122,4 +122,12 @@ public class MoveControl : MonoBehaviour
         
         transform.Translate( moveSpeed * Time.deltaTime * direction); //Move
     }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.transform.name == "Coin") GameManager.coinCount++;
+
+    //    if (other.transform.name == "BlueColor") this.GetComponent<MeshRenderer>().material.color = Color.blue;
+    //    if (other.transform.name == "RedColor") this.GetComponent<MeshRenderer>().material.color = Color.red;
+    //}
 }

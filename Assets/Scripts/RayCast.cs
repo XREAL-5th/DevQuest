@@ -32,13 +32,13 @@ public class RayCast : MonoBehaviour
     {
         if (hit.collider.name == "Head")
         {
-            hit.transform.GetComponent<Enemy>().HP -= 20;
+            hit.transform.GetComponent<Enemy>().HP -= GameManager.Instance.damage * 2;
             Instantiate(criticalParticle, hit.point, Quaternion.identity);
             hit.transform.GetComponent<Rigidbody>().AddForce(this.transform.forward * 150.0f, ForceMode.Force);
         }
         else if (hit.collider.name == "Body")
         {
-            hit.transform.GetComponent<Enemy>().HP -= 10;
+            hit.transform.GetComponent<Enemy>().HP -= GameManager.Instance.damage;
             Instantiate(hitParticle, hit.point, Quaternion.identity);
             hit.transform.GetComponent<Rigidbody>().AddForce(this.transform.forward * 100.0f,ForceMode.Force);
         }
