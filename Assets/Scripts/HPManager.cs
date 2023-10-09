@@ -94,6 +94,9 @@ public class HPManager : MonoBehaviour
 
         // 회전이 끝난 후 게임 오브젝트 파괴
         Destroy(gameObject);
+        // 싱글톤 -> 모든 오리 죽었는지 확인
+        GameOverMGR.main.enemiesnumleft -= 1;
+        bool dead = GameOverMGR.main.IfAllEnemiesdead();
     }
 
 }
