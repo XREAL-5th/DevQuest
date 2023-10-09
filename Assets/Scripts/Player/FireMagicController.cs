@@ -8,7 +8,9 @@ public class FireMagicController : MonoBehaviour
     [SerializeField] private float range;
     [SerializeField] private float cooldownDuration;
     [SerializeField] private GameObject hitEffect;
+    [SerializeField] private GameObject upgradedHitEffect;
     public float damage = 1000f;
+    public bool upgrade = false;
 
     private bool _cooldown = false;
     private Vector3 cameraDeltas = Vector3.zero;
@@ -65,7 +67,8 @@ public class FireMagicController : MonoBehaviour
 
     private void StartExplosion(Vector3 point)
     {
-        var particleInstance = Instantiate(hitEffect, point, Quaternion.identity);
+        var effect = upgrade ? upgradedHitEffect : hitEffect;
+        var particleInstance = Instantiate(effect, point, Quaternion.identity);
         ParticleSystem ps = particleInstance.GetComponent<ParticleSystem>();
         var main = ps.main;
         main.loop = false;
