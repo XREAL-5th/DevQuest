@@ -44,7 +44,6 @@ public class BulletMaker : MonoBehaviour
                 weaponImpact.forward = hitInfo.normal;
                 // 레이가 부딪힌 지점에서 이펙트 생성
                 weaponImpact.position = hitInfo.point;
-
             }
         }
 

@@ -14,6 +14,8 @@ public class Enemy : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float attackRange;
 
+    public GameObject Player;
+
     // HP값 세팅
     int initialHP = 100;
     int currentHP;
@@ -22,7 +24,8 @@ public class Enemy : MonoBehaviour
     {
         None,
         Idle,
-        Attack
+        Attack,
+        Die
     }
     
     [Header("Debug")]
@@ -75,7 +78,10 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
-                //insert code here...
+                case State.Die:
+                    Die();
+                    break;
+                    //insert code here...
             }
         }
         
@@ -86,6 +92,10 @@ public class Enemy : MonoBehaviour
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
+    }
+    private void Die() //현재 공격은 애니메이션만 작동합니다.
+    {
+
     }
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
@@ -98,19 +108,20 @@ public class Enemy : MonoBehaviour
         attackDone = true;
     }
 
-    void HPDamaged()
+    public void HPDamaged(int minDamage, int maxDamage)
     {
         // 공격 당하면 5 ~ 15 HP 감소
-        currentHP -= Random.Range(10, 15);
+        currentHP -= Random.Range(minDamage, maxDamage);
         Debug.Log(currentHP);
         if (currentHP < 0)
-            Destroy(gameObject);
+        {
+            state = State.Die;
+        }            
     }
     private void OnCollisionEnter(Collision collision)
     {
-        HPDamaged();
+        HPDamaged(Player.GetComponent<Player>().minDamage, Player.GetComponent<Player>().maxDamage);
     }
-
 
     private void OnDrawGizmosSelected()
     {

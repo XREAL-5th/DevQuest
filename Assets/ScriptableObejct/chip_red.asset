@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c550a5c25e9f75c4097be8ba2f9ca50a, type: 3}
+  m_Name: chip_red
+  m_EditorClassIdentifier: 
+  itemName: Chip-red
+  itemPrefab: {fileID: 6535898839013764159, guid: 3f974bb01ae33d64a804b3637d1fc81a,
+    type: 3}
+  damageMultiplier: 0.5
+  itemType: 1
