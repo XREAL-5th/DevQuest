@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour
 
         if (health == 1)
         {
-            Debug.Log("살려줘");
+            //Debug.Log("살려줘");
         }
         else if (health == 0)
         {
