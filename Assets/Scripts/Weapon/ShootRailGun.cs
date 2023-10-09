@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+public enum LaserType
+{
+    DamageLaser,
+    DebuffLaser,
+    None
+}
+
 public class ShootRailGun : MonoBehaviour
 {
     public GameObject[] laserPrefab; // 레이저 Prefab
 
     [SerializeField] private GameObject laserSpawnPoint; // 레이저 발사 위치
     [SerializeField] private PlayerState playerState;
+
 
     private void Start()
     {
@@ -23,17 +31,17 @@ public class ShootRailGun : MonoBehaviour
         {
             // 레이저 생성
             // ShootLaser();
-             CreateLaser();
-
-      
+             CreateLaser(LaserType.DamageLaser); // == laserPrefab[0]
         }
 
         // 마우스 오른쪽 클릭 시 속도 너프 레이저 발사
         if(Input.GetMouseButtonDown(1))
         {
-            CreateRedLaser();
+            CreateLaser(LaserType.DebuffLaser); // == laserPrefab[1]
         }
     }
+
+
 
     // 레이캐스트 충돌 체크
     void ShootLaser()
@@ -54,22 +62,18 @@ public class ShootRailGun : MonoBehaviour
     }
 
    // Projectile(발사체) 충돌 체크
-    private void CreateLaser()
+    private void CreateLaser(LaserType laserType)
     {
-        StartCoroutine(ShowLaser(laserSpawnPoint.transform.position));
-    }
-
-    private void CreateRedLaser()
-    {
-        StartCoroutine(ShoRedwLaser(laserSpawnPoint.transform.position));
+        StartCoroutine(ShowLaser(laserSpawnPoint.transform.position, laserType));
     }
 
 
-    // 데미지 레이저 생성 코루틴
-    IEnumerator ShowLaser(Vector3 startPosition)
+    // 레이저 생성 코루틴
+    // 데미지 레이저 - laserPrefab[0] , 속도 디버프 레이저 - laserPrefab[1]
+    IEnumerator ShowLaser(Vector3 startPosition, LaserType laserType)
     {
         // 레이저 생성 및 설정
-        GameObject laser = Instantiate(laserPrefab[0], startPosition, Quaternion.Euler(90, 0, 0));
+        GameObject laser = Instantiate(laserPrefab[(int)laserType], startPosition, Quaternion.Euler(90, 0, 0));
         laser.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
 
         // 일정 시간 후 레이저 제거
@@ -77,18 +81,4 @@ public class ShootRailGun : MonoBehaviour
 
         Destroy(laser);
     }
-
-    // 속도 너프 레이저 생성 코루틴 
-    IEnumerator ShoRedwLaser(Vector3 startPosition)
-    {
-        // 레이저 생성 및 설정
-        GameObject laser = Instantiate(laserPrefab[1], startPosition, Quaternion.Euler(90, 0, 0));
-        laser.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
-
-        // 일정 시간 후 레이저 제거
-        yield return new WaitForSeconds(1f);
-
-        Destroy(laser);
-    }
-
 }

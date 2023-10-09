@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// 적을 SpawnPoint 위치를 받아 생성하고, 생성된 적이 죽는다면, 다음 적을 그 위치에 생성한다.
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;

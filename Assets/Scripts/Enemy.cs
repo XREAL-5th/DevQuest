@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    public Transform player;
+    [SerializeField] private Transform player;
     [SerializeField] private float chaseRange = 10f;
 
     [Header("Enemy State")]
@@ -46,6 +46,8 @@ public class Enemy : MonoBehaviour
         state = State.None;
         nextState = State.Idle;
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        player = GameObject.Find("Player").GetComponent<Transform>();
 
         if (player != null )
         {
