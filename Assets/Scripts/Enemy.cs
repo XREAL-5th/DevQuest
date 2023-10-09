@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour
         state = State.None;
         nextState = State.Idle;
         currentHealth = maxHealth;
+        GameManager.Instance.RegisterEnemy(this);
     }
 
     private void Update()
@@ -126,6 +127,13 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
+        Vector3 playerForward = GameObject.FindGameObjectWithTag("Player").transform.forward;
+        Vector3 spawnPosition = playerPosition + playerForward * 3f;   // 10f == distance
+        ItemManager.Instance.SpawnPowerUpItem(spawnPosition);
+
+        GameManager.Instance.UnregisterEnemy(this);
+        GameManager.Instance.CheckGameEndCondition();
         Destroy(gameObject);
     }
 
