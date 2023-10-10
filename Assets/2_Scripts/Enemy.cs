@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour
     public State nextState = State.None;
 
     private bool attackDone;
+    private bool targetSet;
     private float aniFloat;
     private NavMeshAgent agent;
     private void Start()
@@ -72,13 +73,14 @@ public class Enemy : MonoBehaviour
                 }
                 if ((Physics.CheckSphere(transform.position, runRange, 1 << 6, QueryTriggerInteraction.Ignore)))
                 {
-                    agent.destination = GameObject.FindGameObjectWithTag("Player").transform.position;
                     agent.speed = 1.5f;
+                    targetSet = true;
                     animator.SetFloat("Walk", 2.0f);
                 }
                 else
                 {
                     agent.speed = 1.0f;
+                    targetSet = false;
                     animator.SetFloat("Walk", 1.0f);
                 }
 
@@ -149,7 +151,8 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             agent.SetDestination(SetPosition());
-            yield return new WaitForSeconds(4);     //4초마다 타겟 포지션 변경
+            if (targetSet) agent.destination = GameObject.FindGameObjectWithTag("Player").transform.position;
+            yield return new WaitForSeconds(Random.Range(1, 4));     //타겟 포지션 변경
         }
     }
 
