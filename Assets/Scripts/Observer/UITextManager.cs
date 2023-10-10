@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.LowLevel;
 using UnityEngine.UI;
 
 // 옵저버 패턴과 싱글톤으로 구현된 GameControl 으로 게임의 전반적인 상황을 UI- Text에 반영한다.
 public class UITextManager : MonoBehaviour, IObserver
 {
     [SerializeField] PlayerState playerState;
+    private ShootRailGun RailGun;
 
     [SerializeField] private float setTime = 30.0f;
     [SerializeField] private Text RemainTimeText;
     [SerializeField] private Text CurrentPlayerHPText;
+    [SerializeField] private Text CurrentAttackState;
 
     // HP를 깎는 업데이트를 잠시 중지하기 위한 bool타입 변수
     private bool stopUpdate = false;
@@ -18,6 +21,18 @@ public class UITextManager : MonoBehaviour, IObserver
     private void Start()
     {
         UpdateCurrentPlayerHP();
+
+        // 플레이어의 공격 상태 여부를 알기 위해 ShootRailGun 컴포넌트를 가져온다.
+        RailGun = playerState.GetComponentInChildren<ShootRailGun>();
+
+        if (RailGun != null )
+        {
+            CurrentAttackState.text = "Attack State : " + RailGun.canAttack;
+        }
+        else
+        {
+            Debug.LogError("ShootRailGun 컴포넌트를 찾을 수 없습니다.");
+        }
     }
 
     private void Update()
@@ -35,6 +50,8 @@ public class UITextManager : MonoBehaviour, IObserver
         }
 
         RemainTimeText.text = "Remain Time : " + Mathf.Round(setTime).ToString();
+        // 현재 플레이어의 공격 상태 여부를 알려준다. 
+        CurrentAttackState.text = "Attack State : " + RailGun.canAttack;
 
         if (playerState.currentPlayerHp <= 0)
         {
@@ -58,7 +75,7 @@ public class UITextManager : MonoBehaviour, IObserver
 
 
     // 기존 Update()문 안에서 HP를 깎일 때마다 텍스트를 업데이트 했지만, HP물약을 먹은 후 HP 갱신이 텍스트에 업데이트가 이루어지지 않았음.
-    // Update 문을 두 개로 분리하여 옵저버가 HP 갱신을 알아차릴 때 stopUpdate문을 true로 만듬. 이어서 앞서 언급한 텍스트 업데이트를 잠시 강제종료 함.
+    // Update 문을 두 개로 분리하여 옵저버가 HP 갱신을 알아차릴 때 stopUpdate문을 true로 만듬. 이어서 현재 HP 텍스트 업데이트를 잠시 강제종료 함.
     // 강제 종료 후 갱신 HP를 받아와 새로운 HP로 텍스트에 반영한다.
     // 갱신된 HP 텍스트 반영이 완료되었다면, stopUpdate 를 다시 false로 바꿔, HP를 깎는 업데이트를 진행한다.
     private void FixedUpdate()

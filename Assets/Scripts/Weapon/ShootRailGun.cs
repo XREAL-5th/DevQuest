@@ -15,7 +15,8 @@ public class ShootRailGun : MonoBehaviour
     public GameObject[] laserPrefab; // 레이저 Prefab
 
     [SerializeField] private GameObject laserSpawnPoint; // 레이저 발사 위치
-    [SerializeField] private PlayerState playerState;
+    private PlayerState playerState;
+    public bool canAttack = true; // 공격 가능 여부 
 
 
     private void Start()
@@ -27,7 +28,7 @@ public class ShootRailGun : MonoBehaviour
     {
      
         // 마우스 왼쪽 클릭 시 그리고 공격 부여 물약을 획득 시에 데미지 부여 레이저 발사
-        if (Input.GetMouseButtonDown(0) && playerState.IsAttack == true)
+        if (Input.GetMouseButtonDown(0) && playerState.IsAttack == true && canAttack)
         {
             // 레이저 생성
             // ShootLaser();
@@ -35,7 +36,7 @@ public class ShootRailGun : MonoBehaviour
         }
 
         // 마우스 오른쪽 클릭 시 속도 너프 레이저 발사
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButtonDown(1) && canAttack)
         {
             CreateLaser(LaserType.DebuffLaser); // == laserPrefab[1]
         }
@@ -44,6 +45,7 @@ public class ShootRailGun : MonoBehaviour
 
 
     // 레이캐스트 충돌 체크
+    // 테스트 용으로 현재 게임에서는 쓰이지는 않는다.
     void ShootLaser()
     {
         // 메인 카메라에서 마우스 포인터 방향으로 레이 발사
@@ -65,6 +67,9 @@ public class ShootRailGun : MonoBehaviour
     private void CreateLaser(LaserType laserType)
     {
         StartCoroutine(ShowLaser(laserSpawnPoint.transform.position, laserType));
+        
+        // 공격 쿨다운 중에는 다시 공격을 할 수 없음
+        canAttack = false;
     }
 
 
@@ -76,9 +81,12 @@ public class ShootRailGun : MonoBehaviour
         GameObject laser = Instantiate(laserPrefab[(int)laserType], startPosition, Quaternion.Euler(90, 0, 0));
         laser.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
 
-        // 일정 시간 후 레이저 제거
-        yield return new WaitForSeconds(1f);
+        // 레이저 인스턴스는 1초 후 사라지기
+        Destroy(laser, 1f);
 
-        Destroy(laser);
+        // 3초 쿨타임을 가지고 공격을 다시 가능하게 만든다.
+        yield return new WaitForSeconds(3f);
+
+        canAttack = true;
     }
 }
