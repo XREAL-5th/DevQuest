@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,6 +11,7 @@ public class PlayerItem : MonoBehaviour
     private bool hasItemSpawned = false;
     private GameObject instantiateTemp;
     public int damage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,14 +31,12 @@ public class PlayerItem : MonoBehaviour
             if (other.gameObject.name == "Rifle 2(Clone)")
             {
                 instantiateTemp = Instantiate(ItemsSingleton.main.itemsSpawn.Rifle, gameObject.transform.GetChild(1), false);
-                Debug.LogFormat("* {0}   {1}", gameObject.transform.GetChild(1).childCount, other.gameObject.name);
                 damage = ItemsSingleton.main.itemsSpawn.RifleDamage;
                 hasItemSpawned = true;
             }
             else if (other.gameObject.name == "RPJ(Clone)")
             {
-                instantiateTemp = Instantiate(ItemsSingleton.main.itemsSpawn.RPJ, gameObject.transform.GetChild(1), false);
-                Debug.LogFormat("** {0}   {1}", gameObject.transform.GetChild(1).childCount, other.gameObject.name);
+                instantiateTemp = Instantiate(ItemsSingleton.main.itemsSpawn.Rpj, gameObject.transform.GetChild(1), false);
                 damage = ItemsSingleton.main.itemsSpawn.RpjDamage;
                 hasItemSpawned = true;
             } 
@@ -44,19 +46,14 @@ public class PlayerItem : MonoBehaviour
             {
                 Destroy(instantiateTemp);
                 Instantiate(ItemsSingleton.main.itemsSpawn.Rifle, gameObject.transform.GetChild(1), false);
-                Debug.LogFormat("*** {0}   {1}", gameObject.transform.GetChild(1).childCount, other.gameObject.name);
                 damage = ItemsSingleton.main.itemsSpawn.RifleDamage;
             }
             else if (other.gameObject.name == "RPJ(Clone)")
             {
                 Destroy(instantiateTemp);
-                Instantiate(ItemsSingleton.main.itemsSpawn.RPJ, gameObject.transform.GetChild(1), false);
-                Debug.LogFormat("**** {0}   {1}", gameObject.transform.GetChild(1).childCount, other.gameObject.name);
+                Instantiate(ItemsSingleton.main.itemsSpawn.Rpj, gameObject.transform.GetChild(1), false);
                 damage = ItemsSingleton.main.itemsSpawn.RpjDamage;
-            } else // blue portal
-            {
-
-            }
+            } 
         }
     }
 }
