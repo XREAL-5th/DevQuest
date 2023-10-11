@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
         Idle,
         Attack,
         Chasing,
+        Die,
     }
     
     [Header("Debug")]
@@ -101,6 +102,9 @@ public class Enemy : MonoBehaviour
                 case State.Chasing:
                     Chasing();
                     break;
+                case State.Die:
+                    Die();
+                    break;
             }
         }
         
@@ -134,6 +138,17 @@ public class Enemy : MonoBehaviour
 
         animator.SetTrigger("walk");
     }
+
+    private void Die()
+    {
+        animator.CrossFade("death", 0.1f);
+    }
+
+    public void OnDieEvent()
+    {
+        Managers.Destroy(gameObject);
+    }
+
 
     private void OnDrawGizmosSelected()
     {

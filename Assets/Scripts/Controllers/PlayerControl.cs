@@ -49,15 +49,7 @@ public class PlayerControl : MonoBehaviour
         {
             Stat targetStat = _target.GetComponent<Stat>();
             int damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
-            targetStat.Hp -= damage;
-
-            Debug.Log(targetStat.Hp);
-            if (targetStat.Hp <= 0)
-            {
-                _curKillCount++;
-                Managers.Resource.Destroy(_target);
-            }
-
+            targetStat.OnAttacked(_stat);
         }
     }
 
