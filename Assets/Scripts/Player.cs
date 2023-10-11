@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
 
         // 스킬 로직 추가: 이동기
         // 움직임 구현
-        transform.Translate(transform.forward * 3.0f);
+        transform.Translate(transform.forward * 5.0f);
 
         float timer = skillCooldown;
         while (timer > 0)
