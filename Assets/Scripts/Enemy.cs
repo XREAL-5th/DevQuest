@@ -10,7 +10,9 @@ public class Enemy : MonoBehaviour
     public GameObject hitFx;
     [Header("Preset Fields")] 
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator WalkAnimator;
     [SerializeField] private GameObject splashFx;
+    
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
@@ -128,6 +130,7 @@ public class Enemy : MonoBehaviour
 
     private Vector3 RandomWanderPoint()
     {
+        WalkAnimator.SetTrigger("walk");
         Vector3 randomPoint = Random.insideUnitSphere * wanderRadius;
         randomPoint += transform.position;
         NavMeshHit hit;

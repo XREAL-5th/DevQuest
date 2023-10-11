@@ -243,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitFx: {fileID: 1892078723244562, guid: 46876a2780737ec45a19d62f88e5ce56, type: 3}
   animator: {fileID: 4552836864024372045}
+  WalkAnimator: {fileID: 4552836864024372045}
   splashFx: {fileID: 1995403933065894, guid: 4961a16ba01e09547be3e1c9d16d5ad0, type: 3}
   attackRange: 4.1
   wanderRadius: 10
