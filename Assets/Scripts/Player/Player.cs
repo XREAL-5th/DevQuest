@@ -60,7 +60,6 @@ public class Player : MonoBehaviour
             maxDamage += 5;
         }
         Debug.Log("Min Damage: " + minDamage + " Max Damage: " + maxDamage);
-
     }
     private void PlayerDamageDown()
     {
