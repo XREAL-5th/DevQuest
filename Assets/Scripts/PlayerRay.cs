@@ -8,7 +8,7 @@ public class PlayerRay : MonoBehaviour
 {
     public Transform weapon, BulletIniPos;
     public GameObject Fire, HitPoint, Bullet;
-    private GameObject BulletClone;
+    public GameObject BulletClone;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +20,6 @@ public class PlayerRay : MonoBehaviour
     {
         int layerMask = 1 << 6; // only enemies layer
         layerMask = ~layerMask;
-
 
         if (Input.GetMouseButtonDown(0) && gameObject && weapon.childCount > 0)
         {
@@ -46,10 +45,9 @@ public class PlayerRay : MonoBehaviour
         }
     }
 
-    // Coroutine으로 총알 구현 - 끊기는 듯한 효과 -> AddForce로 전환
+    // Coroutine으로 총알 구현 -> 끊기는 듯한 효과 -> AddForce로 전환
     IEnumerator BulletMove(GameObject cloneBullet, Ray ray, float time)
     {
-        
         while (Time.time - time < 10) // 10 seconds
         {
             // cloneBullet.transform.position += ray.direction.normalized * BulletSpeed; // nullException??

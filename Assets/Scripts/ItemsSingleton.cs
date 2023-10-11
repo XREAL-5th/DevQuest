@@ -22,8 +22,10 @@ public class ItemsSingleton : MonoBehaviour
 
     private bool coroutineAllowed = true;
 
+    public GameObject recentBullet = null;
+
     public enum ItemType { Rifle, Rpj, BluePortal};
-    private Dictionary<ItemType, GameObject> itemTypeToPrefabMap;
+    public Dictionary<ItemType, GameObject> itemTypeToPrefabMap;
 
     private void Awake()
     {

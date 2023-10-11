@@ -12,6 +12,7 @@ public class GameEndingSingleton : MonoBehaviour
     public GameObject respawnEffect;
     public GameObject[] enemies = { };
     public Transform[] playerSpawn = { };
+
     private int index = 0;
 
     // non-lazy, non-DDOL
@@ -48,7 +49,7 @@ public class GameEndingSingleton : MonoBehaviour
     {
         foreach (GameObject enemy in enemies)
         {
-            if (enemy.GetComponent<Enemy>().HP > 0)
+            if (enemy != null && enemy.GetComponent<Enemy>().HP > 0)
             {
                 return false;
             }

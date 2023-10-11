@@ -31,7 +31,6 @@ public class BulletControl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.LogFormat("Velocity: {0}", m_Rigidbody.velocity.magnitude);
         // coroutine 보다는 계산이 더 많음
         if ((iniPos - gameObject.transform.position).magnitude > 100)
         {
