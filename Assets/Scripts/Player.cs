@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -9,13 +11,52 @@ public class Player : MonoBehaviour
     public ItemSO itemData; // 아이템 정보를 저장한 Scriptable Object
     public BadItemSO baditemData; // 아이템 정보를 저장한 Scriptable Object
     public bool isGood;  
+    public float skillCooldown = 10.0f;
+    private bool isSkillReady = true;
+    public TMP_Text cooldownText; // 스킬 쿨타임 UI Text 변수 추가
 
 
 
     private void Start()
     {
         SetAttackDamage(attackPower);
+        cooldownText = GameObject.Find("CooldownText").GetComponent<TextMeshProUGUI>(); // Text? TextMeshProUGUI?
+        cooldownText.text = "";
     }
+
+    private void Update()
+    {
+        if (isSkillReady && Input.GetKeyDown(KeyCode.E))
+        {
+            // 스킬 발동
+            isSkillReady = false; // 스킬 사용 중으로 변경
+            StartCoroutine(ActivateSkill());
+        }
+    }
+
+    private IEnumerator ActivateSkill()
+    {
+        // 스킬 발동
+        // isSkillReady = false; // 스킬 사용 중으로 변경
+        Debug.Log("이동기 스킬을 사용합니다.");
+
+        // 스킬 로직 추가: 이동기
+        // 움직임 구현
+        transform.Translate(transform.forward * 3.0f);
+
+        float timer = skillCooldown;
+        while (timer > 0)
+        {
+            cooldownText.text = "Cooldown: " + timer.ToString("F1") + "s"; // UI에 쿨타임 표시
+            yield return new WaitForSeconds(1.0f);
+            timer -= 1.0f;
+        }
+
+        cooldownText.text = ""; // 쿨타임 종료 시 UI에서 텍스트 숨김
+        isSkillReady = true; // 스킬 재사용 가능으로 변경
+        Debug.Log("스킬 재사용 가능");
+    }
+
 
     public void SetAttackDamage(int Power)
     {
