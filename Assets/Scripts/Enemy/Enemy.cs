@@ -13,14 +13,16 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
+    [SerializeField] private float chaseRange;
     public float health = 50f;
-    
+    public Transform target;
+
     public enum State 
     {
         None,
         Idle,
         Attack,
-        Wander
+        Chase
     }
     
     [Header("Debug")]
@@ -29,17 +31,14 @@ public class Enemy : MonoBehaviour
 
     private bool attackDone;
     NavMeshAgent m_enemy = null;
-    [SerializeField] Transform[] m_WayPoints = null;
-    int m_count = 0;
-    public float time;
 
 
     private void Start()
     { 
         state = State.None;
-        nextState = State.Wander;
+        nextState = State.Chase;
         m_enemy = GetComponent<NavMeshAgent>();
-        InvokeRepeating("MoveToNextWayPoint", 0f, time);
+        //InvokeRepeating("MoveToNextWayPoint", 0f, time);
     }
 
     private void Update()
@@ -55,6 +54,10 @@ public class Enemy : MonoBehaviour
                     {
                         nextState = State.Attack;
                     }
+                    else if (Physics.CheckSphere(transform.position, chaseRange, 1 << 6, QueryTriggerInteraction.Ignore))
+                    {
+                        nextState = State.Chase;
+                    }
                     break;
                 case State.Attack:
                     if (attackDone)
@@ -63,7 +66,7 @@ public class Enemy : MonoBehaviour
                         attackDone = false;
                     }
                     break;
-                case State.Wander:
+                case State.Chase:
                     if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
                         nextState = State.Attack;
@@ -85,8 +88,8 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
-                case State.Wander:
-                    Wander();
+                case State.Chase:
+                    Chase();
                     break;
                 //insert code here...
             }
@@ -98,23 +101,14 @@ public class Enemy : MonoBehaviour
     
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
+        animator.SetBool("isWalking", false);
         animator.SetTrigger("attack");
     }
-    private void Wander()
+    private void Chase()
     {
+        print("chasing");
         animator.SetBool("isWalking", true);
-        InvokeRepeating("MoveToNextWayPoint", 0f, time);
-    }
-    void MoveToNextWayPoint()
-    {
-        if(m_enemy.velocity == Vector3.zero)
-        {
-            m_enemy.SetDestination(m_WayPoints[m_count++].position);
-
-
-            if (m_count >= m_WayPoints.Length)
-                m_count = 0;
-        }
+        m_enemy.SetDestination(target.position);
     }
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
