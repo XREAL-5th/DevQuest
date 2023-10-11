@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using TMPro;
 
 public class MoveControl : MonoBehaviour
 {
@@ -18,6 +19,16 @@ public class MoveControl : MonoBehaviour
     [Header("Shooting")]
     [SerializeField] private GameObject projectilePrefab;
     public GameObject bulletTrailPrefab;
+
+    [Header("Speed Boost Skill")]
+    [SerializeField] private float boostedSpeedMultiplier = 2f; 
+    [SerializeField] private float speedBoostDuration = 3f;
+    [SerializeField] private float speedBoostCooldown = 8f;
+    private bool isBoosted = false;
+    private float speedBoostCooldownTimer = 0f;
+
+    [Header("UI")]
+    [SerializeField] private TMPro.TextMeshProUGUI speedBoostUIText; 
 
     //FSM(finite state machine)에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     public enum State 
@@ -44,7 +55,7 @@ public class MoveControl : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         col = GetComponent<CapsuleCollider>();
-        
+
         state = State.None;
         nextState = State.Idle;
         stateTime = 0f;
@@ -108,6 +119,29 @@ public class MoveControl : MonoBehaviour
         if (Input.GetMouseButtonDown(0))  // left mouse down
         {
             ShootHitscan();
+        }
+
+        // Speed Boost Skill Activation
+        if (Input.GetKeyDown(KeyCode.F) && speedBoostCooldownTimer <= 0 && !isBoosted) // F = the skill activation key
+        {
+            StartCoroutine(SpeedBoostCoroutine());
+        }
+        if (speedBoostCooldownTimer > 0)
+        {
+            speedBoostCooldownTimer -= Time.deltaTime;
+        }
+
+        if (isBoosted)
+        {
+            speedBoostUIText.text = "Speed Boost Active!";
+        }
+        else if (speedBoostCooldownTimer > 0)
+        {
+            speedBoostUIText.text = $"Speed Boost Cooldown: {Mathf.Ceil(speedBoostCooldownTimer)}s";
+        }
+        else
+        {
+            speedBoostUIText.text = "Speed Boost Ready!";
         }
     }
 
@@ -217,5 +251,19 @@ public class MoveControl : MonoBehaviour
         yield return new WaitForSeconds(duration);
         currentDamage = defaultDamage;
         damageBoosted = false;
+    }
+
+    // Skill
+
+    private IEnumerator SpeedBoostCoroutine()
+    {
+        isBoosted = true;
+        moveSpeed *= boostedSpeedMultiplier; // Boost the speed
+
+        yield return new WaitForSeconds(speedBoostDuration);
+
+        moveSpeed /= boostedSpeedMultiplier; // Return to normal speed
+        isBoosted = false;
+        speedBoostCooldownTimer = speedBoostCooldown; // Reset the cooldown timer
     }
 }
