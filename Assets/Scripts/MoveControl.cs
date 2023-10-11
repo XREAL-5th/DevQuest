@@ -24,6 +24,7 @@ public class MoveControl : MonoBehaviour
     [SerializeField] private float boostedSpeedMultiplier = 2f; 
     [SerializeField] private float speedBoostDuration = 3f;
     [SerializeField] private float speedBoostCooldown = 8f;
+    public GameObject speedBoostVFXPrefab;
     private bool isBoosted = false;
     private float speedBoostCooldownTimer = 0f;
 
