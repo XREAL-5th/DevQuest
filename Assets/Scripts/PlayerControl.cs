@@ -8,23 +8,23 @@ public class PlayerControl : MonoBehaviour
     [Header("Preset Fields")]
     [SerializeField] private Rigidbody rigid;
     [SerializeField] private CapsuleCollider col;
+    [SerializeField] private Image skillImage;
+    [SerializeField] private GameObject explosion;
 
     [Header("Settings")]
     [SerializeField][Range(1f, 10f)] public float moveSpeed;
     [SerializeField][Range(1f, 10f)] public float jumpAmount;
     [SerializeField] public int healthPoint;
-
-
-    [SerializeField]
-    private Slider hpBar;
+    [SerializeField] public Slider hpBar;
     [SerializeField]
     private TextMeshProUGUI hpText;
 
+    private bool QSkillReady;
 
     [SerializeField]
     public float currentHp;
 
-    //FSM(finite state machine)¿¡ ´ëÇÑ ´õ ÀÚ¼¼ÇÑ ³»¿ëÀº ¼¼¼Ç 3È¸Â÷¿¡¼­ ¹è¿ï °ÍÀÔ´Ï´Ù!
+    //FSM(finite state machine)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 3È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Ï´ï¿½!
     public enum State
     {
         None,
@@ -55,16 +55,18 @@ public class PlayerControl : MonoBehaviour
         currentHp = healthPoint;
         hpBar.value = (float)currentHp / (float)healthPoint;
         hpText.text = currentHp.ToString();
+
+        QSkillReady = true;
     }
 
     private void Update()
     {
-        //0. ±Û·Î¹ú »óÈ² ÆÇ´Ü
+        //0. ï¿½Û·Î¹ï¿½ ï¿½ï¿½È² ï¿½Ç´ï¿½
         stateTime += Time.deltaTime;
         CheckLanded();
         //insert code here...
 
-        //1. ½ºÅ×ÀÌÆ® ÀüÈ¯ »óÈ² ÆÇ´Ü
+        //1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È¯ ï¿½ï¿½È² ï¿½Ç´ï¿½
         if (nextState == State.None)
         {
             switch (state)
@@ -88,7 +90,7 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        //2. ½ºÅ×ÀÌÆ® ÃÊ±âÈ­
+        //2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ê±ï¿½È­
         if (nextState != State.None)
         {
             state = nextState;
@@ -105,7 +107,7 @@ public class PlayerControl : MonoBehaviour
             stateTime = 0f;
         }
 
-        //3. ±Û·Î¹ú & ½ºÅ×ÀÌÆ® ¾÷µ¥ÀÌÆ®
+        //3. ï¿½Û·Î¹ï¿½ & ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         //insert code here...
 
 
@@ -120,8 +122,8 @@ public class PlayerControl : MonoBehaviour
 
     private void CheckLanded()
     {
-        //¹ß À§Ä¡¿¡ ÀÛÀº ±¸¸¦ ÇÏ³ª »ý¼ºÇÑ ÈÄ, ±× ±¸°¡ ¶¥¿¡ ´ê´ÂÁö °Ë»çÇÑ´Ù.
-        //1 << 3Àº GroundÀÇ ·¹ÀÌ¾î°¡ 3ÀÌ±â ¶§¹®, << ´Â ºñÆ® ¿¬»êÀÚ
+        //ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½Ñ´ï¿½.
+        //1 << 3ï¿½ï¿½ Groundï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î°¡ 3ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½, << ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var center = col.bounds.center;
         var origin = new Vector3(center.x, center.y - ((col.height - 1f) / 2 + 0.15f), center.z);
         landed = Physics.CheckSphere(origin, 0.45f, 1 << 3, QueryTriggerInteraction.Ignore);
@@ -135,8 +137,9 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) direction += -right; //Left
         if (Input.GetKey(KeyCode.S)) direction += -forward; //Back
         if (Input.GetKey(KeyCode.D)) direction += right; //Right
+        if (Input.GetKey(KeyCode.Q)) QSkill(); //Q skill
 
-        direction.Normalize(); //´ë°¢¼± ÀÌµ¿(Ex. W + A)½Ã¿¡µµ µ¿ÀÏÇÑ ÀÌµ¿¼Óµµ¸¦ À§ÇØ directionÀ» Normalize
+        direction.Normalize(); //ï¿½ë°¢ï¿½ï¿½ ï¿½Ìµï¿½(Ex. W + A)ï¿½Ã¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ directionï¿½ï¿½ Normalize
 
         transform.Translate(moveSpeed * Time.deltaTime * direction); //Move
     }
@@ -152,4 +155,38 @@ public class PlayerControl : MonoBehaviour
         }
     }
   
+    public void QSkill()
+    {
+        float coolTime = 3f;
+        int skillDamage = 30;
+        if (QSkillReady)
+        {
+            Rigidbody rigidbody = gameObject.GetComponent<Collider>().GetComponent<Rigidbody>();
+            Vector3 knockbackDirection = -gameObject.transform.forward;
+            knockbackDirection.y = 13f;
+            GameObject clone = Instantiate(explosion, gameObject.transform.position - new Vector3(0f,-0.5f,0f), Quaternion.identity);
+            Collider[] hitColliders = Physics.OverlapSphere(clone.transform.position, 3.5f);
+            foreach (var hitCollider in hitColliders)
+            {
+                if(hitCollider.CompareTag("Enemy"))
+                    hitCollider.gameObject.GetComponent<HpControl>().Damaged(skillDamage);
+            }
+            Destroy(clone,0.95f);
+            rigidbody.AddForce(knockbackDirection, ForceMode.Impulse);
+            QSkillReady = false;
+            StartCoroutine(Cooltime(coolTime));
+        }
+    }
+
+    IEnumerator Cooltime(float coolTime)
+    {
+        float time = 0f;
+        while (coolTime > time)
+        {
+            time += Time.deltaTime;
+            skillImage.fillAmount = (time / coolTime);
+            yield return new WaitForFixedUpdate();
+        }
+        QSkillReady = true;
+    }
 }

@@ -12,6 +12,7 @@ public class HpControl : MonoBehaviour
     private int healthPoint;
     [SerializeField]
     private TextMeshProUGUI hpText;
+    [SerializeField] private Animator animator;
 
 
     [SerializeField]
@@ -32,6 +33,7 @@ public class HpControl : MonoBehaviour
     public void Damaged(int damage)
     {
         currentHp -= damage;
+        animator.SetTrigger("stun");
         if (currentHp < 0)
         {
             currentHp = 0;

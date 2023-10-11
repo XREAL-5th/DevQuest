@@ -13,12 +13,19 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    
+
+    [SerializeField] public float wanderRadius;
+
+    [SerializeField] private Transform target;
+    [SerializeField] private NavMeshAgent agent;
+    private float timer;
+
     public enum State 
     {
         None,
         Idle,
-        Attack
+        Attack,
+        Wander
     }
     
     [Header("Debug")]
@@ -26,11 +33,14 @@ public class Enemy : MonoBehaviour
     public State nextState = State.None;
 
     private bool attackDone;
+    private bool wanderDone;
 
     private void Start()
     { 
         state = State.None;
         nextState = State.Idle;
+
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
@@ -45,7 +55,11 @@ public class Enemy : MonoBehaviour
                     if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
                         nextState = State.Attack;
+                        target = GameManager.main.player.transform;
+                        agent.SetDestination(target.position);
                     }
+                    else if(target != GameManager.main.player.transform)
+                        nextState = State.Wander;
                     break;
                 case State.Attack:
                     if (attackDone)
@@ -55,6 +69,13 @@ public class Enemy : MonoBehaviour
                     }
                     break;
                 //insert code here...
+                case State.Wander:
+                    if (wanderDone)
+                    {
+                        nextState = State.Idle;
+                        wanderDone = false;
+                    }
+                    break;
             }
         }
         
@@ -71,17 +92,29 @@ public class Enemy : MonoBehaviour
                     Attack();
                     break;
                 //insert code here...
+                case State.Wander:
+                    Wander();
+                    break;
             }
         }
-        
+
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
+
     }
     
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
-        GameManager.main.player.Damaged(25);
+    }
+
+    private void Wander() //현재 공격은 애니메이션만 작동합니다.
+    {
+        Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+        agent.SetDestination(newPos);
+        animator.SetBool("walk", true);
+        animator.SetBool("idle", false);
+        StartCoroutine(Wandering());
     }
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
@@ -91,6 +124,8 @@ public class Enemy : MonoBehaviour
     
     public void WhenAnimationDone() //Unity Animation Event 에서 실행됩니다.
     {
+        if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
+            GameManager.main.player.Damaged(25);
         attackDone = true;
     }
 
@@ -101,5 +136,26 @@ public class Enemy : MonoBehaviour
         //해당 함수는 없어도 기능 상의 문제는 없지만, 기능 체크 및 디버깅을 용이하게 합니다.
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawSphere(transform.position, attackRange);
+    }
+
+    IEnumerator Wandering()
+    {
+        yield return new WaitForSeconds(0.3f);
+        wanderDone = true;
+        animator.SetBool("idle", true);
+        animator.SetBool("walk", false);
+    }
+
+    public Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+    {
+        Vector3 randDirection = Random.insideUnitSphere * dist;
+
+        randDirection += origin;
+
+        NavMeshHit navHit;
+
+        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
+
+        return navHit.position;
     }
 }
