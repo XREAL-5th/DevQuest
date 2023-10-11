@@ -12,11 +12,11 @@ public class BulletControl : MonoBehaviour
         GetComponent<Rigidbody>().AddForce(transform.forward * _speed);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.layer == (int)Define.Layer.Enemy)
+        if(other.gameObject.layer == (int)Define.Layer.Enemy)
         {
-            GameObject effect = Instantiate(_hitEffect, collision.transform.position + new Vector3(0.0f, 2.0f, 0.0f), collision.transform.rotation);
+            GameObject effect = Instantiate(_hitEffect, other.transform.position + new Vector3(0.0f, 2.0f, 0.0f), other.transform.rotation);
             Managers.Resource.Destroy(gameObject);          
         }
     }

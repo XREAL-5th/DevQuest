@@ -74,7 +74,8 @@ public class PlayerControl : MonoBehaviour
                 case Define.MouseEvent.PointerDown:
                     {
                         if(!_fired)
-                        { 
+                        {
+                            _firePos = hit.transform;
                             if (hit.collider.gameObject.layer == (int)Define.Layer.Enemy)
                             {
                                 _target = hit.collider.gameObject;
@@ -92,6 +93,7 @@ public class PlayerControl : MonoBehaviour
                     {
                         _target = null;
                         _fired = false;
+                        _firePos = null;
                         break;
                     }
             }
