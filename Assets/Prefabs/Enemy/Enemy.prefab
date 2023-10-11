@@ -1516,7 +1516,7 @@ MonoBehaviour:
   HP: 100
   state: 0
   nextState: 0
-  chaseSpeed: 1
+  chaseSpeed: 0.01
 --- !u!95 &5206763285646312963
 Animator:
   serializedVersion: 5

@@ -99,11 +99,15 @@ public class Enemy : MonoBehaviour
 
         // 3. 글로벌 & 스테이트 업데이트
         // insert code here...
+       
+    }
+
+    private void FixedUpdate()
+    {
         if (Physics.CheckSphere(transform.position + new Vector3(0, 1.0f, 0), attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
         {
             transform.LookAt(GameEndingSingleton.main.player.transform.position);
-            transform.position += transform.forward * chaseSpeed * Time.deltaTime;
-            Debug.Log("Invoked?");
+            transform.position += transform.forward * chaseSpeed;
         }
     }
 
