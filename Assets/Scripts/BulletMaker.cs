@@ -8,14 +8,13 @@ public class BulletMaker : MonoBehaviour
 {
     [SerializeField]
     private GameObject bulletPrefab;
-
     // ¿Ã∆Â∆Æ 
     public Transform weaponImpact;
     [SerializeField]
     private ParticleSystem weaponEffect;
 
-    private float destroyTime = 3.0f;
 
+    private float destroyTime = 3.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +45,6 @@ public class BulletMaker : MonoBehaviour
                 weaponImpact.position = hitInfo.point;
             }
         }
-
     }
+
 }

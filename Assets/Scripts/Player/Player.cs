@@ -6,16 +6,27 @@ public class Player : MonoBehaviour
 {
     public int minDamage = 10;
     public int maxDamage = 15;
-    // Start is called before the first frame update
+
+    public ParticleSystem buffEffect;
+
+    bool activateSkill;
+    float coolTime = 10.0f;
+
+    Coroutine coroutine = null;
+
     void Start()
     {
-        
+        buffEffect.Stop();
+        activateSkill = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.E) && activateSkill == true)
+        {
+            activateSkill = false;
+            coroutine = StartCoroutine("CoroutineBuff", coolTime);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -40,7 +51,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
     private void PlayerDamageUp()
     {
         // 최대 공격력 30으로 제한
@@ -52,7 +62,6 @@ public class Player : MonoBehaviour
         Debug.Log("Min Damage: " + minDamage + " Max Damage: " + maxDamage);
 
     }
-
     private void PlayerDamageDown()
     {
         // 최소 공격력 5로 제한
@@ -63,5 +72,19 @@ public class Player : MonoBehaviour
         }
         Debug.Log("Min Damage: " + minDamage + " Max Damage: " + maxDamage);
     }
+    private IEnumerator CoroutineBuff(float t)
+    {
+        buffEffect.Play();
+        minDamage = 30;
+        maxDamage = 35;
+        Debug.Log("Min Damage: " + minDamage + " Max Damage: " + maxDamage);
+        yield return new WaitForSeconds(t);
+        activateSkill = true;
 
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+    }
 }

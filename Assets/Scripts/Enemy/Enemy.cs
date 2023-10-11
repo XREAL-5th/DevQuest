@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
+    [SerializeField] private float followRange;
+    [SerializeField] private float followSpeed;
 
     public GameObject Player;
 
@@ -24,6 +26,7 @@ public class Enemy : MonoBehaviour
     {
         None,
         Idle,
+        Follow,
         Attack,
         Die
     }
@@ -50,10 +53,25 @@ public class Enemy : MonoBehaviour
             {
                 case State.Idle:
                     //1 << 6인 이유는 Player의 Layer가 6이기 때문
+                    if (Physics.CheckSphere(transform.position, followRange, 1 << 6, QueryTriggerInteraction.Ignore))
+                    {
+                        nextState = State.Follow;
+                    }
+                    break;
+                case State.Follow:
+                    //1 << 6인 이유는 Player의 Layer가 6이기 때문
                     if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
+                        animator.SetBool("follow", false);
                         nextState = State.Attack;
                     }
+                    else if (!Physics.CheckSphere(transform.position, followRange, 1 << 6, QueryTriggerInteraction.Ignore))
+                    {
+                        animator.SetBool("follow", false);
+                        nextState = State.Idle;
+                    }
+                    else
+                        nextState = State.Follow;
                     break;
                 case State.Attack:
                     if (attackDone)
@@ -64,8 +82,7 @@ public class Enemy : MonoBehaviour
                     break;
                 //insert code here...
             }
-        }
-        
+        }        
         //2. 스테이트 초기화
         if (nextState != State.None) 
         {
@@ -74,23 +91,41 @@ public class Enemy : MonoBehaviour
             switch (state) 
             {
                 case State.Idle:
+                    Idle();
+                    break;
+                case State.Follow:
+                    Follow();
                     break;
                 case State.Attack:
                     Attack();
                     break;
                 case State.Die:
+                    Die();
                     break;
                     //insert code here...
             }
         }
-        
-        //3. 글로벌 & 스테이트 업데이트
-        //insert code here...
     }
-    
-    private void Attack() //현재 공격은 애니메이션만 작동합니다.
+    private void Idle()
+    {
+        animator.SetTrigger("idle");
+        
+    }
+    private void Follow()
+    {     
+        animator.SetBool("follow", true);
+        transform.LookAt(Player.transform.position);
+        transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, followSpeed * Time.deltaTime);
+    }
+
+    private void Attack() 
     {
         animator.SetTrigger("attack");
+    }
+    private void Die()
+    {
+        animator.SetTrigger("die");
+        Debug.Log("Monster die");
     }
 
 
@@ -101,21 +136,23 @@ public class Enemy : MonoBehaviour
     
     public void WhenAnimationDone() //Unity Animation Event 에서 실행됩니다.
     {
-        attackDone = true;
+        attackDone = true;      
     }
 
     public void HPDamaged(int minDamage, int maxDamage)
     {
+        animator.SetTrigger("damaged");
         // 공격 당하면 5 ~ 15 HP 감소
         currentHP -= Random.Range(minDamage, maxDamage);
         Debug.Log("HP: " + currentHP);
+        animator.SetTrigger("idle");
         if (currentHP < 0)
         {
-            state = State.Die;
+            nextState = State.Die;
         }            
     }
     private void OnCollisionEnter(Collision collision)
-    {
+    {        
         HPDamaged(Player.GetComponent<Player>().minDamage, Player.GetComponent<Player>().maxDamage);
     }
 
@@ -126,4 +163,5 @@ public class Enemy : MonoBehaviour
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawSphere(transform.position, attackRange);
     }
+
 }
