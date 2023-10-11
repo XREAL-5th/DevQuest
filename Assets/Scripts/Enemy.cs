@@ -14,14 +14,23 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-
     int playerAttackPower;
+
+    [Header("Wander Settings")]
+    [SerializeField] private float wanderRadius = 10f;
+    [SerializeField] private float wanderTimer = 5f; // wander 유지 시간
+
+
+    private NavMeshAgent navMeshAgent;
+    private float timer;
+    private Vector3 randomPoint;
 
     public enum State 
     {
         None,
         Idle,
-        Attack
+        Attack,
+        Wander
     }
     
     [Header("Debug")]
@@ -34,8 +43,10 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     { 
-        state = State.None;
-        nextState = State.Idle;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        timer = wanderTimer;
+        state = State.Wander;
+        // nextState = State.Idle;
         currentHealth = maxHealth; // 체력 초기화
     }
 
@@ -75,6 +86,20 @@ public class Enemy : MonoBehaviour
                         attackDone = false;
                     }
                     break;
+                
+                case State.Wander:
+                    if (timer <= 0) // wander 종료
+                    {
+                        randomPoint = RandomWanderPoint();
+                        navMeshAgent.SetDestination(randomPoint);
+                        timer = wanderTimer;
+                    }
+                    timer -= Time.deltaTime;
+                    if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance && !navMeshAgent.pathPending)
+                    {
+                        timer = 0;
+                    }
+                    break;
                  //insert code here...
             }
 
@@ -92,12 +117,22 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
-                //insert code here...
+                case State.Wander:
+                    break;
             }
         }
         
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
+    }
+
+    private Vector3 RandomWanderPoint()
+    {
+        Vector3 randomPoint = Random.insideUnitSphere * wanderRadius;
+        randomPoint += transform.position;
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomPoint, out hit, wanderRadius, 1);
+        return hit.position;
     }
 
     public void Attack() //현재 공격은 애니메이션만 작동합니다. 
