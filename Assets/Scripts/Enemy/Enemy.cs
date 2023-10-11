@@ -19,7 +19,8 @@ public class Enemy : MonoBehaviour
     {
         None,
         Idle,
-        Attack
+        Attack,
+        Wander
     }
     
     [Header("Debug")]
@@ -27,11 +28,18 @@ public class Enemy : MonoBehaviour
     public State nextState = State.None;
 
     private bool attackDone;
+    NavMeshAgent m_enemy = null;
+    [SerializeField] Transform[] m_WayPoints = null;
+    int m_count = 0;
+    public float time;
+
 
     private void Start()
     { 
         state = State.None;
-        nextState = State.Idle;
+        nextState = State.Wander;
+        m_enemy = GetComponent<NavMeshAgent>();
+        InvokeRepeating("MoveToNextWayPoint", 0f, time);
     }
 
     private void Update()
@@ -55,6 +63,12 @@ public class Enemy : MonoBehaviour
                         attackDone = false;
                     }
                     break;
+                case State.Wander:
+                    if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
+                    {
+                        nextState = State.Attack;
+                    }
+                    break;
                 //insert code here...
             }
         }
@@ -71,6 +85,9 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
+                case State.Wander:
+                    Wander();
+                    break;
                 //insert code here...
             }
         }
@@ -82,6 +99,22 @@ public class Enemy : MonoBehaviour
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
+    }
+    private void Wander()
+    {
+        animator.SetBool("isWalking", true);
+        InvokeRepeating("MoveToNextWayPoint", 0f, time);
+    }
+    void MoveToNextWayPoint()
+    {
+        if(m_enemy.velocity == Vector3.zero)
+        {
+            m_enemy.SetDestination(m_WayPoints[m_count++].position);
+
+
+            if (m_count >= m_WayPoints.Length)
+                m_count = 0;
+        }
     }
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
