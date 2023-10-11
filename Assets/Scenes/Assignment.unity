@@ -251,6 +251,21 @@ PrefabInstance:
       propertyPath: myobject
       value: 
       objectReference: {fileID: 1637095755}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6765139700962344619, guid: 815dca86b4ff3ef4386b2f347141692a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -872,6 +887,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -957,6 +987,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1180,6 +1225,8 @@ MonoBehaviour:
   player: {fileID: 2047535502}
   mainCamera: {fileID: 1330314346}
   gun: {fileID: 4888352}
+  playerPosition: {x: 0, y: 0, z: 0}
+  playerRotation: {x: 0, y: 0, z: 0, w: 0}
   effect: {fileID: 746985979}
   gameTimer: 0.03
   playerMode: 0
@@ -1383,6 +1430,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1414,6 +1476,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 254919230}
     m_Modifications:
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6765139700962344619, guid: 815dca86b4ff3ef4386b2f347141692a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1554,6 +1631,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1752,6 +1844,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780054562933727352, guid: d605c995a3055b24da9666a86812d131,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1908,6 +2015,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 254919230}
     m_Modifications:
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6765139700962344619, guid: 815dca86b4ff3ef4386b2f347141692a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2089,6 +2211,21 @@ PrefabInstance:
       propertyPath: myobject
       value: 
       objectReference: {fileID: 1443950751}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6765139700962344619, guid: 815dca86b4ff3ef4386b2f347141692a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2697,6 +2834,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playermode: 0
+  playerPosition: {x: 0, y: 0, z: 0}
+  playerRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2144963206
 GameObject:
   m_ObjectHideFlags: 0
@@ -2812,7 +2951,17 @@ PrefabInstance:
     - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
         type: 3}
       propertyPath: nextState
-      value: 2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: attackRange
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063995287567533857, guid: 815dca86b4ff3ef4386b2f347141692a,
+        type: 3}
+      propertyPath: recognizationRange
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6765139700962344619, guid: 815dca86b4ff3ef4386b2f347141692a,
         type: 3}

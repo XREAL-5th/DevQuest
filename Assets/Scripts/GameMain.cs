@@ -19,6 +19,8 @@ public class GameMain : MonoBehaviour
     [SerializeField] public Player player;
     [SerializeField] public Camera mainCamera;
     [SerializeField] public GameObject gun;
+    [HideInInspector] public Vector3 playerPosition;
+    [HideInInspector] public Quaternion playerRotation;
 
     [Header("VFX")]
     [SerializeField] public GameObject effect;
@@ -125,8 +127,11 @@ public class GameMain : MonoBehaviour
 
     private void PlayerManage()
     {
-        playerMode = player.playermode;
+        playerPosition = new Vector3(player.playerPosition[0], player.playerPosition[1] - 1, player.playerPosition[2]);
+        playerRotation = player.playerRotation;
 
+        playerMode = player.playermode;
+        
         if (GameMain.main.playerMode == 2)
         {
             gunPower = 3;
@@ -136,6 +141,11 @@ public class GameMain : MonoBehaviour
     private void EnemyManage()
     {
         enemy_count = enemyContainer.transform.childCount;
+
+        //for (int i = 0; i < enemy_count; i++)
+        //{
+        //    Debug.Log(enemy[0].transform.position);
+        //}
 
         if (isShoot)
         {
