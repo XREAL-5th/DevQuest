@@ -57,12 +57,12 @@ public class Enemy : MonoBehaviour
                     if (Physics.CheckSphere(transform.position, recognizationRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
                         nextState = State.Recognization;
-                        Debug.Log("적 인식!");
+                        //Debug.Log("적 인식!");
                     }
                     else if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
                         nextState = State.Attack;
-                        Debug.Log("공격 개시!");
+                        //Debug.Log("공격 개시!");
                     }
                     break;
                 case State.Recognization:
@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
                     if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
                         nextState = State.Attack;
-                        Debug.Log("공격 개시!");
+                        //Debug.Log("공격 개시!");
                     }
                     break;
                 case State.Attack:
@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour
                     {
                         nextState = State.Recognization;
                         attackDone = false;
-                        Debug.Log("너 조심해라, 나 보고 있다");
+                        //Debug.Log("너 조심해라, 나 보고 있다");
                     }
                     break;
                 //insert code here...

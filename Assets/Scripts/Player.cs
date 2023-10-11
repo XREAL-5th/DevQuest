@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     public Vector3 playerPosition;
     public Quaternion playerRotation;
+    public Vector3 playerForwardDirection;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
     {
         playerPosition = transform.position;
         playerRotation = transform.rotation;
+        playerForwardDirection = transform.forward;
     }
 
     void OnTriggerEnter(Collider other)

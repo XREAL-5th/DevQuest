@@ -642,6 +642,7 @@ RectTransform:
   m_Children:
   - {fileID: 2031987823}
   - {fileID: 898202741}
+  - {fileID: 1869292693}
   - {fileID: 2144963207}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -675,7 +676,7 @@ GameObject:
   - component: {fileID: 898202743}
   - component: {fileID: 898202742}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: GameTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -712,7 +713,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15d82471ecd89634fa4397b22673316b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameTimer: {fileID: 898202743}
+  Text: {fileID: 898202743}
+  isGameTimer: 1
+  isSkillTimer: 0
   game_timer: 0
 --- !u!114 &898202743
 MonoBehaviour:
@@ -1223,13 +1226,17 @@ MonoBehaviour:
   enemy_count: 0
   PlayerObject: {fileID: 2047535494}
   player: {fileID: 2047535502}
+  playerControl: {fileID: 2047535501}
   mainCamera: {fileID: 1330314346}
   gun: {fileID: 4888352}
   playerPosition: {x: 0, y: 0, z: 0}
   playerRotation: {x: 0, y: 0, z: 0, w: 0}
+  playerDirection: {x: 0, y: 0, z: 0}
   effect: {fileID: 746985979}
   gameTimer: 0.03
   playerMode: 0
+  gunPower: 0
+  isSkillOn: 0
 --- !u!4 &1363308957
 Transform:
   m_ObjectHideFlags: 0
@@ -2437,6 +2444,102 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1869292692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1869292693}
+  - component: {fileID: 1869292696}
+  - component: {fileID: 1869292695}
+  - component: {fileID: 1869292694}
+  m_Layer: 5
+  m_Name: SkillTimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1869292693
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869292692}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 720502783}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 500.12, y: 100}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &1869292694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869292692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15d82471ecd89634fa4397b22673316b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 1869292695}
+  isGameTimer: 0
+  isSkillTimer: 1
+  game_timer: 0
+--- !u!114 &1869292695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869292692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.71132076, g: 0.85849065, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 40
+    m_Alignment: 7
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &1869292696
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869292692}
+  m_CullTransparentMesh: 1
 --- !u!1 &1969004026
 GameObject:
   m_ObjectHideFlags: 0
@@ -2817,10 +2920,13 @@ MonoBehaviour:
   col: {fileID: 2047535496}
   moveSpeed: 5
   jumpAmount: 5
+  flashDistance: 10
   state: 0
   nextState: 0
   landed: 0
   moving: 0
+  skillOn: 0
+  skillEffect: {fileID: 100004, guid: 757df604761b8ef42831192c70ee1099, type: 3}
 --- !u!114 &2047535502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2836,6 +2942,7 @@ MonoBehaviour:
   playermode: 0
   playerPosition: {x: 0, y: 0, z: 0}
   playerRotation: {x: 0, y: 0, z: 0, w: 0}
+  playerForwardDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &2144963206
 GameObject:
   m_ObjectHideFlags: 0
