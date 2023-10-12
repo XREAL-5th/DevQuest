@@ -17,8 +17,12 @@ public class GameMain : MonoBehaviour
     [Header("PlayerSettings")]
     [SerializeField] public GameObject PlayerObject;
     [SerializeField] public Player player;
+    [SerializeField] public PlayerControl playerControl;
     [SerializeField] public Camera mainCamera;
     [SerializeField] public GameObject gun;
+    [HideInInspector] public Vector3 playerPosition;
+    [HideInInspector] public Quaternion playerRotation;
+    [HideInInspector] public Vector3 playerDirection;
 
     [Header("VFX")]
     [SerializeField] public GameObject effect;
@@ -37,7 +41,8 @@ public class GameMain : MonoBehaviour
 
     // ## Player
     [HideInInspector] public int playerMode;
-    private int gunPower;
+    [HideInInspector] public int gunPower;
+    [HideInInspector] public bool isSkillOn;
      
 
     // ## VFX
@@ -125,7 +130,12 @@ public class GameMain : MonoBehaviour
 
     private void PlayerManage()
     {
+        playerPosition = new Vector3(player.playerPosition[0], player.playerPosition[1] - 1, player.playerPosition[2]);
+        playerRotation = player.playerRotation;
+        playerDirection = player.playerForwardDirection;
+
         playerMode = player.playermode;
+        isSkillOn = playerControl.skillOn;
 
         if (GameMain.main.playerMode == 2)
         {
@@ -136,6 +146,11 @@ public class GameMain : MonoBehaviour
     private void EnemyManage()
     {
         enemy_count = enemyContainer.transform.childCount;
+
+        //for (int i = 0; i < enemy_count; i++)
+        //{
+        //    Debug.Log(enemy[0].transform.position);
+        //}
 
         if (isShoot)
         {

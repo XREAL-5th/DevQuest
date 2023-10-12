@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
-public class MoveControl : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     [Header("Preset Fields")]
     [SerializeField] private Rigidbody rigid;
@@ -14,6 +15,7 @@ public class MoveControl : MonoBehaviour
     [Header("Settings")]
     [SerializeField][Range(1f, 10f)] private float moveSpeed;
     [SerializeField][Range(1f, 10f)] private float jumpAmount;
+    [SerializeField] private float flashDistance = 10;
 
     //FSM(finite state machine)에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     public enum State 
@@ -31,6 +33,11 @@ public class MoveControl : MonoBehaviour
     
     private float stateTime;
     private Vector3 forward, right;
+    public bool skillOn;
+    //public bool skillUsed;
+
+    [Header("VFX")]
+    [SerializeField] public GameObject skillEffect;
 
     private void Start()
     {
@@ -42,6 +49,8 @@ public class MoveControl : MonoBehaviour
         stateTime = 0f;
         forward = transform.forward;
         right = transform.right;
+        skillOn = true;
+        //skillUsed = false;
     }
 
     private void Update()
@@ -105,6 +114,28 @@ public class MoveControl : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateInput();
+
+        if(Input.GetKey(KeyCode.R) && skillOn)
+        {
+            StartCoroutine(SkillManage());
+        }
+        //if(skillUsed == false && skillOn == false)
+        //{
+        //    Flash();
+        //    skillUsed = true;
+        //}
+
+        //if (skillPressed == true)
+        //{
+        //    StartCoroutine(SkillManage());
+        //}
+        //if (skillOn == true && skillPressed == true)
+        //{
+        //    skillOn = false;
+        //    Flash();
+        //}    
+
+        Debug.Log(skillOn);
     }
 
     private void CheckLanded() {
@@ -123,9 +154,25 @@ public class MoveControl : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) direction += -right; //Left
         if (Input.GetKey(KeyCode.S)) direction += -forward; //Back
         if (Input.GetKey(KeyCode.D)) direction += right; //Right
-        
+
+        //if (Input.GetKey(KeyCode.R)) skillPressed = true;
+
         direction.Normalize(); //대각선 이동(Ex. W + A)시에도 동일한 이동속도를 위해 direction을 Normalize
         
         transform.Translate( moveSpeed * Time.deltaTime * direction); //Move
+    }
+
+    private void Flash()
+    {
+        this.transform.position = this.transform.position + GameMain.main.playerDirection * flashDistance;
+        Instantiate(skillEffect, this.transform.position, Quaternion.identity);
+    }
+
+    IEnumerator SkillManage()
+    {
+        Flash();
+        skillOn = false;
+        yield return new WaitForSeconds(5);
+        skillOn = true;
     }
 }

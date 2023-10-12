@@ -7,9 +7,20 @@ public class Player : MonoBehaviour
     [HideInInspector] public int playermode;
     Item item;
 
+    public Vector3 playerPosition;
+    public Quaternion playerRotation;
+    public Vector3 playerForwardDirection;
+
     private void Start()
     {
         playermode = 0;
+    }
+
+    private void Update()
+    {
+        playerPosition = transform.position;
+        playerRotation = transform.rotation;
+        playerForwardDirection = transform.forward;
     }
 
     void OnTriggerEnter(Collider other)
