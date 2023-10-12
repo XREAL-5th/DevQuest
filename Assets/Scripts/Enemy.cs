@@ -21,11 +21,19 @@ public class Enemy : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private GameObject damageVFXPrefab;
 
+    [Header("Wander Settings")]
+    public float wanderRadius = 10f;
+    public float wanderTime = 5f;  // Wandar cooldown
+    private float wanderTimer;
+
+    private NavMeshAgent navMeshAgent;
+
     public enum State 
     {
         None,
         Idle,
-        Attack
+        Attack,
+        Wander
     }
     
     [Header("Debug")]
@@ -37,8 +45,10 @@ public class Enemy : MonoBehaviour
     private void Start()
     { 
         state = State.None;
-        nextState = State.Idle;
+        nextState = State.Wander;
         currentHealth = maxHealth;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        wanderTimer = wanderTime;
         GameManager.Instance.RegisterEnemy(this);
     }
 
@@ -63,7 +73,17 @@ public class Enemy : MonoBehaviour
                         attackDone = false;
                     }
                     break;
-                //insert code here...
+                case State.Wander:
+                    if (wanderTimer <= 0)
+                    {
+                        wanderTimer = wanderTime;
+                        SetRandomDestination();
+                    }
+                    else
+                    {
+                        wanderTimer -= Time.deltaTime;
+                    }
+                    break;
             }
         }
         
@@ -79,7 +99,10 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
-                //insert code here...
+                case State.Wander:
+                    SetRandomDestination();
+                    animator.SetTrigger("walk");
+                    break;
             }
         }
         
@@ -108,6 +131,18 @@ public class Enemy : MonoBehaviour
         //해당 함수는 없어도 기능 상의 문제는 없지만, 기능 체크 및 디버깅을 용이하게 합니다.
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawSphere(transform.position, attackRange);
+    }
+
+    private void SetRandomDestination()
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;
+        randomDirection += transform.position;
+
+        NavMeshHit navHit;
+        NavMesh.SamplePosition(randomDirection, out navHit, wanderRadius, -1);
+        navMeshAgent.SetDestination(navHit.position);
+
+        animator.SetTrigger("walk");
     }
 
     public void TakeDamage(float damage)

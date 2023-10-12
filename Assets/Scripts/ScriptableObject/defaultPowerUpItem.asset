@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c754d8520c8cc43b67c03aa84523bf, type: 3}
   m_Name: defaultPowerUpItem
   m_EditorClassIdentifier: 
-  itemName: 
-  description: 
-  playerEffectValue: 0
-  effectDuration: 0
-  itemVFX: {fileID: 0}
+  itemName: Default Powerup
+  description: Demage*2
+  playerEffectValue: 2
+  effectDuration: 5
+  itemVFX: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
