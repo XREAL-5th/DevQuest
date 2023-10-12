@@ -1511,10 +1511,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5206763285646312963}
   splashFx: {fileID: 100000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
+  rigid: {fileID: 8154327613365761796}
   attackRange: 4.1
   HP: 100
   state: 0
   nextState: 0
+  chaseSpeed: 0.01
 --- !u!95 &5206763285646312963
 Animator:
   serializedVersion: 5

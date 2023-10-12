@@ -16,7 +16,7 @@ public class Items : ScriptableObject
 
     [SerializeField]
     private GameObject rpj;
-    public GameObject RPJ { get { return rpj; } set {  rpj = value; } }
+    public GameObject Rpj { get { return rpj; } set {  rpj = value; } }
     [SerializeField]
     private int rpjDamage;
     public int RpjDamage { get { return rpjDamage; } set { rpjDamage = value; } }
