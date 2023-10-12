@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class WinController: LazySingletonMonoBehavior<WinController>
 {
-    private int enemyCount;
+    private static int enemyCount;
     private event UnityAction OnClearHandlers;
     
     protected override void Awake()
@@ -22,6 +22,11 @@ public class WinController: LazySingletonMonoBehavior<WinController>
             Debug.Log("Clear!");
             OnClearHandlers?.Invoke();
         }
+    }
+
+    public void SpawnEnemy()
+    {
+        enemyCount += 1;
     }
     
     public void OnClearStage(UnityAction action) {

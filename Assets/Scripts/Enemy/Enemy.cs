@@ -33,11 +33,11 @@ public class Enemy : MonoBehaviour
     {
         state = State.None;
         nextState = State.Idle;
+        WinController.Instance.SpawnEnemy();
     }
 
     private void Update()
     {
-        InflictDamage(0f);
         //1. 스테이트 전환 상황 판단
         if (nextState == State.None)
         {
@@ -75,7 +75,9 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
-                //insert code here...
+                case State.Die:
+                    DieAnimation();
+                    break;
             }
         }
 
@@ -86,6 +88,11 @@ public class Enemy : MonoBehaviour
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
+    }
+
+    private void DieAnimation()
+    {
+        animator.SetTrigger("die");
     }
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
@@ -120,6 +127,12 @@ public class Enemy : MonoBehaviour
     {
         WinController.Instance.EnemyKilled();
         nextState = State.Die;
+        StartCoroutine(DieDestroyObject());
+    }
+
+    private IEnumerator DieDestroyObject()
+    {
+        yield return new WaitForSeconds(3);
         Destroy(gameObject);
     }
 }
