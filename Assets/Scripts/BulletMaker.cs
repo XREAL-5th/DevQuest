@@ -8,14 +8,13 @@ public class BulletMaker : MonoBehaviour
 {
     [SerializeField]
     private GameObject bulletPrefab;
-
     // 이펙트 
     public Transform weaponImpact;
     [SerializeField]
     private ParticleSystem weaponEffect;
 
-    private float destroyTime = 3.0f;
 
+    private float destroyTime = 3.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -44,9 +43,8 @@ public class BulletMaker : MonoBehaviour
                 weaponImpact.forward = hitInfo.normal;
                 // 레이가 부딪힌 지점에서 이펙트 생성
                 weaponImpact.position = hitInfo.point;
-
             }
         }
-
     }
+
 }
