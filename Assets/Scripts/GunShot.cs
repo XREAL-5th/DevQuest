@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class GunShot : MonoBehaviour
 {
@@ -32,6 +32,8 @@ public class GunShot : MonoBehaviour
 
     public TextMeshProUGUI ammoText;
     public GameObject muzzleFlash,bulletHole,spark;
+    public Image reloadingImage;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -97,7 +99,8 @@ public class GunShot : MonoBehaviour
                 
         }
         Debug.Log("Rayhit normal : " + rayHit.normal);
-        Instantiate(bulletHole, rayHit.point, Quaternion.Euler(rayHit.normal.y * 90 + 180, rayHit.normal.x * 90, rayHit.normal.z * 90));
+        GameObject bullteHoleClone = Instantiate(bulletHole, rayHit.point, Quaternion.Euler(rayHit.normal.y * 90 + 180, rayHit.normal.x * 90, rayHit.normal.z * 90));
+        bullteHoleClone.transform.parent = rayHit.transform;
         Instantiate(spark, rayHit.point, Quaternion.Euler(rayHit.normal.y*90 + 180, rayHit.normal.x*90 , rayHit.normal.z*90));
         Instantiate(muzzleFlash, muzzle.position, Quaternion.identity);
 
@@ -113,16 +116,22 @@ public class GunShot : MonoBehaviour
     private void Reload()
     {
         state = State.Reloading;
-        Debug.Log("Reloading!");
+        reloadingImage.gameObject.SetActive(true);
         StartCoroutine(Reloading());
 
     }
 
     IEnumerator Reloading()
     {
-        yield return new WaitForSeconds(gunStat.reloadTime);
+        float time = 0f;
+        while (gunStat.reloadTime > time)
+        {
+            time += Time.deltaTime;
+            reloadingImage.fillAmount = (time / gunStat.reloadTime);
+            yield return new WaitForFixedUpdate();
+        }
         leftAmmo = gunStat.ammo;
         state = State.readyToShoot;
-        Debug.Log("Done Reload");
+        reloadingImage.gameObject.SetActive(false);
     }
 }

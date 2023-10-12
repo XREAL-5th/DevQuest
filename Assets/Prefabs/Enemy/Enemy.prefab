@@ -1442,6 +1442,7 @@ GameObject:
   - component: {fileID: 2712630683251984083}
   - component: {fileID: 6183120360295376686}
   - component: {fileID: 273688298808356551}
+  - component: {fileID: 6666347066095134701}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -1483,6 +1484,9 @@ MonoBehaviour:
   animator: {fileID: 1032775293952273678}
   splashFx: {fileID: 100002, guid: e9391f622091e1449bdef4ef15af4948, type: 3}
   attackRange: 4.1
+  wanderRadius: 0
+  target: {fileID: 0}
+  agent: {fileID: 6666347066095134701}
   state: 0
   nextState: 0
 --- !u!95 &1032775293952273678
@@ -1521,6 +1525,7 @@ MonoBehaviour:
   hpBar: {fileID: 1892457775518034501}
   healthPoint: 100
   hpText: {fileID: 2114651528133745708}
+  animator: {fileID: 1032775293952273678}
   currentHp: 0
 --- !u!136 &6183120360295376686
 CapsuleCollider:
@@ -1572,6 +1577,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!195 &6666347066095134701
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5779204539082965404}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5851676365295665083
 GameObject:
   m_ObjectHideFlags: 0
