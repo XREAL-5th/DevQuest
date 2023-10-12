@@ -3,6 +3,16 @@ using System.Collections;
 
 public class Define
 {
+
+    public enum State
+    {
+        None,
+        Die,
+        Idle,
+        Moving,
+        Attack,
+    }
+
     public enum WorldObject
     {
         Unknown,

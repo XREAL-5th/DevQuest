@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class InputManager
 {
-    public Action KeyAction = null;
+    public Action<KeyCode> KeyAction = null;
     public Action<Define.MouseEvent> MouseAction = null;
 
     bool _pressed = false;
@@ -17,7 +17,10 @@ public class InputManager
             return;
 
         if (Input.anyKey && KeyAction != null)
-            KeyAction.Invoke();
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+                KeyAction.Invoke(KeyCode.F);
+        }
 
         if (MouseAction != null)
         {

@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
+    [SerializeField] private float chasingRange;
+    [SerializeField] private GameObject target; //TODO game manager
 
     Stat _stat;
     
@@ -20,7 +22,9 @@ public class Enemy : MonoBehaviour
     {
         None,
         Idle,
-        Attack
+        Attack,
+        Chasing,
+        Die,
     }
     
     [Header("Debug")]
@@ -50,6 +54,10 @@ public class Enemy : MonoBehaviour
                     {
                         nextState = State.Attack;
                     }
+                    else if (Physics.CheckSphere(transform.position, chasingRange, 1 << 6, QueryTriggerInteraction.Ignore))
+                    {
+                        nextState = State.Chasing;
+                    }
                     break;
                 case State.Attack:
                     if (attackDone)
@@ -58,7 +66,24 @@ public class Enemy : MonoBehaviour
                         attackDone = false;
                     }
                     break;
-                //insert code here...
+                case State.Chasing:
+                    {
+                        if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
+                        {
+                            nextState = State.Attack;
+                        }
+                        else if (Physics.CheckSphere(transform.position, chasingRange, 1 << 6, QueryTriggerInteraction.Ignore))
+                        {
+                            nextState = State.Chasing;
+                        }
+                        else
+                        {
+                            nextState = State.Idle;
+                            animator.ResetTrigger("walk");
+                            animator.SetTrigger("idle");
+                        }
+                    }
+                    break;
             }
         }
         
@@ -74,14 +99,19 @@ public class Enemy : MonoBehaviour
                 case State.Attack:
                     Attack();
                     break;
-                //insert code here...
+                case State.Chasing:
+                    Chasing();
+                    break;
+                case State.Die:
+                    Die();
+                    break;
             }
         }
         
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
     }
-    
+
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
         animator.SetTrigger("attack");
@@ -95,6 +125,28 @@ public class Enemy : MonoBehaviour
     public void WhenAnimationDone() //Unity Animation Event 에서 실행됩니다.
     {
         attackDone = true;
+    }
+
+    private void Chasing()
+    {
+        Vector3 dir = target.transform.position - transform.position;
+
+        NavMeshAgent nma = gameObject.GetComponent<NavMeshAgent>();
+        nma.SetDestination(target.transform.position);
+        nma.speed = _stat.MoveSpeed;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+
+        animator.SetTrigger("walk");
+    }
+
+    private void Die()
+    {
+        animator.CrossFade("death", 0.1f);
+    }
+
+    public void OnDieEvent()
+    {
+        Managers.Destroy(gameObject);
     }
 
 

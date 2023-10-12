@@ -22,6 +22,7 @@ public class PlayerControl : MonoBehaviour
 
     [SerializeField] GameObject _bullet;
     [SerializeField] Transform _firePos;
+    [SerializeField] GameObject _skill;
 
     void Start()
     {
@@ -30,11 +31,30 @@ public class PlayerControl : MonoBehaviour
         Managers.Input.MouseAction -= OnMouseEvent;
         Managers.Input.MouseAction += OnMouseEvent;
 
+        Managers.Input.KeyAction -= OnKeyAction;
+        Managers.Input.KeyAction += OnKeyAction;
+
     }
 
-    void BulletFire()
+    private bool _activeSkill = false;
+    private bool _canSkill = true;
+
+    void BulletFire(Vector3 dir)
     {
-        Instantiate(_bullet, _firePos.position, _firePos.rotation);
+        GameObject bullet = Instantiate(_bullet, _firePos.position, Quaternion.LookRotation(dir));
+        if (_activeSkill && _canSkill)
+        {
+            StartCoroutine("CoSkillCoolTime", bullet);
+        }
+    }
+
+    IEnumerator CoSkillCoolTime(GameObject bullet)
+    {
+        Instantiate(_skill, _firePos.position, _firePos.rotation, bullet.transform);
+        _canSkill = false;
+        _activeSkill = false;
+        yield return new WaitForSeconds(5.0f);
+        _canSkill = true;
     }
 
     public bool clearedGame()
@@ -42,23 +62,21 @@ public class PlayerControl : MonoBehaviour
         return _curKillCount >= _maxKillCount;
     }
 
-    void OnHitEvent()
+    void OnHitEvent(Vector3 dir)
     {
-        BulletFire();
+        BulletFire(dir);
         if(_target != null)
         {
             Stat targetStat = _target.GetComponent<Stat>();
             int damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
-            targetStat.Hp -= damage;
-
-            Debug.Log(targetStat.Hp);
-            if (targetStat.Hp <= 0)
-            {
-                _curKillCount++;
-                Managers.Resource.Destroy(_target);
-            }
-
+            targetStat.OnAttacked(_stat);
         }
+    }
+
+    void OnKeyAction(KeyCode evt)
+    {
+        if (evt == KeyCode.F && _canSkill)
+            _activeSkill = true;
     }
 
     void OnMouseEvent(Define.MouseEvent evt)
@@ -74,16 +92,16 @@ public class PlayerControl : MonoBehaviour
                 case Define.MouseEvent.PointerDown:
                     {
                         if(!_fired)
-                        { 
+                        {
                             if (hit.collider.gameObject.layer == (int)Define.Layer.Enemy)
                             {
                                 _target = hit.collider.gameObject;
-                                OnHitEvent();
+                                OnHitEvent(ray.direction);
                                 _fired = true;
                             }
                             else
                             {
-                                BulletFire();
+                                BulletFire(ray.direction);
                             }
                         }
                         break;
