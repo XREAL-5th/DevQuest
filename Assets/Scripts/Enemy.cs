@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    public Transform player;
+    [SerializeField] private Transform player;
     [SerializeField] private float chaseRange = 10f;
 
     [Header("Enemy State")]
@@ -33,7 +33,9 @@ public class Enemy : MonoBehaviour
         None,
         Idle,
         Attack,
-        Walk
+        Walk,
+        
+       LongRangeAttack // 원거리 공격 상태를 넣을려다 실패함.
     }
     
     [Header("Debug")]
@@ -46,6 +48,8 @@ public class Enemy : MonoBehaviour
         state = State.None;
         nextState = State.Idle;
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        player = GameObject.Find("Player").GetComponent<Transform>();
 
         if (player != null )
         {
@@ -100,14 +104,17 @@ public class Enemy : MonoBehaviour
                     }
 
                     // 추적 범위 벗어날 시 Walk 상태에서 Idle 상태로 전환
+                   // 추적 범위 벗어날 시 LongRangeAttack (원거리 공격) 상태로 전환을 시도해보려다 실패..
                     else if (!Physics.CheckSphere(transform.position, chaseRange, 1 << 6, QueryTriggerInteraction.Ignore))
                     {
+                        //nextState = State.LongRangeAttack;
                         nextState = State.Idle;
                     }
                     break;
             }
         }
         
+
         //2. 스테이트 초기화
         if (nextState != State.None) 
         {
@@ -125,6 +132,12 @@ public class Enemy : MonoBehaviour
                 case State.Walk:
                     Walk();
                     break;
+
+
+                //// 구현 실패한 스테이트
+                //case State.LongRangeAttack:
+                //    ReadyLongAttack();
+                //    break;
             }
         }
         
@@ -182,6 +195,12 @@ public class Enemy : MonoBehaviour
 
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
     {
+        // 2023.10.10 문제 발생
+        // 원거리 공격(LongRangeAttack) 스테이트를 추가하려다 실패해서 
+        // 기존에 구현했던 Idle <-> Walk <-> Attack 상태로 되돌리는데 walk 상태에서 attack 상태 전환으로 이루어진 이후에 발동하는 attack 애니메이션이 작동이 안하는 문제가 발생함.. 
+        // 혹시나 원거리 공격 구현했던 코드를 다 주석 처리 해보았으나 효과는 없었음.. 
+        // 애니메이션 부분을 무언가를 잘못 만진 거 같은데 원인을 못 찾고 있습니다.. 
+
         animator.SetTrigger("attack");
 
         // Player가 사정거리 안에 들어와 공격 모션 발동 시 플레이어 HP 깎는다.
@@ -193,8 +212,32 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("walk");
     }
 
+
+
+    // 원거리 공격 애니메이션 추가하려다 실패함.
+    private void ReadyLongAttack()
+    {
+        animator.SetTrigger("longRange");
+        Debug.Log("원거리 애니매이션 호출");
+    }
+
+
+    // RushJump 애니메이션에 Animation Event로 실행해보려 했으나 실패
+    public void HighJump()
+    {
+        // 2023.10.10 문제 발생
+        // 이 부분은 애니메이션을 호출하지도 않았는데, 처음 게임 실행 할 때 애니메이션 실행과 함께 디버그가 출력 됨.
+        Debug.Log("최대 점프 순간 ");
+    }
+
+
+
+
+
+
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
     {
+        Debug.Log("공격 이펙트 발동");
         Instantiate(splashFx, transform.position, Quaternion.identity);
     }
     
