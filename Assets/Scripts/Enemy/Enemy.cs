@@ -14,7 +14,8 @@ public class Enemy : MonoBehaviour
 
     [Header("Settings")] [SerializeField] private float attackRange;
 
-    [SerializeField] private float hp;
+    [SerializeField] private float maxhp;
+    private float hp;
 
     public enum State
     {
@@ -31,6 +32,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        hp = maxhp;
         state = State.None;
         nextState = State.Idle;
         WinController.Instance.SpawnEnemy();
@@ -134,5 +136,10 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         Destroy(gameObject);
+    }
+
+    public float RemainingHealthRatio()
+    {
+        return hp / maxhp;
     }
 }

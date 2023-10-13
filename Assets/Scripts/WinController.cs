@@ -6,20 +6,12 @@ public class WinController: LazySingletonMonoBehavior<WinController>
 {
     private static int enemyCount;
     private event UnityAction OnClearHandlers;
-    
-    protected override void Awake()
-    {
-        base.Awake();
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        enemyCount = enemies.Length;
-    }
 
     public void EnemyKilled()
     {
         enemyCount -= 1;
         if (enemyCount <= 0)
         {
-            Debug.Log("Clear!");
             OnClearHandlers?.Invoke();
         }
     }

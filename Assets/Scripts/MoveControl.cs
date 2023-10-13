@@ -16,9 +16,13 @@ public class MoveControl : MonoBehaviour
 
     [SerializeField] [Range(1f, 10f)] private float jumpAmount;
     [SerializeField] [Range(0.1f, 1f)] private float dashInputDelay;
+    [SerializeField] private float dashCooldownLength = 1f;
 
     private float timeOfLastWPress = 0f;
+    private float timeOfLastDash = 0f;
     private bool dashCooldown;
+
+    [SerializeField] private float dashDuration = 0.3f;
 
     //FSM(finite state machine)에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     public enum State
@@ -130,23 +134,46 @@ public class MoveControl : MonoBehaviour
 
         transform.Translate(moveSpeed * Time.deltaTime * direction); //Move
 
-        if (!dashCooldown && Input.GetKey(KeyCode.W) && Time.time - timeOfLastWPress < dashInputDelay)
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            Debug.Log("Dash");
-            rigid.AddForce(transform.forward * 800f);
-            StartCoroutine(DashCooldown());
-        }
-        
-        if (Input.GetKeyUp(KeyCode.W))
-        {
+            if (Time.time - timeOfLastWPress > dashInputDelay)
+            {
+                timeOfLastWPress = Time.time;
+            }
+            else if (!dashCooldown)
+            {
+                StartCoroutine(Dash());
+            }
+
             timeOfLastWPress = Time.time;
         }
     }
 
-    private IEnumerator DashCooldown()
+    IEnumerator Dash()
     {
         dashCooldown = true;
-        yield return new WaitForSeconds(1f);
+        timeOfLastDash = Time.time;
+        var dashDirection = transform.forward;
+        var startTime = Time.time;
+
+        while (Time.time < startTime + dashDuration)
+        {
+            rigid.velocity = dashDirection * 30f;
+            yield return null;
+        }
+
+        rigid.velocity = Vector3.zero;
+        yield return new WaitForSeconds(dashCooldownLength - dashDuration);
         dashCooldown = false;
+    }
+
+    public float DashRemainingCooldown()
+    {
+        if (!dashCooldown)
+        {
+            return 0;
+        }
+
+        return (Time.time - timeOfLastDash) / dashCooldownLength;
     }
 }
