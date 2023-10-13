@@ -24,8 +24,11 @@ public class GameControl : MonoBehaviour
     public GameObject EscapePortal;
 
 
+
+    // 싱글톤 인스턴스가 다른 씬으로 이동할 때 파괴되지 않도록 합니다.
     private void Awake()
     {
+        // 이미 인스턴스가 존재하면 새로 생성된 것을 파괴합니다.
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);

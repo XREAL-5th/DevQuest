@@ -20,6 +20,8 @@ public class EnemySpawner : MonoBehaviour
         // SpawnPoint에 위치하여 enemyPrefab을 생성
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
 
+        HPBarScript.HPBar_instance.CreateHPBar();
+
         Enemy enemyState = enemy.GetComponent<Enemy>();
         if (enemyState != null)
         {
