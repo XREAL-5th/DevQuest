@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
@@ -14,7 +15,8 @@ public class Enemy : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float attackRange;
     [SerializeField] private float chaseRange;
-    public float health = 50f;
+    public float curHP = 50f;
+    private float maxHP = 50f;
     public Transform target;
 
     public enum State 
@@ -31,6 +33,8 @@ public class Enemy : MonoBehaviour
 
     private bool attackDone;
     NavMeshAgent m_enemy = null;
+    private Slider hpBar;
+    private Text attackDamage;
 
 
     private void Start()
@@ -38,6 +42,9 @@ public class Enemy : MonoBehaviour
         state = State.None;
         nextState = State.Chase;
         m_enemy = GetComponent<NavMeshAgent>();
+        hpBar = GetComponentInChildren<Slider>();
+        hpBar.value = (float)curHP / (float)maxHP;
+        attackDamage = GetComponentInChildren<Text>();
         //InvokeRepeating("MoveToNextWayPoint", 0f, time);
     }
 
@@ -132,8 +139,12 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        health -= amount;
-        if(health <= 0f)
+
+        curHP -= amount;
+        HandleHP();
+        attackDamage.text = "-" + amount.ToString();
+        StartCoroutine(textOff());
+        if (curHP <= 0f)
         {
             Destroy(gameObject);
             GameManager.Instance.currEnemyNum -= 1;
@@ -142,4 +153,17 @@ public class Enemy : MonoBehaviour
             GameObject item = Instantiate(ItemManager.Instance.buffItem, this.transform.position, this.transform.rotation);
         }
     }
+
+    private void HandleHP()
+    {
+        
+        hpBar.value = (float)curHP / (float)maxHP;
+    }
+    
+    IEnumerator textOff()
+    {
+        yield return new WaitForSeconds(1f);
+        attackDamage.text = "";
+    }
+
 }
