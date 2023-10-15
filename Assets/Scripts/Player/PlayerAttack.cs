@@ -19,9 +19,10 @@ public class PlayerAttack : MonoBehaviour
     public GameObject bulletPrefab;
 
     [Header("Skill")]
-    public GameObject hideImg;
-    public GameObject text;
+    public GameObject hideBtn;
+    public GameObject textPros;
     public TextMeshProUGUI hideSkillTimeTexts;
+    public Image hideSkillImg;
     private bool isHideSkills = false;
     private float skillTimes = 10;
     private float getSkillTimes = 0;
@@ -30,8 +31,8 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
         GameManager gameManager = GameManager.Instance;
-        hideSkillTimeTexts = text.GetComponent<TextMeshProUGUI>();
-        hideImg.SetActive(false);
+        hideSkillTimeTexts = textPros.GetComponent<TextMeshProUGUI>();
+        hideBtn.SetActive(false);
     }
     public void Update()
     {
@@ -41,8 +42,14 @@ public class PlayerAttack : MonoBehaviour
         }
         if (Input.GetButtonDown("Fire2") && canFire)
         {
+            HideSkillSetting();
             StartCoroutine(Bomb());
-            StartCoroutine(SkillTimeChk(0));
+
+            //HideSkillCheck();
+        }
+        if (isHideSkills)
+        {
+            StartCoroutine(SkillTimeChk());
         }
     }
 
@@ -93,31 +100,36 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    public void HideSkillSetting(int skillNum)
+    public void HideSkillSetting()
     {
-        hideImg.SetActive(true);
+        hideBtn.SetActive(true);
         getSkillTimes = skillTimes;
         isHideSkills = true;
     }
     private void HideSkillCheck()
     {
-        
+        if(isHideSkills)
+        {
+            StartCoroutine(SkillTimeChk());
+        }
     }
-    IEnumerator SkillTimeChk(int skillNum)
+    IEnumerator SkillTimeChk()
     {
         yield return null;
         if(getSkillTimes > 0)
         {
             getSkillTimes -= Time.deltaTime;
-            if(getSkillTimes< 0)
+            if(getSkillTimes < 0)
             {
+                
+
                 getSkillTimes = 0;
                 isHideSkills = false;
-                hideImg.SetActive(false);
+                hideBtn.SetActive(false);
             }
             hideSkillTimeTexts.text = getSkillTimes.ToString("00");
             float time = getSkillTimes / skillTimes;
-            hideImg.GetComponent<Image>().fillAmount = time;
+            hideSkillImg.fillAmount = time;
             //hideImg.fill
         }
     }
