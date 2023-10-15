@@ -10,7 +10,14 @@ public class UI_Timer : MonoBehaviour
     public Text Text;
     public bool isGameTimer;
     public bool isSkillTimer;
+    private float skillCoolTime;
+    private float skillCoolLeftTime;
     [HideInInspector] public float game_timer;
+
+    void Start()
+    {
+        skillCoolTime = 5f;
+    }
 
 
     void Update()
@@ -34,10 +41,12 @@ public class UI_Timer : MonoBehaviour
             if (GameMain.main.isSkillOn == true)
             {
                 Text.text = "Skill On";
+                skillCoolLeftTime = 5f;
             }
             else
             {
-                Text.text = "Skill OFF";
+                skillCoolLeftTime = skillCoolLeftTime - Time.deltaTime;
+                Text.text = "Skill OFF / Left Time: " + skillCoolLeftTime.ToString("N0") + " sec";
             }
         }
 

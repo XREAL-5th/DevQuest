@@ -13,6 +13,7 @@ public class GameMain : MonoBehaviour
     [SerializeField] public GameObject enemyContainer;
     [SerializeField] public Enemy[] enemy;
     [HideInInspector] public int enemy_count;
+    [HideInInspector] public int[] enemy_health_list;
 
     [Header("PlayerSettings")]
     [SerializeField] public GameObject PlayerObject;
@@ -23,9 +24,12 @@ public class GameMain : MonoBehaviour
     [HideInInspector] public Vector3 playerPosition;
     [HideInInspector] public Quaternion playerRotation;
     [HideInInspector] public Vector3 playerDirection;
+    [HideInInspector] public int playerHealth;
 
     [Header("VFX")]
     [SerializeField] public GameObject effect;
+
+    [Header("UI")]
 
     // Singleton
     public static GameMain main;
@@ -35,6 +39,7 @@ public class GameMain : MonoBehaviour
     private int timerValue;
     private bool isShoot;
     private bool isOnhit;
+    [HideInInspector] public bool isStop;
 
     private bool isEffectOn;
     private float effetTimer;
@@ -81,6 +86,7 @@ public class GameMain : MonoBehaviour
         player = PlayerObject.GetComponent<Player>();
 
         enemy_count = enemyContainer.transform.childCount;
+        enemy_health_list = new int[enemy_count];
         for (int i = 0; i < enemy_count; i++) { enemy[i] = GameObject.Find($"Enemy ({i})").GetComponent<Enemy>(); }
 
         layDistance = 500.0f;
@@ -88,6 +94,7 @@ public class GameMain : MonoBehaviour
         isOnhit = false;
         isEffectOn = false;
         effetTimer = 0f;
+        isStop = false;
 
         gunPower = 1;
 
@@ -104,6 +111,7 @@ public class GameMain : MonoBehaviour
             PlayerManage();
             EnemyManage();
             EffectManage();
+            UIManage();
 
             ResetState();
         }
@@ -122,6 +130,7 @@ public class GameMain : MonoBehaviour
     private void InputManage()
     {
         isShoot = Input.GetMouseButtonDown(0);
+        isStop = Input.GetKey(KeyCode.Escape);
 
         //userPosition = mainCamera.transform.position;
         //userOrientation = mainCamera.transform.rotation;
@@ -133,14 +142,29 @@ public class GameMain : MonoBehaviour
         playerPosition = new Vector3(player.playerPosition[0], player.playerPosition[1] - 1, player.playerPosition[2]);
         playerRotation = player.playerRotation;
         playerDirection = player.playerForwardDirection;
+        playerHealth = player.playerCurrentHeath;
 
         playerMode = player.playermode;
         isSkillOn = playerControl.skillOn;
+
 
         if (GameMain.main.playerMode == 2)
         {
             gunPower = 3;
         }
+
+        for(int i=0; i < enemy_count; i++)
+        {
+            if (enemy[i].attackDone==true)
+            {
+                if (player.playerPosition[1] - enemy[i].enemyPosition[1] <= 1.7f)
+                {
+                    player.playerCurrentHeath -= enemy[i].attackDamage;
+                }
+            }
+            //Debug.Log(player.playerCurrentHeath);
+        }
+        
     }
 
     private void EnemyManage()
@@ -161,16 +185,16 @@ public class GameMain : MonoBehaviour
                 isOnhit = true;
                 Debug.DrawRay(ray.origin, ray.direction * layDistance, Color.red);
 
-                if (hit.collider.gameObject.name == "Enemy (0)") { enemy[0].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (1)") { enemy[1].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (2)") { enemy[2].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (3)") { enemy[3].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (4)") { enemy[4].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (5)") { enemy[5].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (6)") { enemy[6].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (7)") { enemy[7].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (8)") { enemy[8].health -= gunPower; }
-                else if (hit.collider.gameObject.name == "Enemy (9)") { enemy[9].health -= gunPower; }
+                if (hit.collider.gameObject.name == "Enemy (0)") { enemy[0].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (1)") { enemy[1].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (2)") { enemy[2].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (3)") { enemy[3].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (4)") { enemy[4].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (5)") { enemy[5].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (6)") { enemy[6].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (7)") { enemy[7].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (8)") { enemy[8].currnet_health -= gunPower; }
+                else if (hit.collider.gameObject.name == "Enemy (9)") { enemy[9].currnet_health -= gunPower; }
             }
         }
 
@@ -211,6 +235,15 @@ public class GameMain : MonoBehaviour
             lineRenderer.SetPosition(0, new(-100f,-100f,-100f));
             lineRenderer.SetPosition(1, new(-101f, -101f, -101f));
         }
+    }
+
+    private void UIManage()
+    {
+        for(int i = 0; i < enemy_count; i++)
+        {
+            enemy_health_list[i] = enemy[i].currnet_health;
+        }
+        //Debug.Log(enemy_health_list[0]);
     }
 
 
