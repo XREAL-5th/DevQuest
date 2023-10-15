@@ -8,17 +8,25 @@ using UnityEngine.AI;
 using UnityEngine.Rendering.UI;
 using static UnityEditor.PlayerSettings;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.Rendering.Universal;
 
 public class Enemy : MonoBehaviour
 {
     [Header("Preset Fields")]
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject splashFx;
-
     [Header("Settings")]
     [SerializeField] private float runRange;
     [SerializeField] private float attackRange;
+
+    [SerializeField] private GameObject hpCanvas;
+    [SerializeField] private Slider hpSlider;
+
+    public Transform damagePos;
     public int HP;
+    public bool hitCheck = false;
     public enum State
     {
         None,
@@ -32,10 +40,15 @@ public class Enemy : MonoBehaviour
     public State state = State.None;
     public State nextState = State.None;
 
-    private bool attackDone;
+    private int playerDamage;
     private bool targetSet;
-    private float aniFloat;
     private NavMeshAgent agent;
+
+    private void Awake()
+    {
+        hpSlider.maxValue = HP;
+        hpSlider.minValue = 0;
+    }
     private void Start()
     {
         HP = 60;
@@ -46,9 +59,11 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        hpSlider.value = HP;
         //죽음 로직
         if (this.HP <= 0)       
         {
+            hpCanvas.SetActive(false);
             animator.SetTrigger("Die");
             this.gameObject.layer = 0;
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Die") &&
@@ -69,7 +84,7 @@ public class Enemy : MonoBehaviour
                 if (Physics.CheckSphere(transform.position, attackRange, 1 << 6, QueryTriggerInteraction.Ignore))
                 {
                     state = State.Attack;
-                    aniFloat = 0.0f;
+                    //aniFloat = 0.0f;
                 }
                 if ((Physics.CheckSphere(transform.position, runRange, 1 << 6, QueryTriggerInteraction.Ignore)))
                 {
@@ -185,12 +200,6 @@ public class Enemy : MonoBehaviour
     {
         Instantiate(splashFx, transform.position, Quaternion.identity);
     }
-    
-    public void WhenAnimationDone() //Unity Animation Event 에서 실행됩니다.
-    {
-        attackDone = true;
-    }
-
 
     private void OnDrawGizmosSelected()
     {

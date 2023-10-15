@@ -65,7 +65,6 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 0)          //씬 전환 시 에러 방지
         {
             coinText.GetComponent<TextMeshProUGUI>().text = "Coin Count : " + coinCount;
-            Debug.Log(coinCount);
             StartCoroutine(ItemSpawn());
             //ItemSpawn();
         }
@@ -102,7 +101,6 @@ public class GameManager : MonoBehaviour
             {
                 var item = SpawnItem((Spawner)Random.Range(0, 4));
                 items.Enqueue(item);
-                Debug.Log("생성");
                 //item.ItemInfo();
                 spawnTime = 0.0f;
             }

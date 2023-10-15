@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering.UI;
@@ -20,6 +22,8 @@ public class MoveControl : MonoBehaviour
 
     //FSM(finite state machine)에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
 
+    [SerializeField] private GameObject overUI;
+
     public enum State 
     {
         None,
@@ -32,13 +36,16 @@ public class MoveControl : MonoBehaviour
     public State nextState = State.None;
     public bool landed = false;
     public bool moving = false;
-    public Image healImage;
-    
+    [SerializeField] private Image healImage;
+    [SerializeField] private TextMeshProUGUI healTime;
+
     private float stateTime;
     private Vector3 forward, right;
 
     private float coolTime = 5.0f;
+    float healT = 5.0f;
     private bool skillCool = true;
+    private bool isPlaying = true;
     private ParticleSystem heal;
     private void Start()
     {
@@ -60,13 +67,31 @@ public class MoveControl : MonoBehaviour
         CheckLanded();
         //insert code here...
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && skillCool)
+        if (skillCool)
         {
-            StartCoroutine(SkillCoolTime(coolTime));    //스킬 쿨 판단 코루틴
+            healT = 5.0f;
+            healTime.text = "";
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                StartCoroutine(SkillCoolTime(coolTime));    //스킬 쿨 판단 코루틴
+            }
         }
-        if (!skillCool) healImage.fillAmount -= 1.0f / coolTime * Time.deltaTime;   //쿨타임 이미지
+        if (!skillCool)
+        {
+            healImage.fillAmount -= 1.0f / coolTime * Time.deltaTime;   //쿨타임 이미지
+            healT -= Time.deltaTime;
+            healTime.text = MathF.Round(healT) + "s";
+        }
+        else healTime.text = "";
 
-
+        if (Input.GetKeyDown(KeyCode.Escape) && isPlaying)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            Time.timeScale = 0;
+            isPlaying = false;
+            overUI.SetActive(true);
+        }
         //1. 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
@@ -125,6 +150,23 @@ public class MoveControl : MonoBehaviour
         UpdateInput();
     }
 
+    public void ExitBtn()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+    public void CloseUI() 
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1;
+        isPlaying = true;
+        overUI.SetActive(false);
+    }
+
     private void CheckLanded() {
         //발 위치에 작은 구를 하나 생성한 후, 그 구가 땅에 닿는지 검사한다.
         //1 << 3은 Ground의 레이어가 3이기 때문, << 는 비트 연산자
@@ -146,12 +188,4 @@ public class MoveControl : MonoBehaviour
         
         transform.Translate( moveSpeed * Time.deltaTime * direction); //Move
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.transform.name == "Coin") GameManager.coinCount++;
-
-    //    if (other.transform.name == "BlueColor") this.GetComponent<MeshRenderer>().material.color = Color.blue;
-    //    if (other.transform.name == "RedColor") this.GetComponent<MeshRenderer>().material.color = Color.red;
-    //}
 }
