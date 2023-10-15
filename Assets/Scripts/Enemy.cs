@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using TMPro;
 
 public class Enemy : MonoBehaviour
 {
@@ -26,7 +28,15 @@ public class Enemy : MonoBehaviour
     public float wanderTime = 5f;  // Wandar cooldown
     private float wanderTimer;
 
+    [Header("UI")]
+    [SerializeField] private Image healthBarBackground;
+    [SerializeField] private Image healthBarFill;
+    [SerializeField] private TMPro.TextMeshPro damageText;
+
     private NavMeshAgent navMeshAgent;
+
+    private float damageDisplayDuration = 2f;
+    private float damageDisplayTimer;
 
     public enum State 
     {
@@ -49,6 +59,7 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
         navMeshAgent = GetComponent<NavMeshAgent>();
         wanderTimer = wanderTime;
+        UpdateHealthBar();
         GameManager.Instance.RegisterEnemy(this);
     }
 
@@ -105,9 +116,18 @@ public class Enemy : MonoBehaviour
                     break;
             }
         }
-        
+
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
+
+        if (damageDisplayTimer > 0)
+        {
+            damageDisplayTimer -= Time.deltaTime;
+            if (damageDisplayTimer <= 0)
+            {
+                damageText.text = ""; // Hide the text after a certain duration.
+            }
+        }
     }
     
     private void Attack() //현재 공격은 애니메이션만 작동합니다.
@@ -145,9 +165,22 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("walk");
     }
 
+    private void UpdateHealthBar()
+    {
+        float healthPercentage = currentHealth / maxHealth;
+
+        // healthBarFill.fillAmount = healthPercentage;
+        var sizeDelta = healthBarFill.rectTransform.sizeDelta;
+        sizeDelta.x = healthBarBackground.rectTransform.sizeDelta.x * healthPercentage; // Assuming horizontal fill
+        healthBarFill.rectTransform.sizeDelta = sizeDelta;
+    }
+
+
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        DisplayDamage(damage);
+        UpdateHealthBar();
         if (damageVFXPrefab)
         {
             Instantiate(damageVFXPrefab, transform.position, Quaternion.identity);
@@ -158,6 +191,12 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void DisplayDamage(float damage)
+    {
+        damageText.text = $"-{damage.ToString()}";
+        damageDisplayTimer = damageDisplayDuration;
     }
 
     private void Die()
