@@ -134,15 +134,15 @@ public class MoveControl : MonoBehaviour
 
         if (isBoosted)
         {
-            speedBoostUIText.text = "Speed Boost Active!";
+            speedBoostUIText.text = "<sprite=0> Active";
         }
         else if (speedBoostCooldownTimer > 0)
         {
-            speedBoostUIText.text = $"Speed Boost Cooldown: {Mathf.Ceil(speedBoostCooldownTimer)}s";
+            speedBoostUIText.text = $"<sprite=0> {Mathf.Ceil(speedBoostCooldownTimer)}s";
         }
         else
         {
-            speedBoostUIText.text = "Speed Boost Ready!";
+            speedBoostUIText.text = "<sprite=0> Ready(F)";
         }
     }
 
