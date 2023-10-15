@@ -31,7 +31,7 @@ public class GunShot : MonoBehaviour
     public RaycastHit rayHit;
 
     public TextMeshProUGUI ammoText;
-    public GameObject muzzleFlash,bulletHole,spark;
+    public GameObject muzzleFlash,bulletHole,spark,starHit;
     public Image reloadingImage;
     
     // Start is called before the first frame update
@@ -84,12 +84,18 @@ public class GunShot : MonoBehaviour
         if(Physics.Raycast(cam.transform.position,cam.transform.forward,out rayHit))
         {
             Debug.Log(rayHit.collider.name);
-            if (rayHit.collider.CompareTag("Enemy"))
+            if (rayHit.transform.root.CompareTag("Enemy"))
             {
                 //give Damage to Enemy
-                rayHit.collider.GetComponent<HpControl>().Damaged(gunStat.damage);
+                if (rayHit.collider.CompareTag("Head"))
+                {
+                    rayHit.transform.root.GetComponent<HpControl>().Damaged(gunStat.damage * 2);
+                    Destroy(Instantiate(starHit, rayHit.point, Quaternion.identity),0.5f);
+                }
+                else
+                    rayHit.transform.root.GetComponent<HpControl>().Damaged(gunStat.damage);
                 //knockback
-                Rigidbody rigidbody = rayHit.collider.GetComponent<Rigidbody>();
+                Rigidbody rigidbody = rayHit.transform.root.GetComponent<Rigidbody>();
                 Vector3 knockbackDirection = rayHit.collider.transform.position - rayHit.point;
                 knockbackDirection.Normalize();
                 knockbackDirection.y = 0f;
@@ -98,7 +104,6 @@ public class GunShot : MonoBehaviour
             }
                 
         }
-        Debug.Log("Rayhit normal : " + rayHit.normal);
         GameObject bullteHoleClone = Instantiate(bulletHole, rayHit.point, Quaternion.Euler(rayHit.normal.y * 90 + 180, rayHit.normal.x * 90, rayHit.normal.z * 90));
         bullteHoleClone.transform.parent = rayHit.transform;
         Instantiate(spark, rayHit.point, Quaternion.Euler(rayHit.normal.y*90 + 180, rayHit.normal.x*90 , rayHit.normal.z*90));
