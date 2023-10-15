@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 
     public void GameClear()
     {
-        if(currEnemyNum == 0)
+        if (currEnemyNum == 0)
         {
             isWin = true;
         }

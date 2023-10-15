@@ -14,6 +14,7 @@ public class PlayerAttack : MonoBehaviour
     private RaycastHit hit;
     private GameObject enemy;
     private bool canFire = true;
+    public bool canShoot = false;
 
     [Header("Gun Properties")]
     public GameObject bulletPrefab;
@@ -36,27 +37,29 @@ public class PlayerAttack : MonoBehaviour
     }
     public void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if(canShoot)
         {
-            Shoot();
-        }
-        if (Input.GetButtonDown("Fire2") && canFire)
-        {
-            HideSkillSetting();
-            StartCoroutine(Bomb());
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Shoot();
+            }
+            if (Input.GetButtonDown("Fire2") && canFire)
+            {
+                HideSkillSetting();
+                StartCoroutine(Bomb());
 
-            //HideSkillCheck();
+                //HideSkillCheck();
+            }
+            if (isHideSkills)
+            {
+                StartCoroutine(SkillTimeChk());
+            }
         }
-        if (isHideSkills)
-        {
-            StartCoroutine(SkillTimeChk());
-        }
+
     }
 
     private void Shoot()
     {
-
-
 
         if (Physics.Raycast(aim.transform.position, aim.transform.forward, out hit, range))
         {
