@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+// 스폰할 때 마다 적 머리위에 HP바를 생성하고, HealthBar는 Enemey 위치를 따라다닌다 -> 현재 Not Use
 public class HPBarScript : MonoBehaviour
 {
     public static HPBarScript HPBar_instance;
 
     // 프리팹 변수 선언
-    [SerializeField] GameObject m_goPrefab = null;
+    public GameObject m_goPrefab = null;
+    private Image healthBarFilled;
 
     // 몬스터 위치를 담을 리스트
     List<Transform> m_objectList = new List<Transform>();
@@ -27,7 +30,9 @@ public class HPBarScript : MonoBehaviour
     void Start()
     {
         m_camera = Camera.main;
-   
+        // 자식오브젝트의 1번째 오브젝트를 가져온다.
+        healthBarFilled = m_goPrefab.GetComponentsInChildren<Image>()[1];
+
     }
 
     public void CreateHPBar()
@@ -44,8 +49,10 @@ public class HPBarScript : MonoBehaviour
             m_objectList.Add(t_objects[i].transform);
             // 몬스터 위치에 HP바 프리팹 생성 한다.
             GameObject t_hpbar = Instantiate(m_goPrefab, t_objects[i].transform.position, Quaternion.identity, transform);
+
             // 생성된 객체는 HP바 리스트에 추가
             m_hpBarList.Add(t_hpbar);
+      
         }
     }
 
@@ -60,8 +67,9 @@ public class HPBarScript : MonoBehaviour
         }
     }
 
+
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         //if(isEnmeyDead == true)
         //{
@@ -86,6 +94,13 @@ public class HPBarScript : MonoBehaviour
             else
             {
                 m_hpBarList[i].transform.position = m_camera.WorldToScreenPoint(m_objectList[i].position + new Vector3(0, 3.5f, 0));
+
+                var screenPos = m_hpBarList[i].transform.position;
+
+                if(screenPos.z < 0.0f)
+                {
+                    screenPos *= -1.0f;
+                }
             }
         }
     }

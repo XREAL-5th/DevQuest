@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -23,8 +24,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float originEnemySpeed = 3.5f;
     public GameObject DeadVfx;
     private GameObject deadVfxInstance;
- //   public Image healthBarBackGround;
-   // [SerializeField] private Image healthBarField;
+
+
+    public Slider healthBar;
 
     // 적이 사망했을 때 호출되는 이벤트
     public event System.Action OnDeath;
@@ -56,7 +58,6 @@ public class Enemy : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Transform>();
 
         currentHP = HP;
-        
 
         if (player != null )
         {
@@ -71,6 +72,10 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        // Enemy의 HP 깎일 때마다 Slider의 값이 바뀌면서 HP가 깎인 모습을 보여준다.
+        healthBar.value = currentHP;
+
+
         //1. 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
@@ -147,6 +152,8 @@ public class Enemy : MonoBehaviour
                 //    break;
             }
         }
+
+
         
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
@@ -174,21 +181,30 @@ public class Enemy : MonoBehaviour
     public void GetDamage(float damage)
     {
         // HP -= damage;
-
-        currentHP -= damage;
-       
-
         // Debug.Log(HP);
+        
+        currentHP -= damage;
+
+        //// HP 바 업데이트
+        //UpdateHealthBar();
 
         // HP 소진 시 Enemy 사망
-        if(currentHP <= 0)
+        if (currentHP <= 0)
         {
             // Enemy 사망 시 죽는 이펙트 생성
             deadVfxInstance =  Instantiate(DeadVfx, transform.position, Quaternion.identity);
-
             Dead();
         }
     }
+
+     // ==> Not Use
+    //private void UpdateHealthBar()
+    //{
+    //    Debug.Log("HP바 갱신");
+    //    // 현재 HP를 최대 HP로 나누어 fillAmount 업데이트
+    //    healthBar.fillAmount = currentHP / HP;
+    //}
+
 
     // Enemy 사망
     private void Dead()
@@ -196,8 +212,7 @@ public class Enemy : MonoBehaviour
         // OnDeath 이벤트를 발생시켜 다른 스크립트에서 적의 사망을 감지할 수 있도록 함
         OnDeath?.Invoke();
 
-        //HPBarScript.HPBar_instance.isEnmeyDead = true;
-        HPBarScript.HPBar_instance.RemoveHPBar(gameObject);
+        // HPBarScript.HPBar_instance.RemoveHPBar(gameObject);
 
         // Enemy 제거
         Destroy(gameObject);

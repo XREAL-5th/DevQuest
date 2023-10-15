@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 // 적을 SpawnPoint 위치를 받아 생성하고, 생성된 적이 죽는다면, 다음 적을 그 위치에 생성한다.
 public class EnemySpawner : MonoBehaviour
@@ -9,6 +9,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform spawnPoint;
 
+    
 
     private void Start()
     {
@@ -20,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
         // SpawnPoint에 위치하여 enemyPrefab을 생성
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
 
-        HPBarScript.HPBar_instance.CreateHPBar();
+       // HPBarScript.HPBar_instance.CreateHPBar();
 
         Enemy enemyState = enemy.GetComponent<Enemy>();
         if (enemyState != null)

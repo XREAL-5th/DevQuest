@@ -12,7 +12,7 @@ public enum GameResultType
 }
 
 
-// 게임의 전반적인 상황을 제어한다.
+// 게임의 전반적인 상황을 제어한다. => 게임의 상황을 파악하고, 마지막 상황을 다음 씬에게 반영한다.
 public class GameControl : MonoBehaviour
 {
     private static GameControl instance;
