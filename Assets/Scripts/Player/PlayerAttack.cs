@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -16,9 +18,20 @@ public class PlayerAttack : MonoBehaviour
     [Header("Gun Properties")]
     public GameObject bulletPrefab;
 
+    [Header("Skill")]
+    public GameObject hideImg;
+    public GameObject text;
+    public TextMeshProUGUI hideSkillTimeTexts;
+    private bool isHideSkills = false;
+    private float skillTimes = 10;
+    private float getSkillTimes = 0;
+
+
     private void Start()
     {
         GameManager gameManager = GameManager.Instance;
+        hideSkillTimeTexts = text.GetComponent<TextMeshProUGUI>();
+        hideImg.SetActive(false);
     }
     public void Update()
     {
@@ -29,6 +42,7 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetButtonDown("Fire2") && canFire)
         {
             StartCoroutine(Bomb());
+            StartCoroutine(SkillTimeChk(0));
         }
     }
 
@@ -76,6 +90,35 @@ public class PlayerAttack : MonoBehaviour
                 enemy.GetComponent<Enemy>().TakeDamage(20);
             }
 
+        }
+    }
+
+    public void HideSkillSetting(int skillNum)
+    {
+        hideImg.SetActive(true);
+        getSkillTimes = skillTimes;
+        isHideSkills = true;
+    }
+    private void HideSkillCheck()
+    {
+        
+    }
+    IEnumerator SkillTimeChk(int skillNum)
+    {
+        yield return null;
+        if(getSkillTimes > 0)
+        {
+            getSkillTimes -= Time.deltaTime;
+            if(getSkillTimes< 0)
+            {
+                getSkillTimes = 0;
+                isHideSkills = false;
+                hideImg.SetActive(false);
+            }
+            hideSkillTimeTexts.text = getSkillTimes.ToString("00");
+            float time = getSkillTimes / skillTimes;
+            hideImg.GetComponent<Image>().fillAmount = time;
+            //hideImg.fill
         }
     }
 
