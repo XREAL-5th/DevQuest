@@ -11,6 +11,7 @@ public class Stat : MonoBehaviour
     [SerializeField] protected int _attack;
     [SerializeField] protected int _defense;
     [SerializeField] protected float _moveSpeed;
+    [SerializeField] protected GameObject _damageUI;
 
     public int Level { get { return _level; } set { _level = value; } }
     public int Hp { get { return _hp; } set { _hp = value; } }
@@ -39,6 +40,7 @@ public class Stat : MonoBehaviour
             Hp = 0;
             OnDead(attacker);
         }
+        DamageNumber damageNumber = Instantiate(_damageUI, gameObject.transform).GetComponent<DamageNumber>();
     }
 
     private void OnDead(Stat attacker)
