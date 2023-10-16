@@ -412,11 +412,6 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 223490899}
-    - target: {fileID: 4062613334141025340, guid: 5aaa3bd8f0fe54d5b95f317f798d1f2a,
-        type: 3}
-      propertyPath: chasingRange
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 5259254253225669630, guid: 5aaa3bd8f0fe54d5b95f317f798d1f2a,
         type: 3}
       propertyPath: m_Name
@@ -470,6 +465,16 @@ PrefabInstance:
     - target: {fileID: 7175880210016818091, guid: 5aaa3bd8f0fe54d5b95f317f798d1f2a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8963575181941656152, guid: 5aaa3bd8f0fe54d5b95f317f798d1f2a,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8963575181941656152, guid: 5aaa3bd8f0fe54d5b95f317f798d1f2a,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
