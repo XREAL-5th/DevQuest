@@ -248,6 +248,7 @@ MonoBehaviour:
   attackRange: 4.1
   wanderRadius: 10
   wanderTimer: 5
+  healthBar: {fileID: 0}
   state: 0
   nextState: 0
   maxHealth: 100

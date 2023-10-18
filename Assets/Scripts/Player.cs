@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
         float timer = skillCooldown;
         while (timer > 0)
         {
-            cooldownText.text = "Cooldown: " + timer.ToString("F1") + "s"; // UI에 쿨타임 표시
+            cooldownText.text = timer.ToString("F1") + "s"; // UI에 쿨타임 표시
             yield return new WaitForSeconds(1.0f);
             timer -= 1.0f;
         }

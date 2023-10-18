@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
@@ -21,6 +22,9 @@ public class Enemy : MonoBehaviour
     [Header("Wander Settings")]
     [SerializeField] private float wanderRadius = 10f;
     [SerializeField] private float wanderTimer = 5f; // wander 유지 시간
+
+    [SerializeField] private Slider healthBar;
+
 
 
     private NavMeshAgent navMeshAgent;
@@ -156,6 +160,7 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+        UpdateHealthBar(); // 체력바 업데이트
     }
 
     private void Die()
@@ -163,6 +168,13 @@ public class Enemy : MonoBehaviour
         GameManager.Instance.EnemyKilled(); // 적이 처치되었을 때 GameManager에게 알림
         Destroy(gameObject);
     }
+
+    private void UpdateHealthBar()
+    {
+        float healthPercentage = (float)currentHealth / maxHealth;
+        healthBar.value = healthPercentage;
+    }
+
 
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
