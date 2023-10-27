@@ -13,7 +13,7 @@ public class Menu : MonoBehaviour
     public void OnClickEndButton()
     {
         Debug.Log("Menu - Exit ´©¸§");
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("TitleScene");
 
     }
 }

@@ -57,6 +57,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("게임 종료 - 모든 적 처치");
 
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("TitleScene");
     }
 }
