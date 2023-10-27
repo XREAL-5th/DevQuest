@@ -17,19 +17,23 @@ public class Enemy : MonoBehaviour
     
     [Header("Settings")]
     [SerializeField] private float attackRange;
-    int playerAttackPower;
-
-    [Header("Wander Settings")]
-    [SerializeField] private float wanderRadius = 10f;
-    [SerializeField] private float wanderTimer = 5f; // wander 유지 시간
-
-    [SerializeField] private Slider healthBar;
-
-
+    float playerAttackPower;
 
     private NavMeshAgent navMeshAgent;
     private float timer;
     private Vector3 randomPoint;
+
+    private bool attackDone;
+    [SerializeField] public float maxHealth = 100;
+    public float currentHealth;
+
+    [SerializeField] HealthBar healthBar; // HealthBar.cs
+
+    // public Slider healthBar;
+
+    [Header("Wander Settings")]
+    [SerializeField] private float wanderRadius = 10f;
+    [SerializeField] private float wanderTimer = 5f; // wander 유지 시간
 
     public enum State 
     {
@@ -43,9 +47,6 @@ public class Enemy : MonoBehaviour
     public State state = State.None;
     public State nextState = State.None;
 
-    private bool attackDone;
-    [SerializeField] public int maxHealth = 100;
-    public int currentHealth;
 
     private void Start()
     { 
@@ -54,23 +55,26 @@ public class Enemy : MonoBehaviour
         state = State.Wander;
         // nextState = State.Idle;
         currentHealth = maxHealth; // 체력 초기화
+
+        healthBar = GetComponentInChildren<HealthBar>();
+        // healthBar.value = (float)currentHealth / (float)maxHealth;
+
+        healthBar.UpdateHealthBar(currentHealth, maxHealth); // 체력바 업데이트
     }
 
     private void Update()
     {
         // Player를 찾을 때까지 반복적으로 시도
-        if (playerAttackPower == 0 || playerAttackPower == 10)
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
         {
-            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-            if (playerObject != null)
+            Player player = playerObject.GetComponent<Player>();
+            if (player != null)
             {
-                Player player = playerObject.GetComponent<Player>();
-                if (player != null)
-                {
-                    playerAttackPower = player.attackPower;
-                }
+                playerAttackPower = player.attackPower;
             }
         }
+        
         //1. 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
@@ -142,9 +146,10 @@ public class Enemy : MonoBehaviour
         return hit.position;
     }
 
-    public void Attack() //현재 공격은 애니메이션만 작동합니다. 
+    public void Attack() 
     {
         animator.SetTrigger("attack");
+        
         // 공격을 받았을 때 체력을 감소시키는 로직
         TakeDamage(playerAttackPower); // 현재 palyer의 attect power 만큼
         Debug.Log("[enemy] -" + playerAttackPower);
@@ -152,15 +157,15 @@ public class Enemy : MonoBehaviour
         Instantiate(hitFx, transform.position, Quaternion.identity);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        healthBar.UpdateHealthBar(currentHealth, maxHealth); // 체력바 업데이트
 
         if (currentHealth <= 0)
         {
             Die();
         }
-        UpdateHealthBar(); // 체력바 업데이트
     }
 
     private void Die()
@@ -168,14 +173,6 @@ public class Enemy : MonoBehaviour
         GameManager.Instance.EnemyKilled(); // 적이 처치되었을 때 GameManager에게 알림
         Destroy(gameObject);
     }
-
-    private void UpdateHealthBar()
-    {
-        float healthPercentage = (float)currentHealth / maxHealth;
-        healthBar.value = healthPercentage;
-    }
-
-
 
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
     {
