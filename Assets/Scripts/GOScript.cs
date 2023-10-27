@@ -16,4 +16,12 @@ public class GOScript : MonoBehaviour
     {
         
     }
+    public void Quit()
+    {
+            #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false; //에디터에서 작동
+            #else
+                    Application.Quit(); // 빌드 시 작동
+            #endif
+    }
 }
