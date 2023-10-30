@@ -135,7 +135,7 @@ public class PlayerControl : MonoBehaviour
         //    Flash();
         //}    
 
-        Debug.Log(skillOn);
+        //Debug.Log(skillOn);
     }
 
     private void CheckLanded() {

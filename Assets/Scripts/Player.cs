@@ -11,9 +11,14 @@ public class Player : MonoBehaviour
     public Quaternion playerRotation;
     public Vector3 playerForwardDirection;
 
+    public int playerMaxHeath;
+    public int playerCurrentHeath;
+
     private void Start()
     {
         playermode = 0;
+        playerMaxHeath = 3;
+        playerCurrentHeath = 3;
     }
 
     private void Update()

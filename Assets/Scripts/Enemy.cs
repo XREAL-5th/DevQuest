@@ -13,12 +13,16 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject splashFx;
     
     [Header("Settings")]
+    [SerializeField] public Vector3 enemyPosition;
+    [SerializeField] public Quaternion enemyRotation;
     [SerializeField] private float attackRange;
     [SerializeField] private float recognizationRange;
-    [SerializeField] private float attackDamage;
+    [SerializeField] public int attackDamage;
     [SerializeField] public float enemyMovingSpeed;
     [SerializeField] public float enemyRotatingSpeed;
-    [SerializeField] public int health;
+    [SerializeField] public int max_health;
+    [SerializeField] public int currnet_health;
+
 
     public enum State 
     {
@@ -32,7 +36,7 @@ public class Enemy : MonoBehaviour
     public State state = State.None;
     public State nextState = State.None;
 
-    private bool attackDone;
+    [HideInInspector] public bool attackDone;
 
     private void Start()
     { 
@@ -41,12 +45,16 @@ public class Enemy : MonoBehaviour
         attackDamage = 1;
         enemyMovingSpeed = 5f;
         enemyRotatingSpeed = 500f;
-        health = 3;
-        
+        max_health = 3;
+        currnet_health = 3;
     }
 
     private void Update()
     {
+        //0. enemy의 상태 업데이트
+        enemyPosition = transform.position;
+        enemyRotation = transform.rotation;
+
         //1. 현재 state에 대한 작동 및 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
@@ -118,11 +126,11 @@ public class Enemy : MonoBehaviour
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
 
-        if (health == 1)
+        if (currnet_health == 1)
         {
             //Debug.Log("살려줘");
         }
-        else if (health == 0)
+        else if (currnet_health == 0)
         {
             Destroy(this.gameObject);
         }
