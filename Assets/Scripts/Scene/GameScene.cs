@@ -11,9 +11,12 @@ public class GameScene : BaseScene
     [HideInInspector] public PlayTime timer;
 
     public Transform playerSpawn;
-
+    public GameObject quitMenu;
     
     private bool _cleared = false;
+    private bool _paused = false;
+
+    public bool Paused { get; }
 
     private Dictionary<string, float> _targets = null;
 
@@ -64,5 +67,28 @@ public class GameScene : BaseScene
     public override void Clear()
     {
         Debug.Log("Game Scene Clear!");
+    }
+
+    public void Pause(){
+        quitMenu.SetActive(true);
+        Time.timeScale = 0f;
+        _paused = true;
+    }
+
+    public void Resume()
+    {
+        quitMenu.SetActive(false);
+        Time.timeScale = 1f;
+        _paused = false;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public bool DialogOpen()
+    {
+        return quitMenu.activeSelf;
     }
 }

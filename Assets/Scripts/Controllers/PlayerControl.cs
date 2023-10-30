@@ -23,10 +23,27 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] GameObject _bullet;
     [SerializeField] Transform _firePos;
     [SerializeField] GameObject _skill;
+    [SerializeField] float[] cooldownMax;
+    [SerializeField] float[] cooldown;
+
+    public float GetCooldown(int idx)
+    {
+        return cooldown[idx];
+    }
+
+    public float GetCooldownMax(int idx)
+    {
+        if (idx >= 0 && idx < cooldownMax.Length)
+            return cooldownMax[idx];
+        Debug.Log($"Unavailable Skill idx: {idx}");
+        return 0.0f;
+    }
 
     void Start()
     {
         _stat = gameObject.GetComponent<PlayerStat>();
+        cooldown = new float[] { 0.0f };
+        cooldownMax = new float[] { 5.0f };
 
         Managers.Input.MouseAction -= OnMouseEvent;
         Managers.Input.MouseAction += OnMouseEvent;
@@ -44,16 +61,21 @@ public class PlayerControl : MonoBehaviour
         GameObject bullet = Instantiate(_bullet, _firePos.position, Quaternion.LookRotation(dir));
         if (_activeSkill && _canSkill)
         {
-            StartCoroutine("CoSkillCoolTime", bullet);
+            _canSkill = false;
+            _activeSkill = false;
+            StartCoroutine(CoSkillCoolTime(bullet, 0));
         }
     }
 
-    IEnumerator CoSkillCoolTime(GameObject bullet)
+    IEnumerator CoSkillCoolTime(GameObject bullet, int idx)
     {
         Instantiate(_skill, _firePos.position, _firePos.rotation, bullet.transform);
-        _canSkill = false;
-        _activeSkill = false;
-        yield return new WaitForSeconds(5.0f);
+        cooldown[idx] = cooldownMax[idx];
+        while (cooldown[idx] > 0.0f)
+        {
+            cooldown[idx] -= Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
         _canSkill = true;
     }
 
