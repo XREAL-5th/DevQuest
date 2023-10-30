@@ -6,11 +6,13 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
-    public int attackPower = 10; // 초기 공격력
+    public float attackPower = 10.0f; // 초기 공격력
     private Player player;
     public ItemSO itemData; // 아이템 정보를 저장한 Scriptable Object
     public BadItemSO baditemData; // 아이템 정보를 저장한 Scriptable Object
     public bool isGood;  
+
+
     public float skillCooldown = 10.0f;
     private bool isSkillReady = true;
     public TMP_Text cooldownText; // 스킬 쿨타임 UI Text 변수 추가
@@ -47,7 +49,7 @@ public class Player : MonoBehaviour
         float timer = skillCooldown;
         while (timer > 0)
         {
-            cooldownText.text = "Cooldown: " + timer.ToString("F1") + "s"; // UI에 쿨타임 표시
+            cooldownText.text = timer.ToString("F1"); // UI에 쿨타임 표시
             yield return new WaitForSeconds(1.0f);
             timer -= 1.0f;
         }
@@ -58,13 +60,13 @@ public class Player : MonoBehaviour
     }
 
 
-    public void SetAttackDamage(int Power)
+    public void SetAttackDamage(float Power)
     {
         attackPower = Power;
     }
 
 
-    public int GetAttackPower()
+    public float GetAttackPower()
     {
         return player.attackPower;
     }
@@ -108,9 +110,12 @@ public class Player : MonoBehaviour
             Debug.Log("isGood Item");
 
             // 아이템의 효과를 적용
-            attackPower *= (int)item.itemData.attackPowerMultiplier;
-            Debug.Log("공격력 배 :" + (int)item.itemData.attackPowerMultiplier);
+            attackPower *= item.itemData.attackPowerMultiplier;
+            SetAttackDamage(attackPower);
+            Debug.Log("공격력 배 :" + item.itemData.attackPowerMultiplier);
             Debug.Log("공격력 : " + attackPower);
+            // Debug.Log("실제 공격력 : " + GetAttackPower());
+
 
 
             item.destroyItem();
@@ -133,6 +138,7 @@ public class Player : MonoBehaviour
 
             // 아이템의 효과를 적용
             attackPower = attackPower/2;
+            SetAttackDamage(attackPower);
             Debug.Log("공격력 반 값");
             Debug.Log("공격력 : " + attackPower);
 

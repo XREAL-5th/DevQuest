@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
 
     private int remainingEnemies = 5; // 처치해야 할 적의 수
 
+    public GameObject menuSet;
+
+
 
     private void Awake()
     {
@@ -24,6 +27,21 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void Update()
+    {
+        if (Input.GetButtonDown("Cancel")) // ESC 버튼
+        {
+            if (menuSet.activeSelf)
+            {
+                menuSet.SetActive(false);
+            }
+            else
+            {
+                menuSet.SetActive(true);
+            }
+        }
+    }
+
 
     public void EnemyKilled()
     {
@@ -35,10 +53,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void EndGame()
+    public void EndGame()
     {
         Debug.Log("게임 종료 - 모든 적 처치");
 
-        SceneManager.LoadScene("GameOver");
+        SceneManager.LoadScene("TitleScene");
     }
 }
