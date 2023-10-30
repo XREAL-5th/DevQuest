@@ -25,16 +25,16 @@ public class GameManager : MonoBehaviour
     {
         //ΩÃ±€≈Ê º≥¡§
         if (main != null && main != this)
-             Destroy(gameObject);
+            Destroy(gameObject);
         else
-             main = this;
+            main = this;
 
         DontDestroyOnLoad(this);
-            //ΩÃ±€≈Ê √ ±‚»≠
-            player = GameObject.FindObjectOfType<PlayerControl>();
+        //ΩÃ±€≈Ê √ ±‚»≠
+        player = GameObject.FindObjectOfType<PlayerControl>();
         cam = Camera.main;
         camc = GameObject.FindObjectOfType<CameraControl>();
-        Enemys = new List<GameObject> (GameObject.FindGameObjectsWithTag("Enemy"));
+        Enemys = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
         score = 0;
         clear = false;
     }
@@ -57,17 +57,25 @@ public class GameManager : MonoBehaviour
             clear = true;
             Debug.Log("Game Clear");
         }
-            SceneManager.LoadSceneAsync("GameOver");
+        SceneManager.LoadSceneAsync("GameOver");
     }
 
     public void GenerateItem(float code)
     {
-        switch(code)
+        switch (code)
         {
             case 1: break;
             default: break;
         }
     }
 
+    public void Quit()
+    {
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false; //ø°µ≈Õø°º≠ ¿€µø
+        #else
+				Application.Quit(); // ∫ÙµÂ Ω√ ¿€µø
+        #endif
+    } 
 
 }

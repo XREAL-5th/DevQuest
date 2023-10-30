@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
+
 public class PlayerControl : MonoBehaviour
 {
     [Header("Preset Fields")]
@@ -18,6 +20,8 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] public Slider hpBar;
     [SerializeField]
     private TextMeshProUGUI hpText;
+    [SerializeField]
+    private GameObject ExitPanel;
 
     private bool QSkillReady;
 
@@ -138,7 +142,17 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) direction += -forward; //Back
         if (Input.GetKey(KeyCode.D)) direction += right; //Right
         if (Input.GetKey(KeyCode.Q)) QSkill(); //Q skill
-
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            ExitPanel.SetActive(true);
+        }
+        if(ExitPanel.activeSelf)
+        {
+            if (Input.GetKey(KeyCode.Y))
+                GameManager.main.Quit();
+            else if(Input.GetKey(KeyCode.N))
+                ExitPanel.SetActive(false);
+        }
         direction.Normalize(); //�밢�� �̵�(Ex. W + A)�ÿ��� ������ �̵��ӵ��� ���� direction�� Normalize
 
         transform.Translate(moveSpeed * Time.deltaTime * direction); //Move
