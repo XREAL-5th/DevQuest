@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public List<Enemy> enemies = new List<Enemy>();
 
+    [SerializeField] private GameObject confirmationDialog;
+
     private void Awake()
     {
         if (Instance == null)
@@ -42,5 +44,29 @@ public class GameManager : MonoBehaviour
         {
             enemies.Remove(enemy);
         }
+    }
+
+    public void OnQuitButtonPressed()
+    {
+        confirmationDialog.SetActive(true);
+    }
+
+    public void OnConfirmQuitPressed()
+    {
+        QuitGame();
+    }
+
+    public void OnCancelQuitPressed()
+    {
+        confirmationDialog.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }
