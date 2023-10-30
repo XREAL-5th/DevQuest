@@ -10,6 +10,7 @@ public class AttackManager : MonoBehaviour
     public ParticleSystem hiteffect;
     public Image img_Skill;
     public ParticleSystem skilleffect;
+    public Text text_Skill;
     
     void Start(){
 
@@ -54,17 +55,20 @@ public class AttackManager : MonoBehaviour
     {
         Debug.Log("쿨타임 시작");
 
-       
+        text_Skill.gameObject.SetActive(true);
         float elapsedTime = 0;
 
         while (elapsedTime < cool)
         {
+            
+            text_Skill.text = (cool - elapsedTime).ToString("F2");
             elapsedTime += Time.deltaTime;
             img_Skill.fillAmount = elapsedTime / cool;
             yield return null;
         }
-
+        
         img_Skill.fillAmount = 1.0f; // 확실하게 1로 설정
+        text_Skill.gameObject.SetActive(false);
 
         Debug.Log("쿨타임 종료");
 

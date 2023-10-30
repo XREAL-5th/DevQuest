@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameOverMGR : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GameOverMGR : MonoBehaviour
     [HideInInspector] public GameObject gameclearwindow;
     [HideInInspector] public GameObject[] enemies;
     [HideInInspector] public int enemiesnumleft;
+
+    [HideInInspector] public GameObject gameexitwindow;
 
     //싱글톤의 필드들 - 이미 인스펙터 창으로 설정되어 있습니다.
     //public GameObject[] enemies = { };
@@ -27,6 +30,9 @@ public class GameOverMGR : MonoBehaviour
         gameclearwindow.SetActive(false);
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         enemiesnumleft = enemies.Length;
+
+        gameexitwindow = GameObject.FindGameObjectWithTag("ExitWindow");
+        gameexitwindow.SetActive(false);
 
     }
 
@@ -71,5 +77,30 @@ public class GameOverMGR : MonoBehaviour
             return true;
         }
     }
+    void Update()
+    {
+        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameOverUIClicked();
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+    }
+
+    public void GameOverUIClicked()
+    {
+        gameexitwindow.SetActive(true);
+        Debug.Log("클릭됨");
+        
+    }
+
+    public void Quit()
+{
+		#if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPlaying = false; //에디터에서 작동
+		#else
+				Application.Quit(); // 빌드 시 작동
+		#endif
+}
 
 }
