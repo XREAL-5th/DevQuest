@@ -888,8 +888,10 @@ MonoBehaviour:
   player: {fileID: 0}
   chaseRange: 20
   HP: 100
+  currentHP: 0
   originEnemySpeed: 3.5
   DeadVfx: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
+  healthBar: {fileID: 0}
   state: 0
   nextState: 0
 --- !u!95 &5419908163042997159

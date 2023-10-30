@@ -26,7 +26,9 @@ public class ShootRailGun : MonoBehaviour
 
     void Update()
     {
-     
+
+        // && playerState.IsAttack == true && canAttack
+
         // 마우스 왼쪽 클릭 시 그리고 공격 부여 물약을 획득 시에 데미지 부여 레이저 발사
         if (Input.GetMouseButtonDown(0) && playerState.IsAttack == true && canAttack)
         {

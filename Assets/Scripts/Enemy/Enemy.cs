@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
@@ -18,9 +20,13 @@ public class Enemy : MonoBehaviour
 
     [Header("Enemy State")]
     [SerializeField] private float HP = 100f;
+    [SerializeField] private float currentHP = 0f;
     [SerializeField] private float originEnemySpeed = 3.5f;
     public GameObject DeadVfx;
     private GameObject deadVfxInstance;
+
+
+    public Slider healthBar;
 
     // 적이 사망했을 때 호출되는 이벤트
     public event System.Action OnDeath;
@@ -51,6 +57,8 @@ public class Enemy : MonoBehaviour
 
         player = GameObject.Find("Player").GetComponent<Transform>();
 
+        currentHP = HP;
+
         if (player != null )
         {
             playerState = player.GetComponent<PlayerState>();
@@ -64,6 +72,10 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        // Enemy의 HP 깎일 때마다 Slider의 값이 바뀌면서 HP가 깎인 모습을 보여준다.
+        healthBar.value = currentHP;
+
+
         //1. 스테이트 전환 상황 판단
         if (nextState == State.None) 
         {
@@ -140,6 +152,8 @@ public class Enemy : MonoBehaviour
                 //    break;
             }
         }
+
+
         
         //3. 글로벌 & 스테이트 업데이트
         //insert code here...
@@ -166,12 +180,16 @@ public class Enemy : MonoBehaviour
     // 일정 데미지 부여 합니다.
     public void GetDamage(float damage)
     {
-        HP -= damage;
-
+        // HP -= damage;
         // Debug.Log(HP);
+        
+        currentHP -= damage;
+
+        //// HP 바 업데이트
+        //UpdateHealthBar();
 
         // HP 소진 시 Enemy 사망
-        if(HP <= 0)
+        if (currentHP <= 0)
         {
             // Enemy 사망 시 죽는 이펙트 생성
             deadVfxInstance =  Instantiate(DeadVfx, transform.position, Quaternion.identity);
@@ -179,14 +197,26 @@ public class Enemy : MonoBehaviour
         }
     }
 
+     // ==> Not Use
+    //private void UpdateHealthBar()
+    //{
+    //    Debug.Log("HP바 갱신");
+    //    // 현재 HP를 최대 HP로 나누어 fillAmount 업데이트
+    //    healthBar.fillAmount = currentHP / HP;
+    //}
+
+
     // Enemy 사망
     private void Dead()
     {
         // OnDeath 이벤트를 발생시켜 다른 스크립트에서 적의 사망을 감지할 수 있도록 함
         OnDeath?.Invoke();
 
+        // HPBarScript.HPBar_instance.RemoveHPBar(gameObject);
+
         // Enemy 제거
         Destroy(gameObject);
+       // DestroyImmediate(gameObject);
 
         // 죽는 이펙트 인스턴스 파괴
         Destroy(deadVfxInstance, 2f);
@@ -213,38 +243,36 @@ public class Enemy : MonoBehaviour
     }
 
 
-
-    // 원거리 공격 애니메이션 추가하려다 실패함.
-    private void ReadyLongAttack()
-    {
-        animator.SetTrigger("longRange");
-        Debug.Log("원거리 애니매이션 호출");
-    }
-
-
-    // RushJump 애니메이션에 Animation Event로 실행해보려 했으나 실패
-    public void HighJump()
-    {
-        // 2023.10.10 문제 발생
-        // 이 부분은 애니메이션을 호출하지도 않았는데, 처음 게임 실행 할 때 애니메이션 실행과 함께 디버그가 출력 됨.
-        Debug.Log("최대 점프 순간 ");
-    }
-
-
-
-
-
-
     public void InstantiateFx() //Unity Animation Event 에서 실행됩니다.
     {
         Debug.Log("공격 이펙트 발동");
         Instantiate(splashFx, transform.position, Quaternion.identity);
     }
-    
+
     public void WhenAnimationDone() //Unity Animation Event 에서 실행됩니다.
     {
         attackDone = true;
     }
+
+
+
+
+    //// 원거리 공격 애니메이션 추가하려다 실패함.
+    //private void ReadyLongAttack()
+    //{
+    //    animator.SetTrigger("longRange");
+    //    Debug.Log("원거리 애니매이션 호출");
+    //}
+
+
+    //// RushJump 애니메이션에 Animation Event로 실행해보려 했으나 실패
+    //public void HighJump()
+    //{
+    //    // 2023.10.10 문제 발생
+    //    // 이 부분은 애니메이션을 호출하지도 않았는데, 처음 게임 실행 할 때 애니메이션 실행과 함께 디버그가 출력 됨.
+    //    Debug.Log("최대 점프 순간 ");
+    //}
+
 
 
     private void OnDrawGizmosSelected()
